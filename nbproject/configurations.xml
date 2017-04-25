@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>Clock.hpp</itemPath>
+      <itemPath>Mapa.h</itemPath>
+      <itemPath>Personaje.hpp</itemPath>
+      <itemPath>Sprite.hpp</itemPath>
+      <itemPath>tinystr.h</itemPath>
+      <itemPath>tinyxml.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>Clock.cpp</itemPath>
+      <itemPath>Mapa.cpp</itemPath>
+      <itemPath>Personaje.cpp</itemPath>
+      <itemPath>Sprite.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+      <itemPath>tinystr.cpp</itemPath>
+      <itemPath>tinyxml.cpp</itemPath>
+      <itemPath>tinyxmlerror.cpp</itemPath>
+      <itemPath>tinyxmlparser.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/SFML</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <linkerAddLib>
+            <pElem>/usr/lib/x86_64-linux-gnu</pElem>
+          </linkerAddLib>
+          <linkerLibItems>
+            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/libsfml-audio.so</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/libsfml-graphics.so</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/libsfml-network.so</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/libsfml-system.so</linkerLibFileItem>
+            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/libsfml-window.so</linkerLibFileItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinystr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinystr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tinyxml.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinyxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tinyxmlerror.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinyxmlparser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mapa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinystr.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinystr.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tinyxml.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinyxml.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tinyxmlerror.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tinyxmlparser.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
