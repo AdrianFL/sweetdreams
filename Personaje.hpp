@@ -21,6 +21,8 @@ public:
     Personaje(int id);
     Sprite* render(int est);
     void move(int i);
+    void atacar();
+    Sprite* getAnimacionActiva();
     int getDireccion();
     int getXCoordinate();
     int getYCoordinate();
@@ -35,6 +37,7 @@ private:
     int x, y;
     float sx, sy;
     int vida, mana, vidamax, manamax;
+    int activa;
     
     int direccion;
 };
