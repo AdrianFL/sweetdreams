@@ -79,3 +79,17 @@ sf::Sprite Sprite::render(int32_t t){
     }
     return fotogramas[puntero];
 }
+
+sf::Sprite Sprite::getFotogramaActual(){
+    return fotogramas[puntero];
+}
+
+bool Sprite::comprobarColision(int x, Sprite ajeno){
+    if(x<0 && x>=fr){
+        x=puntero;
+    }
+    if(fotogramas[x].getGlobalBounds().intersects(ajeno.getFotogramaActual().getGlobalBounds())){
+        return true;
+    }
+    return false;
+}

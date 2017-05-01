@@ -15,7 +15,6 @@
 #define PERSONAJE_HPP
 
 #include "Sprite.hpp"
-#include <SFML/Graphics.hpp>
 
 class Personaje {
 public:
@@ -30,9 +29,12 @@ private:
     Sprite *idleleft;
     Sprite *moveright;
     Sprite *moveleft;
+    Sprite *attackright;
+    Sprite *attackleft;
     
     int x, y;
     float sx, sy;
+    int vida, mana, vidamax, manamax;
     
     int direccion;
 };

@@ -27,7 +27,9 @@ public:
     void set_position(int x, int y);
     void set_scale(float x, float y);
     void move(int x, int y);
+    bool comprobarColision(int x, Sprite ajeno);
     sf::Sprite render(int32_t t);
+    sf::Sprite getFotogramaActual();
 private:    
     sf::Sprite *fotogramas;
     sf::Texture textura;

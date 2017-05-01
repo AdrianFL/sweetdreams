@@ -17,6 +17,10 @@
 
 Personaje::Personaje(int id) {
     if(id==0){
+        vida=200;
+        mana=100;
+        vidamax=200;
+        manamax=100;
         int coordenadas[24]={7,28,31,64,39,28,31,64,73,28,29,64,105,27,30,65,138,27,31,65,172,27,31,65};
         int frames=6;
         std::string ruta("resources/Agony.png");
