@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Clock.o \
+	${OBJECTDIR}/Enemy.o \
 	${OBJECTDIR}/Mapa.o \
 	${OBJECTDIR}/Personaje.o \
 	${OBJECTDIR}/Sprite.o \
@@ -74,6 +75,11 @@ ${OBJECTDIR}/Clock.o: Clock.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Clock.o Clock.cpp
+
+${OBJECTDIR}/Enemy.o: Enemy.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Enemy.o Enemy.cpp
 
 ${OBJECTDIR}/Mapa.o: Mapa.cpp 
 	${MKDIR} -p ${OBJECTDIR}

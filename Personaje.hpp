@@ -15,17 +15,19 @@
 #define PERSONAJE_HPP
 
 #include "Sprite.hpp"
+#include "Enemy.h"
 
 class Personaje {
 public:
     Personaje(int id);
     Sprite* render(int est);
     void move(int i);
-    void atacar();
+    void atacar(Enemy e);
     Sprite* getAnimacionActiva();
     int getDireccion();
     int getXCoordinate();
     int getYCoordinate();
+    void herir(int dmg);
 private:
     Sprite *idle;
     Sprite *idleleft;
@@ -38,6 +40,8 @@ private:
     float sx, sy;
     int vida, mana, vidamax, manamax;
     int activa;
+    
+    int32_t atctime;
     
     int direccion;
 };

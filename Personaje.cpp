@@ -13,6 +13,7 @@
 
 #include "Personaje.hpp"
 #include "Sprite.hpp"
+#include "Enemy.h"
 #include <iostream>
 
 Personaje::Personaje(int id) {
@@ -59,9 +60,24 @@ Personaje::Personaje(int id) {
     sy=1.0;
     direccion=1;
     activa=0;
+    atctime=-1;
 }
 
 Sprite* Personaje::render(int est){
+    if(atctime>=0){
+        if(direccion>0){
+            attackright->set_position(x,y);
+            attackright->set_scale(sx, sy);
+            activa=4;
+            return(attackright);
+        }
+        else{
+            attackleft->set_position(x,y);
+            attackleft->set_scale(sx, sy);
+            activa=5;
+            return(attackleft);
+        }
+    }
     if(est>0){
         moveright->set_position(x, y);
         moveright->set_scale(sx, sy);
@@ -90,30 +106,32 @@ Sprite* Personaje::render(int est){
 }
 
 void Personaje::move(int i){
-    if(i==1){
-        direccion=1;
-        if(x<1153){
-            x+=4;
-        } 
-    }
-    else if(i==2){
-        direccion=-1;
-        if(x>20){
-            x-=4;
+    if(atctime<0){
+        if(i==1){
+            direccion=1;
+            if(x<1153){
+                x+=4;
+            } 
         }
-    }
-    else if(i==3){
-        if(y>380){
-            sx-=0.002;
-            sy-=0.002;
-            y-=2;
+        else if(i==2){
+            direccion=-1;
+            if(x>20){
+                x-=4;
+            }
         }
-    }
-    else if(i==4){
-        if(y<570){
-            sx+=0.002;
-            sy+=0.002;
-            y+=2;
+        else if(i==3){
+            if(y>380){
+                sx-=0.002;
+                sy-=0.002;
+                y-=2;
+            }
+        }
+        else if(i==4){
+            if(y<570){
+                sx+=0.002;
+                sy+=0.002;
+                y+=2;
+            }
         }
     }
 }
@@ -131,5 +149,44 @@ int Personaje::getYCoordinate(){
 }
 
 Sprite* Personaje::getAnimacionActiva(){
-    
+    switch(activa){
+        case 0: return(idle);
+        break;
+        case 1: return(idleleft);
+        break;
+        case 2: return(moveright);
+        break;
+        case 3: return(moveleft);
+        break;
+        case 4: return(attackright);
+        break;
+        case 5: return(attackleft);
+        break;
+        default: return(idle);
+        break;
+    }
+}
+
+void Personaje::atacar(Enemy e){
+    if(atctime<0){
+        atctime=400;
+        if(direccion>0){
+            attackright->set_position(x,y);
+            attackright->set_scale(sx, sy);
+            if(attackright->comprobarColision(4, e.getAnimacionActiva())){
+                e.herir(10);
+            }
+        }
+        else{
+            attackleft->set_position(x,y);
+            attackleft->set_scale(sx, sy);
+            if(attackleft->comprobarColision(4, e.getAnimacionActiva())){
+                e.herir(10);
+            }
+        }
+    }
+}
+
+void Personaje::herir(int dmg){
+    vida-=dmg;
 }
