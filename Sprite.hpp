@@ -22,6 +22,8 @@ public:
     Sprite(const Sprite& orig);
     virtual ~Sprite();*/
     Sprite(std::string& url, int coord[], int frames);
+    void set_origin(int x, int y);
+    void set_framerate(int32_t x);
     void set_position(int x, int y);
     void set_scale(float x, float y);
     void move(int x, int y);

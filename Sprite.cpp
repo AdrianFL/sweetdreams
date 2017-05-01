@@ -14,6 +14,7 @@
 #include "Sprite.hpp"
 #include <iostream>
 
+//Parametros: url de la textura, array de coordenadas para cada frame (multiplo de 4) y cantidad de frames
 Sprite::Sprite(std::string& url, int coord[], int frames)
 {
     if(!textura.loadFromFile(url)){
@@ -34,26 +35,43 @@ Sprite::Sprite(std::string& url, int coord[], int frames)
     frames=75;
 }
 
+//Coloca la coordenada origen para cada frame de la animacion
+void Sprite::set_origin(int x, int y){
+    for(int i=0; i<fr; i++){
+        fotogramas[i].setOrigin(x, y);
+    }
+}
+
+//Fija la tasa de frames de la animacion
+void Sprite::set_framerate(int32_t x){
+    tasa=x;
+    frames=x;
+}
+
+//Coloca la animacion entera en una posicion
 void Sprite::set_position(int x, int y){
     for(int i=0; i<fr; i++){
         fotogramas[i].setPosition(x, y);
     }
 }
 
+//Cambia la escala de la animacion
 void Sprite::set_scale(float x, float y){
     for(int i=0; i<fr; i++){
         fotogramas[i].setScale(x, y);
     }
 }
 
+//Funcion no necesaria por el momento
 void Sprite::move(int x, int y){
     
 }
 
+//Devuelve el sprite de SFML que se debe renderizar
 sf::Sprite Sprite::render(int32_t t){
     frames-=t;
     if(frames<0){
-        frames=75;
+        frames=tasa;
         puntero++;
         if(puntero>=fr){
             puntero=0;

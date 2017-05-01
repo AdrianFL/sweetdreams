@@ -22,16 +22,20 @@ Personaje::Personaje(int id) {
         std::string ruta("resources/Agony.png");
         idle= new Sprite(ruta, coordenadas, frames);
         idle->set_position(600, 320);
+        idle->set_framerate(120);
         int coordenadas2[24] = {38, 28, -31, 64, 70,28,-31,64,102,28,-29,64,135,27,-30,65,169, 27, -31, 65,203, 27, -31,65};
         idleleft = new Sprite(ruta, coordenadas2, frames);
         idleleft->set_position(600, 320);
+        idleleft->set_framerate(120);
         int coordenadas3[32] = {632, 131, 47, 59, 682,125, 42,65, 727,126,47,57,777,128,45,59,825,131,46,57,874,125,40,63,917,126,46,57,966,128,44,59};
         frames=8;
         moveright=new Sprite(ruta, coordenadas3, frames);
         moveright->set_position(600, 320);
+        moveright->set_framerate(100);
         int coordenadas4[32] = {679,131,-47,59, 724,125, -42, 65, 774, 126, -47, 57, 822,128,-45,59,871,131,-46,57,914,125,-40,63,963,126,-46,57,1010,128,-44,59};
         moveleft=new Sprite(ruta, coordenadas4, frames);
         moveleft->set_position(600,320);
+        moveleft->set_framerate(100);
     }
     else if(id==1){
         
@@ -98,4 +102,12 @@ void Personaje::move(int i){
 
 int Personaje::getDireccion(){
     return(direccion);
+}
+
+int Personaje::getXCoordinate(){
+    return(x);
+}
+
+int Personaje::getYCoordinate(){
+    return(y);
 }

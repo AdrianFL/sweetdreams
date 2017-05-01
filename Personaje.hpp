@@ -23,6 +23,8 @@ public:
     Sprite* render(int est);
     void move(int i);
     int getDireccion();
+    int getXCoordinate();
+    int getYCoordinate();
 private:
     Sprite *idle;
     Sprite *idleleft;
