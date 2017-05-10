@@ -15,11 +15,11 @@
 #include "Personaje.hpp"
 
 //Le pasamos el tipo de enemigo que se crea, y su posición inicial
-Enemy::Enemy(int id, int inix, int iniy, float tAtaque) {
+Enemy::Enemy(int id, int inix, int iniy, int tAtaque) {
     x=inix;
     y=iniy;
-    tiempoAtaque = tAtaque;
-    muerte = false;
+    vida = 30;
+    danyoAtaque = 10;
     if(id==0){
         
         int frames=6;
@@ -46,16 +46,16 @@ Enemy::Enemy(int id, int inix, int iniy, float tAtaque) {
         
         
         int coordenadas5[36]={1,670,54,77, 59,668,56,79, 119,665,61,80, 184,664,65,83, 253,666,79,81, 336,673,80,74, 420,672,64,75, 488,673,58,73, 550,672,50,75};
-        ataqueRight=new Sprite(ruta, coordenadas4, frames);
+        ataqueRight=new Sprite(ruta, coordenadas5, frames);
         ataqueRight->set_position(x,y);
         ataqueRight->set_framerate(100);
         
         int coordenadas6[36]={55,670,-54,77, 115,668,-56,79, 180,665,-61,80, 249,664,-65,83, 332,666,-79,81, 416,673,-80,74, 484,672,-64,75, 546,673,-58,73, 600,672,-50,75};
-        ataqueLeft=new Sprite(ruta, coordenadas4, frames);
+        ataqueLeft=new Sprite(ruta, coordenadas6, frames);
         ataqueLeft->set_position(x,y);
         ataqueLeft->set_framerate(100);
         
-        int coordenadas7[] = {};
+        //int coordenadas7[] = {}; Para la muerte
         
         spriteActual = idle;
     }
@@ -63,6 +63,7 @@ Enemy::Enemy(int id, int inix, int iniy, float tAtaque) {
     sx=1.0;
     sy=1.0;
     direccion=1;
+    ataquetime = -1;
 }
 
 Enemy::Enemy(const Enemy& orig) {
@@ -71,8 +72,22 @@ Enemy::Enemy(const Enemy& orig) {
 Enemy::~Enemy() {
 }
 
-Sprite* Enemy::render(){
-    int est = direccion;
+Sprite* Enemy::render(int est, int32_t tempo){
+    ataquetime-=tempo;
+    if(ataquetime>=0){
+        if(direccion>0){
+            ataqueRight->set_position(x*0.9,y*0.9);
+            ataqueRight->set_scale(sx, sy);
+            spriteActual = ataqueRight;
+            return(ataqueRight);
+        }
+        else{
+            ataqueLeft->set_position(x*0.9,y*0.9);
+            ataqueLeft->set_scale(sx, sy);
+            spriteActual = ataqueLeft;
+            return(ataqueLeft);
+        }
+    }
     if(est>0){
         moveright->set_position(x*0.9, y*0.9);
         moveright->set_scale(sx, sy);
@@ -100,53 +115,90 @@ Sprite* Enemy::render(){
     }
 }
 
-void Enemy::perseguir(Personaje* p){
+void Enemy::atacar(Personaje *p){
+    if(ataquetime < 0){
+        ataquetime = 900;
+        if(direccion>0){
+            ataqueRight->set_position(x*0.9,y*0.9);
+            ataqueRight->set_scale(sx, sy);
+            if(ataqueRight->comprobarColision(5, p->getAnimacionActiva())){
+                p->herir(danyoAtaque);
+            }
+        }
+        else{
+            ataqueLeft->set_position(x*0.9,y*0.9);
+            ataqueLeft->set_scale(sx, sy);
+            if(ataqueLeft->comprobarColision(5, p->getAnimacionActiva())){
+               p->herir(danyoAtaque);
+            }
+        }
+    }
+}
+
+int Enemy::perseguir(Personaje *p){
+    int dirc = 0;
     int px = p->getXCoordinate();
     int py = p->getYCoordinate();
     
-    if(x <= px){
-        move(1);
-        direccion = 1;
+    int danyo = 0;
+    if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
+        if(x-20 <= px){
+            move(1);
+            dirc = 1;
+        }
+        else if(x-80 >=px){
+            move(2);
+            dirc = -1;
+        }
+        else if(y-30 >= py){
+            move(3);
+            dirc = direccion;
+        }
+        else if(y-50 <= py){
+            move(4);
+            dirc = direccion;
+        }
+    }else{
+        atacar(p);
     }
-    if(x-100 >=px){
-        move(2);
-        direccion = -1;
-    }
-    if(y >= py){
-        move(3);
-    }
-    if(y-70 <= py){
-        move(4);
+    return dirc;
+}
+
+void Enemy::herir(int h){
+    vida-=h;
+    if(vida<=0){
+        std::cout<<"Me he muerto colegui"<<std::endl;
     }
 }
 
 
-
 void Enemy::move(int i){
-    if(i==1){
-        direccion=1;
-        if(x<1153){
-            x+=4;
-        } 
-    }
-    else if(i==2){
-        direccion=-1;
-        if(x>20){
-            x-=4;
+    if(ataquetime<0){
+        if(i==1){
+            direccion=1;
+            if(x<1153){
+                x+=4;
+            } 
         }
-    }
-    else if(i==3){
-        if(y>380){
-            sx-=0.002;
-            sy-=0.002;
-            y-=2;
+        else if(i==2){
+            direccion=-1;
+            if(x>20){
+                x-=4;
+            }
         }
-    }
-    else if(i==4){
-        if(y<570){
-            sx+=0.002;
-            sy+=0.002;
-            y+=2;
+        else if(i==3){
+            if(y>380){
+                sx-=0.002;
+                sy-=0.002;
+                y-=2;
+            }
+        }
+        else if(i==4){
+            if(y<570){
+                sx+=0.002;
+                sy+=0.002;
+                y+=2;
+            }
         }
     }
 }

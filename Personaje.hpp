@@ -15,19 +15,33 @@
 #define PERSONAJE_HPP
 
 #include "Sprite.hpp"
+#include <SFML/Graphics.hpp>
+#include "Pocion.h"
 #include "Enemy.h"
+class Enemy;
 
 class Personaje {
 public:
     Personaje(int id);
-    Sprite* render(int est);
+    Sprite* render(int est, int32_t tempo);
     void move(int i);
-    void atacar(Enemy e);
-    Sprite* getAnimacionActiva();
     int getDireccion();
     int getXCoordinate();
     int getYCoordinate();
+    int getVidaMax();
+    int getManaMax();
+    int getVida();
+    int getMana();    
+    void setMana(int i);
+    void setVida(int i);
+    void usaPocion(Pocion pocion);
+    //bool cogeObjeto();
+    int numeroPoc();
+   // void setPociones(Pocion *pociones[5]); //para probar
     void herir(int dmg);
+    void atacar(Enemy *e);
+    Sprite* getAnimacionActiva();
+    
 private:
     Sprite *idle;
     Sprite *idleleft;
@@ -36,9 +50,16 @@ private:
     Sprite *attackright;
     Sprite *attackleft;
     
+    int vida;
+    int mana;
+    int vidamax;
+    int manamax;
+    int numPVida;
+    int numPMana;
+    
+    Pocion *bolsilloP[5];
     int x, y;
     float sx, sy;
-    int vida, mana, vidamax, manamax;
     int activa;
     
     int32_t atctime;

@@ -31,18 +31,36 @@ Mapa::~Mapa(){
     delete _tilemap;
 }
 
-void Mapa::leerMapa(){
+void Mapa::leerMapa(int mapa){
     
      //cargo la textura del fondo
-    if(!texturafondo.loadFromFile("resources/Fondo.png")){
-        std::cerr << "Error cargando la imagen de fondo";
-        exit(0);
+    if(mapa==1){
+        if(!texturafondo.loadFromFile("resources/Fondo.png")){
+            std::cerr << "Error cargando la imagen de fondo";
+            exit(0);
+        }
+    }
+    if(mapa==2){
+        if(!texturafondo.loadFromFile("resources/Mapa2.png")){
+            std::cerr << "Error cargando la imagen de fondo";
+            exit(0);
+        }
     }
     fondo.setTexture(texturafondo);
-
+    
     TiXmlDocument doc;
-    doc.LoadFile("resources/Mapa.tmx");
+    
+    if(mapa==1){ 
+        doc.LoadFile("resources/Mapa.tmx");
+    }
+    
+    if(mapa==2){
+        doc.LoadFile("resources/Mapa2.tmx");
+         
+    }
     TiXmlElement* map = doc.FirstChildElement("map");
+
+    
     
     //guardamos los datos del tmx
     map->QueryIntAttribute("width",&_width);

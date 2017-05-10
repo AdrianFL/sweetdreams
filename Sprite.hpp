@@ -26,8 +26,10 @@ public:
     void set_framerate(int32_t x);
     void set_position(int x, int y);
     void set_scale(float x, float y);
+    void set_rotation(float x);
+    void rotate(float x);
     void move(int x, int y);
-    bool comprobarColision(int x, Sprite ajeno);
+    bool comprobarColision(int x, Sprite *ajeno);
     sf::Sprite render(int32_t t);
     sf::Sprite getFotogramaActual();
 private:    

@@ -16,12 +16,11 @@
 #include "Enemy.h"
 #include <iostream>
 
+
+
+
 Personaje::Personaje(int id) {
     if(id==0){
-        vida=200;
-        mana=100;
-        vidamax=200;
-        manamax=100;
         int coordenadas[24]={7,28,31,64,39,28,31,64,73,28,29,64,105,27,30,65,138,27,31,65,172,27,31,65};
         int frames=6;
         std::string ruta("resources/Agony.png");
@@ -49,7 +48,6 @@ Personaje::Personaje(int id) {
         attackleft=new Sprite(ruta,coordenadas6, frames);
         attackleft->set_position(600,450);
         attackleft->set_framerate(50);
-    
     }
     else if(id==1){
         
@@ -61,19 +59,26 @@ Personaje::Personaje(int id) {
     direccion=1;
     activa=0;
     atctime=-1;
+    vidamax=200;
+    manamax=100;
+    vida=20;
+    mana=10;
+    numPVida=3;
+    numPMana=2;
 }
 
-Sprite* Personaje::render(int est){
+Sprite* Personaje::render(int est, int32_t tempo){
+    atctime-=tempo;
     if(atctime>=0){
         if(direccion>0){
-            attackright->set_position(x,y);
-            attackright->set_scale(sx, sy);
+            //attackright->set_position(x,y);
+            //attackright->set_scale(sx, sy);
             activa=4;
             return(attackright);
         }
         else{
-            attackleft->set_position(x,y);
-            attackleft->set_scale(sx, sy);
+            //attackleft->set_position(x,y);
+            //attackleft->set_scale(sx, sy);
             activa=5;
             return(attackleft);
         }
@@ -136,6 +141,98 @@ void Personaje::move(int i){
     }
 }
 
+void Personaje::usaPocion(Pocion p){
+       
+       int sumvida=0;
+       int summana=0;
+    
+    bool stop=false;
+    
+    for(int i=0; i<5; i++){
+            if(p.getTipo()=="vida"){
+            if(numPVida>0){
+                if(stop==false){
+                     if (this->getVida()+p.getTamanyo()>this->getVidaMax()){
+                         this->setVida(this->getVidaMax());
+                         stop=true;
+                         numPVida--;
+                
+                         //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                         std::cout<<"Has usado una pocion de vida, tu vida es:"<<this->getVida()<<std::endl;
+                         std::cout<<"Te quedan "<<this->numPVida<<" pociones en el bolsillo."<<std::endl;
+                           //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                
+                         }
+                    else if (this->getVida()+p.getTamanyo()<this->getVidaMax()){
+                        sumvida=this->getVida()+p.getTamanyo();
+                        this->setVida(sumvida);
+                        stop=true;
+                        numPVida--;
+                        
+                        //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                        std::cout<<"Has usado una pocion de vida, tu vida es:"<<this->getVida()<<std::endl;
+                        std::cout<<"Te quedan "<<this->numPVida<<" pociones en el bolsillo."<<std::endl;
+                        //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                         }
+                    else{
+                        this->setVida(this->getVida());
+                        stop=true;
+                    }
+                }
+              }
+            }
+            if(p.getTipo()=="mana"){
+            if(numPMana>0){
+                    if(stop==false){
+                        if (this->getMana()+p.getTamanyo()>this->getManaMax()){
+                            this->setMana(this->getManaMax());
+                            stop=true;
+                            numPMana--;
+
+                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                            std::cout<<"Has usado una pocion de mana, tu mana es:"<<this->getMana()<<std::endl;
+                            std::cout<<"Te quedan "<<this->numPMana<<" pociones de mana."<<std::endl;
+                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                         }
+                    else if (this->getMana()+p.getTamanyo()<this->getManaMax()){
+                            summana=this->getMana()+p.getTamanyo();
+                            this->setMana(summana);
+                            stop=true;
+                            numPMana--;
+
+                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                            std::cout<<"Has usado una pocion de mana, tu mana es:"<<this->getMana()<<std::endl;
+                            std::cout<<"Te quedan "<<this->numPMana<<" pociones de mana."<<std::endl;
+                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
+                }
+                else{
+                    this->setMana(this->getMana());
+                    stop=true;
+                }
+                }
+            }
+            }
+        
+    }
+    
+}
+
+/*bool Personaje::cogeObjeto(){
+    
+    bool stop=false;
+    
+    for(int i=0; i<5; i++){
+        if(bolsilloP[i]==NULL){
+            if(stop==false){
+                bolsilloP[i]=p;
+                stop=true;
+                return true;
+            }
+        }
+    }
+    
+}*/
+
 int Personaje::getDireccion(){
     return(direccion);
 }
@@ -147,6 +244,39 @@ int Personaje::getXCoordinate(){
 int Personaje::getYCoordinate(){
     return(y);
 }
+
+int Personaje::getManaMax(){
+    return manamax;
+}
+
+int Personaje::getVidaMax(){
+    return vidamax;
+}
+
+void Personaje::setMana(int i){
+    mana=i;
+}
+
+void Personaje::setVida(int i){
+    vida=i;
+}
+
+int Personaje::getMana(){
+    return mana;
+}
+
+int Personaje::getVida(){
+    return vida;
+}
+
+/*void Personaje::setPociones(Pocion *pociones[]){
+    
+    for(int i=0; i<5; i++){
+        for(int j=0; i<5; i++){
+            bolsilloP[i]=pociones[j];
+        }
+    }
+}*/
 
 Sprite* Personaje::getAnimacionActiva(){
     switch(activa){
@@ -167,21 +297,21 @@ Sprite* Personaje::getAnimacionActiva(){
     }
 }
 
-void Personaje::atacar(Enemy e){
+void Personaje::atacar(Enemy *e){
     if(atctime<0){
         atctime=400;
         if(direccion>0){
             attackright->set_position(x,y);
             attackright->set_scale(sx, sy);
-            if(attackright->comprobarColision(4, e.getAnimacionActiva())){
-                e.herir(10);
+            if(attackright->comprobarColision(4, e->getAnimacionActiva())){
+                e->herir(10);
             }
         }
         else{
             attackleft->set_position(x,y);
             attackleft->set_scale(sx, sy);
-            if(attackleft->comprobarColision(4, e.getAnimacionActiva())){
-                e.herir(10);
+            if(attackleft->comprobarColision(4, e->getAnimacionActiva())){
+                e->herir(10);
             }
         }
     }
@@ -189,4 +319,7 @@ void Personaje::atacar(Enemy e){
 
 void Personaje::herir(int dmg){
     vida-=dmg;
+    if(vida<0){
+        std::cout<<"baia biaa"<<std::endl;
+    }
 }

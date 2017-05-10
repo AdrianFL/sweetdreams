@@ -4,10 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Arma.h</itemPath>
       <itemPath>Clock.hpp</itemPath>
       <itemPath>Enemy.h</itemPath>
       <itemPath>Mapa.h</itemPath>
       <itemPath>Personaje.hpp</itemPath>
+      <itemPath>Pocion.h</itemPath>
       <itemPath>Sprite.hpp</itemPath>
       <itemPath>tinystr.h</itemPath>
       <itemPath>tinyxml.h</itemPath>
@@ -19,10 +21,12 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Arma.cpp</itemPath>
       <itemPath>Clock.cpp</itemPath>
       <itemPath>Enemy.cpp</itemPath>
       <itemPath>Mapa.cpp</itemPath>
       <itemPath>Personaje.cpp</itemPath>
+      <itemPath>Pocion.cpp</itemPath>
       <itemPath>Sprite.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>tinystr.cpp</itemPath>
@@ -69,6 +73,10 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Arma.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Arma.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
@@ -84,6 +92,10 @@
       <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Pocion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Pocion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -124,6 +136,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Arma.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Arma.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
@@ -139,6 +155,10 @@
       <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Pocion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Pocion.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -21,7 +21,7 @@ public:
     Mapa(const Mapa& orig);
     ~Mapa();
     
-    void leerMapa();
+    void leerMapa(int mapa);
     void dibuja(sf::RenderWindow &window);
     
     sf::Sprite  fondo;

@@ -35,10 +35,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Arma.o \
 	${OBJECTDIR}/Clock.o \
 	${OBJECTDIR}/Enemy.o \
 	${OBJECTDIR}/Mapa.o \
 	${OBJECTDIR}/Personaje.o \
+	${OBJECTDIR}/Pocion.o \
 	${OBJECTDIR}/Sprite.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/tinystr.o \
@@ -65,11 +67,16 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mapapersonaje
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mapapersonaje: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mapapersonaje ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Arma.o: Arma.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Arma.o Arma.cpp
 
 ${OBJECTDIR}/Clock.o: Clock.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -90,6 +97,11 @@ ${OBJECTDIR}/Personaje.o: Personaje.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Personaje.o Personaje.cpp
+
+${OBJECTDIR}/Pocion.o: Pocion.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Pocion.o Pocion.cpp
 
 ${OBJECTDIR}/Sprite.o: Sprite.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -127,7 +139,7 @@ ${OBJECTDIR}/tinyxmlparser.o: tinyxmlparser.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/mapapersonaje
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones
 
 # Subprojects
 .clean-subprojects:

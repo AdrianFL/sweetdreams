@@ -80,16 +80,31 @@ sf::Sprite Sprite::render(int32_t t){
     return fotogramas[puntero];
 }
 
+
 sf::Sprite Sprite::getFotogramaActual(){
     return fotogramas[puntero];
 }
 
-bool Sprite::comprobarColision(int x, Sprite ajeno){
+bool Sprite::comprobarColision(int x, Sprite *ajeno){
     if(x<0 && x>=fr){
         x=puntero;
     }
-    if(fotogramas[x].getGlobalBounds().intersects(ajeno.getFotogramaActual().getGlobalBounds())){
+    if(fotogramas[x].getGlobalBounds().intersects(ajeno->getFotogramaActual().getGlobalBounds())){
         return true;
     }
     return false;
+}
+
+void Sprite::set_rotation(float x)
+{
+    for(int i=0; i<fr; i++){
+        fotogramas[i].setRotation(x);
+    }
+}
+
+void Sprite::rotate(float x)
+{
+    for(int i=0; i<fr; i++){
+        fotogramas[i].rotate(x);
+    }
 }

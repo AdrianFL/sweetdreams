@@ -11,21 +11,26 @@
  * Created on 1 de mayo de 2017, 16:55
  */
 #include "Sprite.hpp"
-#include "Personaje.hpp"
+#include "Clock.hpp"
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #ifndef ENEMY_H
 #define ENEMY_H
 
+class Personaje;
+
 class Enemy {
 public:
-    Enemy(int id, int inix, int iniy, float tAtaque);
+    Enemy(int id, int inix, int iniy, int tAtaque);
     Enemy(const Enemy& orig);
     virtual ~Enemy();
     
-    Sprite* render();
+    Sprite* render(int est, int32_t tempo);
     void move(int i);
-    void perseguir(Personaje* p);
+    int perseguir(Personaje *p);
+    void herir(int h);
+    void atacar(Personaje *p);
     int getDireccion();
     int getXCoordinate();
     int getYCoordinate();
@@ -38,15 +43,18 @@ private:
     Sprite *moveleft;
     Sprite *ataqueRight;
     Sprite *ataqueLeft;
-    
-    
+    Sprite *muerte;
     
     int x, y;
     float sx, sy;
-    bool muerte;
     
+    int vida;
     int direccion;
-    float tiempoAtaque;
+    
+    int32_t ataquetime;
+    
+    int  danyoAtaque;
 };
 
 #endif /* ENEMY_H */
+
