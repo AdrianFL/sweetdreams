@@ -108,3 +108,8 @@ void Sprite::rotate(float x)
         fotogramas[i].rotate(x);
     }
 }
+
+void Sprite::reset()
+{
+    puntero=0;
+}

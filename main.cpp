@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <SFML/Graphics.hpp>
 #include "Personaje.hpp"
 #include "Clock.hpp"
@@ -22,6 +23,8 @@
 #include <cstring>
 #include "Arma.h"
 #include "Pocion.h"
+
+#define UPDATE_TICK_TIME 1000.0/15.0
 
 
 int main()
@@ -38,10 +41,12 @@ int main()
     mapa->leerMapa(1);
     
     Clock clock;
+    Clock updateclock;
     int32_t time;
-    int direccion=0;
+    int32_t updatetime;
     
     int prueba=0;
+    int option=0;
     
     //Bucle del juego
     while (window.isOpen())
@@ -62,42 +67,52 @@ int main()
             
         }
         time=clock.restart();
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-            p1.move(1);
-            direccion=1;
+        if(updateclock.getTime() > UPDATE_TICK_TIME)
+        {
+            updatetime=updateclock.restart();
+        //Bloque update
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+                option=1;
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+                option=2;
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+                option=3;
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+                option=4;
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){
+                p1.usaPocion(pvida); 
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)){
+                p1.usaPocion(pmana);
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){
+                p1.atacar();
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){
+                p1.herir(25);
+            }
+            p1.move(option);
+            option=0;
         }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-            p1.move(2);
-            direccion=-1;
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            p1.move(3);
-            direccion=p1.getDireccion();
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-            p1.move(4);
-            direccion=p1.getDireccion();
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){
-            p1.usaPocion(pvida); 
-        }
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)){
-            p1.usaPocion(pmana);
-        }
-        
+
         //coger objetos
         /*else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
             p1.cogeObjeto;
         }*/
-       
+             
         
+        //Bloque Render
+        float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
         window.clear();
         mapa->dibuja(window);
         window.draw(hacha.getSprite()->render(time));
         window.draw(pvida.getSprite()->render(time));
-        window.draw(p1.render(direccion, time)->render(time));
+        window.draw(p1.render(time, percentTick)->render(time));
         window.display();
-        direccion=0;
     }
 
     return 0;

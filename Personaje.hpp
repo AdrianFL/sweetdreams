@@ -23,7 +23,7 @@ class Enemy;
 class Personaje {
 public:
     Personaje(int id);
-    Sprite* render(int est, int32_t tempo);
+    Sprite* render(int32_t tempo, float p);
     void move(int i);
     int getDireccion();
     int getXCoordinate();
@@ -39,7 +39,7 @@ public:
     int numeroPoc();
    // void setPociones(Pocion *pociones[5]); //para probar
     void herir(int dmg);
-    void atacar(Enemy *e);
+    void atacar();
     Sprite* getAnimacionActiva();
     
 private:
@@ -49,6 +49,12 @@ private:
     Sprite *moveleft;
     Sprite *attackright;
     Sprite *attackleft;
+    Sprite *potivida;
+    Sprite *potividaleft;
+    Sprite *potimana;
+    Sprite *potimanaleft;
+    Sprite *muerte;
+    Sprite *muerteleft;
     
     int vida;
     int mana;
@@ -59,10 +65,13 @@ private:
     
     Pocion *bolsilloP[5];
     int x, y;
+    int lastx, lasty;
     float sx, sy;
     int activa;
     
-    int32_t atctime;
+    bool movingborder;
+    
+    int32_t atctime, potvidatime, potmanatime;
     
     int direccion;
 };

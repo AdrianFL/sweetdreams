@@ -32,6 +32,7 @@ public:
     bool comprobarColision(int x, Sprite *ajeno);
     sf::Sprite render(int32_t t);
     sf::Sprite getFotogramaActual();
+    void reset();
 private:    
     sf::Sprite *fotogramas;
     sf::Texture textura;
