@@ -73,11 +73,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sweetdreams
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sweetdreams: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sweetdreams ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/Arma.o: Arma.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -175,7 +175,7 @@ ${OBJECTDIR}/tinyxmlparser.o: tinyxmlparser.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sweetdreams
 
 # Subprojects
 .clean-subprojects:

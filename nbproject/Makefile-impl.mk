@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=EntregablePersonajes
+PROJECTNAME=sweetdreams
 
 # Active Configuration
 DEFAULTCONF=Debug

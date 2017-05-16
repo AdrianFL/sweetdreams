@@ -13,14 +13,26 @@
 
 #ifndef PROYECTIL_H
 #define PROYECTIL_H
+#include "Sprite.hpp"
 
 class Proyectil {
 public:
-    Proyectil();
+    Proyectil(int px, int py, int ex, int ey, int v, int d);
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
+    Sprite* render(int32_t tempo, float p);
+    
+    
+    int x, y, lastx, lasty, objx, objy;
+    int vida, danyo;
+    float sx,sy;
+    
+    bool movingborder;
+    int direccion;
 private:
-
+    Sprite* movleft;
+    Sprite* movright;
+    Sprite* spriteActual;
 };
 
 #endif /* PROYECTIL_H */
