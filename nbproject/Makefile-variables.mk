@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=entregablepociones
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/entregablepociones
+CND_ARTIFACT_NAME_Debug=entregablepersonajes
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/entregablepersonajes
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=entregablepociones.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/entregablepociones.tar
+CND_PACKAGE_NAME_Debug=entregablepersonajes.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/entregablepersonajes.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
-CND_ARTIFACT_NAME_Release=entregablepociones
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/entregablepociones
+CND_ARTIFACT_NAME_Release=entregablepersonajes
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/entregablepersonajes
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
-CND_PACKAGE_NAME_Release=entregablepociones.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/entregablepociones.tar
+CND_PACKAGE_NAME_Release=entregablepersonajes.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/entregablepersonajes.tar
 #
 # include compiler specific variables
 #

@@ -23,6 +23,10 @@
 #include <cstring>
 #include "Arma.h"
 #include "Pocion.h"
+#include "enemyMelee.h"
+#include "enemyRange.h"
+#include "Proyectil.h"
+#include "Camara.h"
 
 #define UPDATE_TICK_TIME 1000.0/15.0
 
@@ -39,6 +43,17 @@ int main()
     Mapa *mapa = new Mapa();
     //1 para leer el mapa 1, 2 para leer el mapa 2
     mapa->leerMapa(1);
+    
+    Camara *camara=new Camara(window.getSize().x, window.getSize().y, 12, *mapa);
+    
+    int movimiento=0;
+    
+    //###################
+    enemyMelee enemigoM(850,450,30,1);
+    enemyRange enemigoR(100,500,30,1);
+    
+    std::vector<Proyectil*> proyectiles;
+    //###################
     
     Clock clock;
     Clock updateclock;
@@ -67,15 +82,19 @@ int main()
             
         }
         time=clock.restart();
+        
+            
         if(updateclock.getTime() > UPDATE_TICK_TIME)
         {
             updatetime=updateclock.restart();
         //Bloque update
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
                 option=1;
+                movimiento=1;                
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
                 option=2;
+                movimiento=2;
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
                 option=3;
@@ -96,22 +115,62 @@ int main()
                 p1.herir(25);
             }
             p1.move(option);
+            if(movimiento==1){
+                 camara->moverDer(p1);
+            }
+            if(movimiento==2){
+                camara->moverIzq(p1);
+            }
             option=0;
+            
+            //######################
+            enemigoM.perseguir(&p1,mapa);
+            enemigoR.perseguir(&p1,mapa);
+            //######################
         }
 
         //coger objetos
         /*else if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
             p1.cogeObjeto;
         }*/
-             
+        
+       
         
         //Bloque Render
         float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
         window.clear();
         mapa->dibuja(window);
+        
+         //###########################################
+        //mapa->dibujaNodos(window);
+        mapa->dibujaObs(window);
+        
+        
+        
+        //Verifico que el camino va
+        for(int i = 0; i < enemigoM.caminoActual.size();i++){
+            window.draw(enemigoM.caminoActual.at(i)->getParcela()->render(time));
+        }
+        for(int i = 0; i < enemigoR.caminoActual.size();i++){
+            window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
+        }
+        //Verifico que el raycast va
+        window.draw(enemigoR.raycast->render(time));
+        window.draw(enemigoM.raycast->render(time));
+        //###################
+        
         window.draw(hacha.getSprite()->render(time));
         window.draw(pvida.getSprite()->render(time));
         window.draw(p1.render(time, percentTick)->render(time));
+        
+        //###################
+         window.draw(enemigoM.render(time, percentTick)->render(time));
+         window.draw(enemigoR.render(time, percentTick)->render(time));
+        //###################
+         
+         
+         camara->draw(window);
+         
         window.display();
     }
 

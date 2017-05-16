@@ -183,8 +183,47 @@ void Mapa::leerMapa(int mapa){
             }
         }
     }
-      
-
+    
+    //###########################################
+    //Detalles extra de datos
+    _cols = columns;
+    _rows = rows;
+    
+    std::string verde("resources/verde.png");
+    std::string rojo("resources/rojo.png");
+    std::string amarillo("resources/amarillo.png");
+    
+    
+    //-------Añadir el tamaño del enemigo para regular el tamaño del nodo
+    //Carga de los nodos mágicos para la IA
+    grid = new Nodo**[rows];
+    for(int i = 0; i<_cols; i++){
+        grid[i] = new Nodo*[_cols];
+        for(int j = 0; j< _rows; j++){
+            //----------El tamanyo del nodo debería de ser el tamanyo del enemigo que lo usa
+            grid[i][j] = new Nodo(verde,i,j,50.0f,50.0f,0);
+        }
+    }
+    
+    //Carga de los obstaculos para la IA
+    obstaculos = new Obstaculo*[2];
+    obstaculos[0] = new Obstaculo(rojo,300,200,1,3);
+    obstaculos[1] = new Obstaculo(rojo,500,500,4,1);
+    
+    //Pintar los nodos que coinciden con los obstáculos como bloqueados
+    for(int i = 0; i<_rows; i++){
+        for(int j = 0; j< _cols; j++){
+            //----------El tamanyo del nodo debería de ser el tamanyo del enemigo que lo usa
+            for(int k = 0; k<2;k++){
+               if(grid[i][j]->getParcela()->comprobarColision(0,obstaculos[k]->getSprite())){
+                   grid[i][j]->colisionaObstaculo(amarillo,1);
+               } 
+            }
+            
+        }
+    }
+    //###########################################
+    
     cout<<endl;
     cout<<"Datos del mapa:"<<endl;
     cout<<"Heigth= "<<_height<<endl;
@@ -214,3 +253,330 @@ void Mapa::dibuja(sf::RenderWindow& window){
     }
     
 }
+
+//Métodos añadidos para verificar la IA
+//###########################################
+void Mapa::dibujaNodos(sf::RenderWindow& window){
+     for(int t=0; t<_rows; t++){
+        for(int y=0; y<_cols; y++){
+            window.draw(grid[t][y]->getParcela()->render(0));
+        }
+     }
+}
+
+void Mapa::dibujaObs(sf::RenderWindow& window){
+    for(int i = 0; i< 2; i++){
+        window.draw(obstaculos[i]->getSprite()->render(0));
+    }
+}
+
+
+//Métodos añadidos para usar la IA
+std::vector<Nodo*> Mapa::CalcRoute(int px, int py, int ex, int ey){
+    //Lista de nodos en la lista abierta, y nodos del camino final
+    std::vector<Nodo*> open;
+    std::vector<Nodo*> closed;
+    
+    //Limpiamos por si queda basurilla de la anterior ejecución
+    open.clear();
+    closed.clear();
+    
+    //Cogemos el nodo q que será con el que trabajaremos
+    Nodo* q = grid[ex][ey];
+    
+    //Si no nos salimos del límite
+    if(px<_width*_cols && px>=0 && ex<_width*_cols && ex>=0 && py<_height*_rows && py>=0 && ey<_height*_rows && ey>=0){
+        //Metemos en la lista abierta el nodo inicial
+        open.push_back(grid[ex][ey]);
+        
+        bool reached = false;
+        
+        //Las variables de posicion del nodo actual en el grid
+        int nodox = ex;
+        int nodoy = ey;
+        
+        //Bucle while que solo acaba cuando no haya más elementos en la lista abierta y no alcancemos el objetivo
+        while(!open.empty() && !reached){
+            int tirar = 0;
+            //Nuestro nodo provisional será el primero de la lista
+            q = open.at(0);
+            nodox = q->x;
+            nodoy = q->y;
+            
+            //Y luego buscamos el que tenga menos valor de F para cogerlo
+            for(int i = 0; i<open.size(); i++){
+                if(open.at(i)->f < q->f){
+                    q = open.at(i);
+                    nodox = q->x;
+                    nodoy = q->y;
+                    tirar = i;
+                }
+            }
+            
+            // si llegamos al final, ta luego
+            if(nodox == px && nodoy == py){
+                reached = true;
+            }else{
+            
+            //Metemos en la lista cerrada este nodo, y lo borramos de la abierta
+            closed.push_back(open.at(tirar));
+            open.erase(open.begin()+tirar);
+            q->closed = true;
+            
+            //Nodo provisional para trabajar con él
+            Nodo* x;
+            if(nodox+1 < _cols){
+                x = grid[nodox+1][nodoy];
+                if(x->estado!=1){
+                    if(!x->closed){
+                        //Si no está en la lista abierta
+                        if(!x->open){
+                            //lo metemos dentro
+                            open.push_back(x);
+                            x->open = true;
+                            x->padre = q;
+
+                            //Calculo de g
+                            x->g = q->g+10;
+
+                            //calculo de H
+                            int i = px - (nodox+1);
+                            int j = py - nodoy;
+
+                            if(i<0){
+                                i = -i;
+                            }
+                            if(j<0){
+                                j = -j;
+                            }
+
+                            x->h = i+j;
+
+
+                            //Calculo de f
+                            x->f = x->g+x->h;
+                        }else{
+                            //Si está ya dentro de la lista, actualizamos sus valores
+                            //Si el coste es menor desde aquí, actualizamos
+                            if(q->g+10 < x->g){
+
+                                x->padre = q;
+                                x->g = q->g+10;
+                                x->f = x->g + x->h;
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(nodox-1 >= 0){
+                 x = grid[nodox-1][nodoy];
+                if(x->estado!=1){
+                    if(!x->closed){
+                        //Si no está en la lista abierta
+                        if(!x->open){
+                            //lo metemos dentro
+                            open.push_back(x);
+                            x->open = true;
+                            x->padre = q;
+
+                            //Calculo de g
+                            x->g = q->g+10;
+
+                            //calculo de H
+                            int i = px - (nodox-1);
+                            int j = py - nodoy;
+
+                            if(i<0){
+                                i = -i;
+                            }
+                            if(j<0){
+                                j = -j;
+                            }
+
+                            x->h = i+j;
+
+
+                            //Calculo de f
+                            x->f = x->g+x->h;
+                        }else{
+                            //Si está ya dentro de la lista, actualizamos sus valores
+                            //Si el coste es menor desde aquí, actualizamos
+                            if(q->g+10 < x->g){
+
+                                x->padre = q;
+                                x->g = q->g+10;
+                                x->f = x->g + x->h;
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(nodoy+1 < _rows){
+                x = grid[nodox][nodoy+1];
+                if(x->estado!=1){
+                    if(!x->closed){
+                        //Si no está en la lista abierta
+                        if(!x->open){
+                            //lo metemos dentro
+                            open.push_back(x);
+                            x->open = true;
+                            x->padre = q;
+
+                            //Calculo de g
+                            x->g = q->g+10;
+
+                            //calculo de H
+                            int i = px - nodox;
+                            int j = py - (nodoy+1);
+
+                            if(i<0){
+                                i = -i;
+                            }
+                            if(j<0){
+                                j = -j;
+                            }
+
+                            x->h = i+j;
+
+
+                            //Calculo de f
+                            x->f = x->g+x->h;
+                        }else{
+                            //Si está ya dentro de la lista, actualizamos sus valores
+                            //Si el coste es menor desde aquí, actualizamos
+                            if(q->g+10 < x->g){
+
+                                x->padre = q;
+                                x->g = q->g+10;
+                                x->f = x->g + x->h;
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(nodoy-1 >= 0){
+                x = grid[nodox][nodoy-1];
+                if(x->estado!=1){
+                    if(x->closed == false ){
+                        //Si no está en la lista abierta
+                        if(x->open == false){
+                            //lo metemos dentro
+                            open.push_back(x);
+                            x->open = true;
+                            x->padre = q;
+
+                            //Calculo de g
+                            x->g = q->g+10;
+
+                            //calculo de H
+                            int i = px - nodox;
+                            int j = py - (nodoy-1);
+
+                            if(i<0){
+                                i = -i;
+                            }
+                            if(j<0){
+                                j = -j;
+                            }
+
+                            x->h = i+j;
+
+
+                            //Calculo de f
+                            x->f = x->g+x->h;
+                        }else{
+                            //Si está ya dentro de la lista, actualizamos sus valores
+                            //Si el coste es menor desde aquí, actualizamos
+                            if(q->g+10 < x->g){
+
+                                x->padre = q;
+                                x->g = q->g+10;
+                                x->f = x->g + x->h;
+                            }
+                        }
+
+                    }
+                }
+            }
+            
+            }
+        }
+        
+    }
+   
+    std::vector<Nodo*> caminoProv;
+    std::vector<Nodo*> caminoFinal;
+    
+    caminoProv.clear();
+    caminoFinal.clear();
+    
+    
+    Nodo* f = grid[px][py];
+    
+    //Por algún motivo no calcula bien condiciones dentro del while, usar siempre booleans
+    bool iguales = false;
+    if(f->x == ex && f->y == ey){
+         iguales = true;
+    }
+    if(f->estado==1){
+        iguales = true;
+    }
+    //Mientras no sean ambos puntos iguales, es decir, que se llegue al destino
+    while(!iguales){
+        iguales=false;
+        if(f->x == ex && f->y == ey){
+            iguales=true;
+        }
+        if(!f->padre){
+            iguales = true;
+        }
+        if(!iguales){
+             //std::cout<<"Camino trazado: "<<f->x <<","<<f->y<<std::endl;
+            caminoProv.push_back(f);
+            f = f->padre;
+        }
+    }
+    
+    //Se reordenan dado que se almacen de delante para atrás
+    for(int i = 0; i<caminoProv.size();i++){
+        caminoFinal.push_back(caminoProv.at(i));
+    }
+    
+    limpiaIA();
+    
+     //---- Añadir optimización de ruta y linealizado
+    
+    return caminoFinal;
+    //return closed;
+   
+}
+
+void Mapa::limpiaIA(){
+    for(int i=0;i<_rows;i++){
+        for(int j=0;j<_cols;j++){
+            grid[i][j]->f = 0;
+            grid[i][j]->h = 0;
+            grid[i][j]->g = 0;
+            grid[i][j]->padre = NULL;
+            grid[i][j]->closed = false;
+            grid[i][j]->open = false;
+        }
+    }
+}
+
+Nodo* Mapa::devuelveNodo(int x, int y){
+    return grid[x][y];
+}
+
+bool Mapa::colisionaObs(Sprite *colisionador){
+    for(int i = 0; i< 2; i++){
+        if(obstaculos[i]->getSprite()->comprobarColision(0,colisionador)){
+            return true;
+        }
+    }
+    return false;
+}
+//###########################################

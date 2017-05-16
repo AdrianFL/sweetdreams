@@ -5,12 +5,18 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Arma.h</itemPath>
+      <itemPath>Camara.h</itemPath>
       <itemPath>Clock.hpp</itemPath>
       <itemPath>Enemy.h</itemPath>
       <itemPath>Mapa.h</itemPath>
+      <itemPath>Nodo.h</itemPath>
+      <itemPath>Obstaculo.h</itemPath>
       <itemPath>Personaje.hpp</itemPath>
       <itemPath>Pocion.h</itemPath>
+      <itemPath>Proyectil.h</itemPath>
       <itemPath>Sprite.hpp</itemPath>
+      <itemPath>enemyMelee.h</itemPath>
+      <itemPath>enemyRange.h</itemPath>
       <itemPath>tinystr.h</itemPath>
       <itemPath>tinyxml.h</itemPath>
     </logicalFolder>
@@ -22,12 +28,18 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Arma.cpp</itemPath>
+      <itemPath>Camara.cpp</itemPath>
       <itemPath>Clock.cpp</itemPath>
       <itemPath>Enemy.cpp</itemPath>
       <itemPath>Mapa.cpp</itemPath>
+      <itemPath>Nodo.cpp</itemPath>
+      <itemPath>Obstaculo.cpp</itemPath>
       <itemPath>Personaje.cpp</itemPath>
       <itemPath>Pocion.cpp</itemPath>
+      <itemPath>Proyectil.cpp</itemPath>
       <itemPath>Sprite.cpp</itemPath>
+      <itemPath>enemyMelee.cpp</itemPath>
+      <itemPath>enemyRange.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>tinystr.cpp</itemPath>
       <itemPath>tinyxml.cpp</itemPath>
@@ -77,6 +89,10 @@
       </item>
       <item path="Arma.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Camara.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Camara.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
@@ -89,6 +105,14 @@
       </item>
       <item path="Mapa.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Obstaculo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Obstaculo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
@@ -97,9 +121,21 @@
       </item>
       <item path="Pocion.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Proyectil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Proyectil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="enemyMelee.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyMelee.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="enemyRange.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -140,6 +176,10 @@
       </item>
       <item path="Arma.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Camara.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Camara.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Clock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
@@ -152,6 +192,14 @@
       </item>
       <item path="Mapa.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Nodo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Nodo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Obstaculo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Obstaculo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Personaje.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Personaje.hpp" ex="false" tool="3" flavor2="0">
@@ -160,9 +208,21 @@
       </item>
       <item path="Pocion.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Proyectil.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Proyectil.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Sprite.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="enemyMelee.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyMelee.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="enemyRange.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

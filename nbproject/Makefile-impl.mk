@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=EntregablePociones
+PROJECTNAME=EntregablePersonajes
 
 # Active Configuration
 DEFAULTCONF=Debug

@@ -36,12 +36,18 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Arma.o \
+	${OBJECTDIR}/Camara.o \
 	${OBJECTDIR}/Clock.o \
 	${OBJECTDIR}/Enemy.o \
 	${OBJECTDIR}/Mapa.o \
+	${OBJECTDIR}/Nodo.o \
+	${OBJECTDIR}/Obstaculo.o \
 	${OBJECTDIR}/Personaje.o \
 	${OBJECTDIR}/Pocion.o \
+	${OBJECTDIR}/Proyectil.o \
 	${OBJECTDIR}/Sprite.o \
+	${OBJECTDIR}/enemyMelee.o \
+	${OBJECTDIR}/enemyRange.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/tinystr.o \
 	${OBJECTDIR}/tinyxml.o \
@@ -67,16 +73,21 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/Arma.o: Arma.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Arma.o Arma.cpp
+
+${OBJECTDIR}/Camara.o: Camara.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Camara.o Camara.cpp
 
 ${OBJECTDIR}/Clock.o: Clock.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -93,6 +104,16 @@ ${OBJECTDIR}/Mapa.o: Mapa.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa.o Mapa.cpp
 
+${OBJECTDIR}/Nodo.o: Nodo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Nodo.o Nodo.cpp
+
+${OBJECTDIR}/Obstaculo.o: Obstaculo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Obstaculo.o Obstaculo.cpp
+
 ${OBJECTDIR}/Personaje.o: Personaje.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -103,10 +124,25 @@ ${OBJECTDIR}/Pocion.o: Pocion.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Pocion.o Pocion.cpp
 
+${OBJECTDIR}/Proyectil.o: Proyectil.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Proyectil.o Proyectil.cpp
+
 ${OBJECTDIR}/Sprite.o: Sprite.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Sprite.o Sprite.cpp
+
+${OBJECTDIR}/enemyMelee.o: enemyMelee.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyMelee.o enemyMelee.cpp
+
+${OBJECTDIR}/enemyRange.o: enemyRange.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyRange.o enemyRange.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -139,7 +175,7 @@ ${OBJECTDIR}/tinyxmlparser.o: tinyxmlparser.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepociones
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
 
 # Subprojects
 .clean-subprojects:

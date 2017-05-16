@@ -52,4 +52,3 @@
     void Pocion::deletePocion(){     
         delete this;
     }
-    

@@ -80,6 +80,7 @@ Personaje::Personaje(int id) {
         muerteleft=new Sprite(ruta, coordenadas12, frames);
         muerteleft->set_position(x, y);
         muerteleft->set_framerate(125);
+      
     }
     else if(id==1){
         
@@ -102,6 +103,8 @@ Personaje::Personaje(int id) {
     numPVida=3;
     numPMana=2;
     movingborder=false;
+    
+    margen=0;
 }
 
 Sprite* Personaje::render(int32_t tempo, float p){
@@ -194,11 +197,11 @@ void Personaje::move(int i){
     if(atctime<0){
         if(i==1){
             direccion=1;
-            if(x<1153){
+            if(x<3160){
                 movingborder=false;
                 lastx=x;
                 lasty=y;
-                x+=8;
+                x+=12;
             } 
             else{
                 movingborder=true;
@@ -212,7 +215,7 @@ void Personaje::move(int i){
                 movingborder=false;
                 lastx=x;
                 lasty=y;
-                x-=8;
+                x-=12;
             }
             else{
                 movingborder=true;
@@ -472,4 +475,13 @@ void Personaje::herir(int dmg){
         }
         std::cout<<"baia biaa"<<std::endl;
     }
+}
+
+void Personaje::aumentarMargenDer(int i){
+    margen=margen+i;
+}
+
+void Personaje::aumentarMargenIzq(int i){
+    margen=margen-i;
+    
 }

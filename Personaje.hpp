@@ -42,6 +42,9 @@ public:
     void atacar();
     Sprite* getAnimacionActiva();
     
+    void aumentarMargenDer(int i);
+    void aumentarMargenIzq(int i);
+    
 private:
     Sprite *idle;
     Sprite *idleleft;
@@ -74,7 +77,8 @@ private:
     int32_t atctime, potvidatime, potmanatime;
     
     int direccion;
+    
+    int margen;
 };
 
 #endif /* PERSONAJE_HPP */
-

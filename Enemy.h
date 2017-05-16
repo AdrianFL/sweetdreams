@@ -13,48 +13,67 @@
 #include "Sprite.hpp"
 #include "Clock.hpp"
 #include <iostream>
+#include <cmath>
 #include <SFML/Graphics.hpp>
+#include "Nodo.h"
+#include "Personaje.hpp"
+#include "Mapa.h"
 
 #ifndef ENEMY_H
 #define ENEMY_H
 
 class Personaje;
+class Mapa;
 
 class Enemy {
 public:
-    Enemy(int id, int inix, int iniy, int tAtaque);
+    Enemy(int id, int inix, int iniy, int vida, int danyo);
     Enemy(const Enemy& orig);
     virtual ~Enemy();
     
-    Sprite* render(int est, int32_t tempo);
+    Sprite* render(int32_t tempo, float per);
     void move(int i);
-    int perseguir(Personaje *p);
     void herir(int h);
-    void atacar(Personaje *p);
+    float distanciaAEnemigo(Mapa *m, int px,int py, int ex,int ey);
     int getDireccion();
     int getXCoordinate();
     int getYCoordinate();
     Sprite* getAnimacionActiva();
-private:
+    
+    std::vector<Nodo*> caminoActual;
+    Nodo* nodoObjetivo;
+    
+    //Sprite de raycast
+    Sprite *raycast;
+protected:
+    //Sprites de movimiento
     Sprite *spriteActual;
     Sprite *idle;
     Sprite *idleleft;
     Sprite *moveright;
     Sprite *moveleft;
+    
+    //Sprites relacionados con ataque
     Sprite *ataqueRight;
     Sprite *ataqueLeft;
     Sprite *muerte;
     
-    int x, y;
+    
+    
+    int x, y, lastx, lasty;
     float sx, sy;
     
     int vida;
     int direccion;
     
     int32_t ataquetime;
+    int32_t IAtime;
+    int32_t cambiatime;
+    
     
     int  danyoAtaque;
+    
+    bool movingborder;
 };
 
 #endif /* ENEMY_H */
-

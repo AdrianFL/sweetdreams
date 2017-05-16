@@ -14,6 +14,10 @@
 #ifndef MAPA_H
 #define MAPA_H
 #include <SFML/Graphics.hpp>
+//######################
+#include "Nodo.h"
+#include "Obstaculo.h"
+//######################
 
 class Mapa {
 public:
@@ -28,6 +32,19 @@ public:
     int _width;
     int _tileWidth;
  
+    //Añadido para la IA
+    //#####################
+    void dibujaNodos(sf::RenderWindow &window);
+    void dibujaObs(sf::RenderWindow &window);
+    
+    int _rows;
+    int _cols;
+    std::vector<Nodo*> CalcRoute(int px, int py, int ex, int ey);
+    void limpiaIA();
+    Nodo* devuelveNodo(int x, int y);
+    bool colisionaObs(Sprite *colisionador);
+    //#####################
+    
 private:
     
     int ***_tilemap;
@@ -40,6 +57,12 @@ private:
     
     sf::Texture _tilesetTexture;
     sf::Texture texturafondo;
+    
+        //Añadido para la IA
+    //#####################
+    Nodo*** grid;
+    Obstaculo** obstaculos;
+     //#####################
     
 };
 
