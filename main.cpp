@@ -66,6 +66,9 @@ int main()
     //Bucle del juego
     while (window.isOpen())
     {
+        //#############
+        Proyectil* disparo = NULL;
+        //############
         //Bucle de obtención de eventos
         sf::Event event;
         while (window.pollEvent(event))
@@ -124,8 +127,27 @@ int main()
             option=0;
             
             //######################
+            //Enemigo melee
             enemigoM.perseguir(&p1,mapa);
-            enemigoR.perseguir(&p1,mapa);
+            
+            //Enemigo de rango
+            disparo = enemigoR.perseguir(&p1,mapa, time);
+            
+            //Control de los disparos
+            if(disparo!=NULL){
+                proyectiles.push_back(disparo);
+            }
+            int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
+            for(int i = 0; i<proyectiles.size();i++){
+                if(!proyectiles[i]->muerto){
+                    proyectiles[i]->volar(&p1);
+                }else{
+                    proyectiles.erase(proyectiles.begin()+i-destruidos);
+                    destruidos++;
+                }
+            }
+            
+            //Destruir proyectiles muertos
             //######################
         }
 
@@ -166,6 +188,9 @@ int main()
         //###################
          window.draw(enemigoM.render(time, percentTick)->render(time));
          window.draw(enemigoR.render(time, percentTick)->render(time));
+         for(int i =0; i<proyectiles.size();i++){
+             window.draw(proyectiles[i]->render(time,percentTick)->render(time));
+         }
         //###################
          
          

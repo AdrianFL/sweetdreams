@@ -44,7 +44,6 @@ void Camara::draw(sf::RenderWindow& window){
 void Camara::moverDer(Personaje personaje){
     if(desp==0){
         if(personaje.getXCoordinate()>=camara->getSize().x*0.5 && camara->getCenter().x <=(fondo.getGlobalBounds().width*0.79)){
-            std::cout<<"ENTRO"<<std::endl;
             camara->move(kvel,0);
             desp=desp+kvel;
             
@@ -68,7 +67,6 @@ void Camara::moverIzq(Personaje personaje){
         if(personaje.getXCoordinate()<=camara->getSize().x*0.5+desp && camara->getCenter().x!=posorigen){
             camara->move(-kvel,0);
             desp=desp-kvel;
-            std::cout<<"HIJOPUTA"<<std::endl;
             personaje.aumentarMargenIzq(kvel);
         }
     }

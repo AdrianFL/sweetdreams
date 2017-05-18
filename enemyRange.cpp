@@ -14,7 +14,8 @@
 #include "enemyRange.h"
 
 enemyRange::enemyRange(int inix, int iniy, int vida, int danyo) : Enemy(1,inix,iniy,vida,danyo) {
-    distDisparo = 500;
+    distDisparo = 200;
+    disparotime = -1;
 }
 
 enemyRange::enemyRange(const enemyRange& orig) : Enemy(orig) {
@@ -48,8 +49,8 @@ void enemyRange::atacar(Personaje *p){
     }
 }
 
-Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
-    
+Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
+    disparotime-=tempo;
     
     Proyectil* disparo = NULL;
     bool colisionaRaycast = false;
@@ -74,8 +75,11 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
 
             if(distRaycast!=-1){
                 //Si está a rango de dispararle, le dispara
-                if(distRaycast >= distDisparo){
-                    disparo = new Proyectil(px,py,ex,ey, 5, 10);
+                if(distRaycast <= distDisparo){
+                    if(disparotime<0){
+                       disparotime = 600;
+                       disparo = new Proyectil(px,py,ex,ey, 5, 10); 
+                    }
                 }else{
                 //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente
                     dirigex = ex;
@@ -104,52 +108,39 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
                 //le pasa un array de personajes 
                 //Discernir también por quien tiene menos vida y cosas así
 
-                //if(IAtime<0){
-                    nodoObjetivo = NULL;
-                    //IAtime = 200;
+                nodoObjetivo = NULL;
+                //IAtime = 200;
 
-                    //Cogemos el punto del nodo en el array de nodos
-                    int nodoPx = px/50;
-                    int nodoPy = py/50;
-                    int nodoEx = ex/50;
-                    int nodoEy = ey/50;
+                //Cogemos el punto del nodo en el array de nodos
+                int nodoPx = px/50;
+                int nodoPy = py/50;
+                int nodoEx = ex/50;
+                int nodoEy = ey/50;
 
-                    caminoActual =  m->CalcRoute(nodoPx,nodoPy, nodoEx, nodoEy);
-
-
-                    //Si el camino es mayor que 1, 
-                    if(caminoActual.size()>=1){
-                        //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
-                        nodoObjetivo =caminoActual.at(caminoActual.size()-1);
-
-                        std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+                caminoActual =  m->CalcRoute(nodoPx,nodoPy, nodoEx, nodoEy);
 
 
-                        //Si colisiona con ese nodo, se coge el siguiente
-                        if(nodoObjetivo->getParcela()->comprobarColision(0,spriteActual)){
-                            caminoActual.pop_back();
-                            std::cout<<"nodo entrado"<<std::endl;
+                //Si el camino es mayor que 1, 
+                if(caminoActual.size()>=1){
+                    //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
+                    nodoObjetivo =caminoActual.at(caminoActual.size()-1);
 
-                            if(caminoActual.size() == 1){
-                                caminoActual.clear();
-                            }
+                    std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+
+
+                    //Si colisiona con ese nodo, se coge el siguiente
+                    if(nodoObjetivo->getParcela()->comprobarColision(0,spriteActual)){
+                        caminoActual.pop_back();
+                        std::cout<<"nodo entrado"<<std::endl;
+
+                        if(caminoActual.size() == 1){
+                            caminoActual.clear();
                         }
-
                     }
-               //}
 
-
-                //Si hay un nodo siguiente, hace cosas, y sino se queda quieto
+                }
                 if(!nodoObjetivo){
-
-                    /*//Cogemos el punto del nodo en el array de nodos
-                    int nodoEx = ex/50;
-                    int nodoEy = ey/50;
-
-                    std::cout<<"Que pasa aqui: "<<nodoEx<<","<<nodoEy<<std::endl;
-                     */
                     nodoObjetivo = m->devuelveNodo(nodoEx,nodoEy);
-                    //Movimiento
 
                     move(0);
                 }else{

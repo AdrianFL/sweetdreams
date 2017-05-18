@@ -12,18 +12,19 @@
  */
 
 #include "Proyectil.h"
+#include "Personaje.hpp"
 
 Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d) {
     //Posiciones del proyectil
-    x = px;
-    y = py;
+    x = ex;
+    y = ey;
     lastx = x;
     lasty = y;
     movingborder=false;
     
     //Inicialización de los sprites
-    sx=1;
-    sy=1;
+    sx=3;
+    sy=3;
     int frames=4;
     std::string ruta("resources/proyectil.png");
     //Sprite derecha
@@ -43,6 +44,14 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d) {
     movleft->set_framerate(100);
     movleft->set_origin(6,7);
     
+    //Sprite explosion
+    frames = 6;
+    int coordenadas3[24]={23,25,16,13, 7,27,13,9, 80,27,10,9, 80,27,10,9, 7,27,13,9, 80,27,10,9};
+    explosion= new Sprite(ruta, coordenadas3, frames);
+    explosion->set_position(x, y);
+    explosion->set_framerate(60);
+    explosion->set_origin(6,4);
+    
     if(px-ex<0){
         direccion=-1;
         spriteActual = movleft;
@@ -52,12 +61,18 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d) {
     }
     
     //Posición a la que tiene que ir
-    objx = ex;
-    objy = ey;
+    objx = px;
+    objy = py;
     
     //otros detalles, como vida y daño
-    vida = vida;
-    danyo = danyo;
+    vida = v;
+    danyo = d;
+    explotar = false;
+    muerto = false;
+    
+    //Inicialización del tiempo de vuelo esperado y de muerte
+    muertetime=600;
+    vuelotime = 1600;
 }
 
 Proyectil::Proyectil(const Proyectil& orig) {
@@ -67,8 +82,22 @@ Proyectil::~Proyectil() {
 }
 
 Sprite* Proyectil::render(int32_t tempo, float p){
-    
+    vuelotime-=tempo;
+   
     int movx=0,movy=0;
+    if(explotar){
+        muertetime-=tempo;
+        if(muertetime>0){
+            explosion->set_position(x,y);
+            explosion->set_scale(sx,sy);
+            spriteActual = explosion;
+            return(explosion);
+        }else{
+            muerto = true;
+            return(explosion);
+        }
+    }
+    
     if(p<1.0f && (lastx!=x||lasty!=y)){
         if(direccion>0){
             movx=(lastx*(1-p))+(x*p);
@@ -96,88 +125,82 @@ Sprite* Proyectil::render(int32_t tempo, float p){
             spriteActual = movleft;
             return(movleft);
         }
+    }else{
+       if(direccion>0){
+            movright->set_position(x, y);
+            movright->set_scale(sx, sy);
+            spriteActual = movright;
+            return(movright);
+       }else if(direccion<0){
+           movleft->set_position(x, y);
+           movleft->set_scale(sx, sy);
+           spriteActual = movleft;
+           return(movleft);
+       }
     }
 }
 
-void enemyRange::atacar(Personaje *p){
-    if(ataquetime < 0){
-        ataquetime = 1200;
-        if(direccion>0){
-            ataqueRight->set_position(x,y);
-            ataqueRight->set_scale(sx, sy);
-            ataqueLeft->reset();
-            
-            if(ataqueRight->comprobarColision(5, p->getAnimacionActiva())){
-                p->herir(danyoAtaque);
-            }
-        }
-        else{
-            ataqueLeft->set_position(x,y);
-            ataqueLeft->set_scale(sx, sy);
-            ataqueLeft->reset();
-            
-            if(ataqueLeft->comprobarColision(5, p->getAnimacionActiva())){
-               p->herir(danyoAtaque);
-            }
-            
-        }
-    }
-}
-
-
-void Enemy::move(int i){
+void Proyectil::volar(Personaje *p){
     lastx=x;
     lasty=y;
-    if(ataquetime<0){
-        if(i==1){
-            direccion=1;
-            if(x<1153){
-                movingborder=false;
-                x+=6;
-            } 
-            else{
-                movingborder=true;
+    if(vuelotime>=0 && !muerto && !explotar){
+        if(spriteActual->comprobarColision(0,p->getAnimacionActiva())){
+            p->herir(danyo);
+            explotar = true;
+        }else{
+            if(objx-x>0){
+                direccion=1;
+                if(x<1153){
+                    movingborder=false;
+                    x+=6;
+                } 
+                else{
+                    movingborder=true;
+                }
             }
-        }
-        else if(i==2){
-            direccion=-1;
-            if(x>20){
-                movingborder=false;
-                x-=6;
+            else if(objx-x <0){
+                direccion=-1;
+                if(x>20){
+                    movingborder=false;
+                    x-=6;
+                }
+                else{
+                    movingborder=true;
+                    lastx=x;
+                    lasty=y;
+                }
             }
-            else{
-                movingborder=true;
-                lastx=x;
+            if(objy-y<0){
+                if(y>380){
+                    movingborder=false;
+                    sx-=0.01;
+                    sy-=0.01;
+                    y-=4;
+                }
+                else{
+                    movingborder=true;
+                }
+            }
+            else if(objy-y>0){
+                if(y<570){
+                    movingborder=false;
+                    sx+=0.01;
+                    sy+=0.01;
+                    y+=4;
+                }
+                else{
+                    movingborder=true;
+                }
+            }
+
+            if(objx==x && objy == y)
+            {
+                movingborder=false;
                 lasty=y;
+                lastx=x;
             }
         }
-        else if(i==3){
-            if(y>380){
-                movingborder=false;
-                sx-=0.01;
-                sy-=0.01;
-                y-=4;
-            }
-            else{
-                movingborder=true;
-            }
-        }
-        else if(i==4){
-            if(y<570){
-                movingborder=false;
-                sx+=0.01;
-                sy+=0.01;
-                y+=4;
-            }
-            else{
-                movingborder=true;
-            }
-        }
-        else if(i==0)
-        {
-            movingborder=false;
-            lasty=y;
-            lastx=x;
-        }
+    }else{
+        muerto = true;
     }
 }

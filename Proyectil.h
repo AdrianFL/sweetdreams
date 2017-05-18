@@ -14,6 +14,7 @@
 #ifndef PROYECTIL_H
 #define PROYECTIL_H
 #include "Sprite.hpp"
+#include "Personaje.hpp"
 
 class Proyectil {
 public:
@@ -21,7 +22,8 @@ public:
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
     Sprite* render(int32_t tempo, float p);
-    
+    void atacar();
+    void volar(Personaje* p);
     
     int x, y, lastx, lasty, objx, objy;
     int vida, danyo;
@@ -29,9 +31,17 @@ public:
     
     bool movingborder;
     int direccion;
+    
+    bool explotar;
+    
+    int32_t vuelotime;
+    int32_t muertetime;
+    bool muerto;
 private:
     Sprite* movleft;
     Sprite* movright;
+    Sprite* explosion;
+    
     Sprite* spriteActual;
 };
 
