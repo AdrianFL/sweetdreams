@@ -34,13 +34,17 @@ public:
     int getMana();    
     void setMana(int i);
     void setVida(int i);
-    void usaPocion(Pocion pocion);
-    //bool cogeObjeto();
+    void usaPocion(std::string s);
     int numeroPoc();
+    void activaRecogida();
    // void setPociones(Pocion *pociones[5]); //para probar
     void herir(int dmg);
     void atacar();
     Sprite* getAnimacionActiva();
+    void aumentaPVida();
+    void aumentaPMana();
+    int getNumPVida();
+    int getNumPMana();
     
     void aumentarMargenDer(int i);
     void aumentarMargenIzq(int i);
@@ -58,6 +62,8 @@ private:
     Sprite *potimanaleft;
     Sprite *muerte;
     Sprite *muerteleft;
+    Sprite *recogida;
+    Sprite *recogidaleft;
     
     int vida;
     int mana;
@@ -74,7 +80,7 @@ private:
     
     bool movingborder;
     
-    int32_t atctime, potvidatime, potmanatime;
+    int32_t atctime, potvidatime, potmanatime, picktime;
     
     int direccion;
     

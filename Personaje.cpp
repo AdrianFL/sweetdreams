@@ -74,13 +74,18 @@ Personaje::Personaje(int id) {
         frames=10;
         int coordenadas11[40]={1259, 1552, 40, 62, 1302, 1548, 49, 56, 1355, 1545, 71, 44, 1429, 1539, 66, 36, 1499, 1535, 67, 44, 1570, 1541, 59, 54, 1633, 1575, 45, 38, 1682, 1580, 66, 30, 1751, 1581, 65, 30, 1820, 1587, 68, 28};
         muerte=new Sprite(ruta, coordenadas11, frames);
-        muerte->set_position(x, y);
         muerte->set_framerate(125);
         int coordenadas12[40]={1299,1552,-40,62,1351,1548,-49,56,1426,1545,-71,44,1495,1539,-66,36,1566,1535,-67,44,1629,1541,-59,54,1678,1575,-45,38,1748,1580,-66,30,1816,1581,-65,30,1888,1587,-68,28};
         muerteleft=new Sprite(ruta, coordenadas12, frames);
-        muerteleft->set_position(x, y);
         muerteleft->set_framerate(125);
-      
+        //recogida
+        frames=3;
+        int coordenadas13[12]={488, 347, 33, 53, 527, 351, 47, 49, 579, 348, 41, 52};
+        recogida=new Sprite(ruta, coordenadas13, frames);
+        recogida->set_framerate(100);
+        int coordenadas14[12]={521,347,-33,53,574,351,-47,49,620,348,-41,52};
+        recogidaleft=new Sprite(ruta, coordenadas14, frames);
+        recogidaleft->set_framerate(100);
     }
     else if(id==1){
         
@@ -96,6 +101,7 @@ Personaje::Personaje(int id) {
     atctime=-1;
     potvidatime=-1;
     potmanatime=-1;
+    picktime=-1;
     vidamax=200;
     manamax=100;
     vida=20;
@@ -111,6 +117,7 @@ Sprite* Personaje::render(int32_t tempo, float p){
     atctime-=tempo;
     potvidatime-=tempo;
     potmanatime-=tempo;
+    picktime-=tempo;
     int movx=0, movy=0;
     if(vida<0){
         if(direccion>0){
@@ -148,6 +155,14 @@ Sprite* Personaje::render(int32_t tempo, float p){
         }
         else{
             return(potimanaleft);
+        }
+    }
+    else if(picktime>=0){
+        if(direccion>0){
+            return(recogida);
+        }
+        else{
+            return(recogidaleft);
         }
     }
     if(p<1.0f && (lastx!=x||lasty!=y)){
@@ -262,7 +277,7 @@ void Personaje::move(int i){
     }
 }
 
-void Personaje::usaPocion(Pocion p){
+void Personaje::usaPocion(std::string s){
        
        int sumvida=0;
        int summana=0;
@@ -271,7 +286,7 @@ void Personaje::usaPocion(Pocion p){
     
     //Falta comprobar que tiene pociones al hacer la animacion
     //Y alargar los ultimos fotogramas repitiendolos
-    if(potvidatime<0 && p.getTipo()=="vida"){
+    if(potvidatime<0 && s=="vida"){
         if(direccion>0){
             potivida->reset();
             potivida->set_position(x, y);
@@ -284,7 +299,7 @@ void Personaje::usaPocion(Pocion p){
         }
         potvidatime=600;
     }
-    else if(potmanatime<0 && p.getTipo()=="mana"){
+    else if(potmanatime<0 && s=="mana"){
         if(direccion>0){
             potimana->reset();
             potimana->set_position(x, y);
@@ -296,91 +311,22 @@ void Personaje::usaPocion(Pocion p){
             potimanaleft->set_scale(sx, sy);
         }
         potmanatime=600;
-    }
-    for(int i=0; i<5; i++){
-            if(p.getTipo()=="vida"){
-            if(numPVida>0){
-                if(stop==false){
-                     if (this->getVida()+p.getTamanyo()>this->getVidaMax()){
-                         this->setVida(this->getVidaMax());
-                         stop=true;
-                         numPVida--;
-                
-                         //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                         std::cout<<"Has usado una pocion de vida, tu vida es:"<<this->getVida()<<std::endl;
-                         std::cout<<"Te quedan "<<this->numPVida<<" pociones en el bolsillo."<<std::endl;
-                           //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                
-                         }
-                    else if (this->getVida()+p.getTamanyo()<this->getVidaMax()){
-                        sumvida=this->getVida()+p.getTamanyo();
-                        this->setVida(sumvida);
-                        stop=true;
-                        numPVida--;
-                        
-                        //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                        std::cout<<"Has usado una pocion de vida, tu vida es:"<<this->getVida()<<std::endl;
-                        std::cout<<"Te quedan "<<this->numPVida<<" pociones en el bolsillo."<<std::endl;
-                        //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                         }
-                    else{
-                        this->setVida(this->getVida());
-                        stop=true;
-                    }
-                }
-              }
-            }
-            if(p.getTipo()=="mana"){
-            if(numPMana>0){
-                    if(stop==false){
-                        if (this->getMana()+p.getTamanyo()>this->getManaMax()){
-                            this->setMana(this->getManaMax());
-                            stop=true;
-                            numPMana--;
-
-                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                            std::cout<<"Has usado una pocion de mana, tu mana es:"<<this->getMana()<<std::endl;
-                            std::cout<<"Te quedan "<<this->numPMana<<" pociones de mana."<<std::endl;
-                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                         }
-                    else if (this->getMana()+p.getTamanyo()<this->getManaMax()){
-                            summana=this->getMana()+p.getTamanyo();
-                            this->setMana(summana);
-                            stop=true;
-                            numPMana--;
-
-                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                            std::cout<<"Has usado una pocion de mana, tu mana es:"<<this->getMana()<<std::endl;
-                            std::cout<<"Te quedan "<<this->numPMana<<" pociones de mana."<<std::endl;
-                            //EXCLUSIVO DE ESTE ENTREGABLE, ES PARA PROBAR
-                }
-                else{
-                    this->setMana(this->getMana());
-                    stop=true;
-                }
-                }
-            }
-            }
-        
-    }
-    
+    }   
 }
 
-/*bool Personaje::cogeObjeto(){
-    
-    bool stop=false;
-    
-    for(int i=0; i<5; i++){
-        if(bolsilloP[i]==NULL){
-            if(stop==false){
-                bolsilloP[i]=p;
-                stop=true;
-                return true;
-            }
+void Personaje::activaRecogida(){
+    if(picktime<0){
+        picktime=300;
+        if(direccion>0){
+            recogida->set_position(x, y);
+            recogida->set_scale(sx, sy);
+        }
+        else{
+            recogidaleft->set_position(x, y);
+            recogidaleft->set_scale(sx, sy);
         }
     }
-    
-}*/
+}
 
 int Personaje::getDireccion(){
     return(direccion);
@@ -483,5 +429,26 @@ void Personaje::aumentarMargenDer(int i){
 
 void Personaje::aumentarMargenIzq(int i){
     margen=margen-i;
-    
+}
+
+void Personaje::aumentaPVida(){
+    if(numPVida<2){
+        numPVida++;
+    }
+    std::cout << "Tu numero actual de pociones de vida es:" << numPVida << std::endl;
+}
+
+void Personaje::aumentaPMana(){
+    if(numPMana<2){
+        numPMana++;
+    }
+    std::cout << "Tu numero actual de pociones de mana es:" << numPMana << std::endl;
+}
+
+int Personaje::getNumPVida(){
+    return numPVida;
+}
+
+int Personaje::getNumPMana(){
+    return numPMana;
 }

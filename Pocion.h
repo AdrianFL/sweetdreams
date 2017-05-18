@@ -36,6 +36,9 @@ class Pocion{
         
         sf::FloatRect getPosicion();
         
+        int getPosX();
+        int getPosY();
+        
             
 };
 

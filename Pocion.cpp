@@ -49,6 +49,15 @@
         return spritepocion;
     }
     
+    //Esto esta mal creo
     void Pocion::deletePocion(){     
         delete this;
+    }
+    
+    int Pocion::getPosX(){
+        return posX;
+    }
+    
+    int Pocion::getPosY(){
+        return posY;
     }
