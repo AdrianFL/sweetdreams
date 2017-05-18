@@ -286,7 +286,9 @@ void Personaje::usaPocion(std::string s){
     
     //Falta comprobar que tiene pociones al hacer la animacion
     //Y alargar los ultimos fotogramas repitiendolos
-    if(potvidatime<0 && s=="vida"){
+    if(potvidatime<0 && s=="vida" && numPVida>0){
+        numPVida--;
+        vida+=Pocion::getCantidad(s);
         if(direccion>0){
             potivida->reset();
             potivida->set_position(x, y);
@@ -299,7 +301,9 @@ void Personaje::usaPocion(std::string s){
         }
         potvidatime=600;
     }
-    else if(potmanatime<0 && s=="mana"){
+    else if(potmanatime<0 && s=="mana" && numPMana>0){
+        numPMana--;
+        mana+=Pocion::getCantidad(s);
         if(direccion>0){
             potimana->reset();
             potimana->set_position(x, y);
@@ -311,7 +315,7 @@ void Personaje::usaPocion(std::string s){
             potimanaleft->set_scale(sx, sy);
         }
         potmanatime=600;
-    }   
+    }
 }
 
 void Personaje::activaRecogida(){

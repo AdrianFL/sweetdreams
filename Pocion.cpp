@@ -61,3 +61,12 @@
     int Pocion::getPosY(){
         return posY;
     }
+    
+    int Pocion::getCantidad(std::string s){
+        if(s=="vida"){
+            return 30;
+        }
+        else if(s=="mana"){
+            return 20;
+        }
+    }

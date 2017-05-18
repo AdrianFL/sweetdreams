@@ -72,7 +72,6 @@ private:
     int numPVida;
     int numPMana;
     
-    Pocion *bolsilloP[5];
     int x, y;
     int lastx, lasty;
     float sx, sy;
