@@ -14,7 +14,7 @@
 #include "Proyectil.h"
 #include "Personaje.hpp"
 
-Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d) {
+Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, float veloy) {
     //Posiciones del proyectil
     x = ex;
     y = ey;
@@ -72,7 +72,12 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d) {
     
     //Inicialización del tiempo de vuelo esperado y de muerte
     muertetime=600;
-    vuelotime = 1600;
+    vuelotime = 1000;
+    
+    //velocidad del proyectil
+    pendiente = std::abs( (float)(objy-y)/(objx-x));
+    vx = velox;
+    vy = veloy;
 }
 
 Proyectil::Proyectil(const Proyectil& orig) {
@@ -149,52 +154,48 @@ void Proyectil::volar(Personaje *p){
             explotar = true;
         }else{
             if(objx-x>0){
-                direccion=1;
                 if(x<1153){
                     movingborder=false;
-                    x+=6;
-                } 
-                else{
+                    x += vx;
+                }else{
                     movingborder=true;
+                    lastx=x;
+                    lasty=y;
                 }
-            }
-            else if(objx-x <0){
-                direccion=-1;
+                
+            }else if(objx-x<0){
                 if(x>20){
                     movingborder=false;
-                    x-=6;
-                }
-                else{
+                    x -= vx;
+                }else{
                     movingborder=true;
                     lastx=x;
                     lasty=y;
                 }
             }
+            
             if(objy-y<0){
                 if(y>380){
                     movingborder=false;
-                    sx-=0.01;
-                    sy-=0.01;
-                    y-=4;
-                }
-                else{
+                     y -= vy*pendiente;
+                }else{
                     movingborder=true;
+                    lastx=x;
+                    lasty=y;
                 }
-            }
-            else if(objy-y>0){
+               
+            }else if(objy-y>0){
                 if(y<570){
                     movingborder=false;
-                    sx+=0.01;
-                    sy+=0.01;
-                    y+=4;
-                }
-                else{
+                     y +=  vy*pendiente;
+                }else{
                     movingborder=true;
+                    lastx=x;
+                    lasty=y;
                 }
+               
             }
-
-            if(objx==x && objy == y)
-            {
+            if(objx == x && objy == y){
                 movingborder=false;
                 lasty=y;
                 lastx=x;

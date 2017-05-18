@@ -78,7 +78,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                 if(distRaycast <= distDisparo){
                     if(disparotime<0){
                        disparotime = 600;
-                       disparo = new Proyectil(px,py,ex,ey, 5, 10); 
+                       disparo = new Proyectil(px,py,ex,ey, 5, 10,15.0f,15.0f); 
                     }
                 }else{
                 //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente

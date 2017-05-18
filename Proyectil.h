@@ -18,16 +18,17 @@
 
 class Proyectil {
 public:
-    Proyectil(int px, int py, int ex, int ey, int v, int d);
+    Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, float veloy);
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
     Sprite* render(int32_t tempo, float p);
     void atacar();
     void volar(Personaje* p);
     
-    int x, y, lastx, lasty, objx, objy;
+    float x, y, lastx, lasty, objx, objy;
     int vida, danyo;
     float sx,sy;
+    float pendiente,vx,vy;
     
     bool movingborder;
     int direccion;

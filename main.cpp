@@ -142,12 +142,11 @@ int main()
                 if(!proyectiles[i]->muerto){
                     proyectiles[i]->volar(&p1);
                 }else{
+                    //Destruir proyectiles muertos
                     proyectiles.erase(proyectiles.begin()+i-destruidos);
                     destruidos++;
                 }
             }
-            
-            //Destruir proyectiles muertos
             //######################
         }
 
