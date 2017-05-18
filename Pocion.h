@@ -34,7 +34,12 @@ class Pocion{
         
         void deletePocion();
         
+        static int getCantidad(std::string s);
+        
         sf::FloatRect getPosicion();
+        
+        int getPosX();
+        int getPosY();
         
             
 };
