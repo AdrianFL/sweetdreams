@@ -103,10 +103,10 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                     //IAtime = 200;
 
                     //Cogemos el punto del nodo en el array de nodos
-                    int nodoPx = px/50;
-                    int nodoPy = py/50;
-                    int nodoEx = ex/50;
-                    int nodoEy = ey/50;
+                    int nodoPx = px/Nodo::width;
+                    int nodoPy = py/Nodo::height;
+                    int nodoEx = ex/Nodo::width;
+                    int nodoEy = ey/Nodo::height;
 
                     caminoActual =  m->CalcRoute(nodoPx,nodoPy, nodoEx, nodoEy);
 

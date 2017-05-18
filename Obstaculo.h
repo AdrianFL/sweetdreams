@@ -11,6 +11,7 @@
  * Created on 10 de mayo de 2017, 17:45
  */
 #include "Sprite.hpp"
+#include "Nodo.h"
 
 #ifndef OBSTACULO_H
 #define OBSTACULO_H

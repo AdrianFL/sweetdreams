@@ -9,20 +9,17 @@
  * Author: alexei
  * 
  * Created on 10 de mayo de 2017, 16:11
- */
-
+*/
 #include "Nodo.h"
 #include "Sprite.hpp"
 
-Nodo::Nodo(std::string& url, int nodox, int nodoy, float tamanyox, float tamanyoy, int e) {
+
+ 
+Nodo::Nodo(std::string& url, int nodox, int nodoy, int e) {
     
     //posicion x, y en el array de nodos
     x = nodox;
     y = nodoy;
-    
-    //su tamaño
-    height = tamanyox;
-    width = tamanyoy;
     
     //su centro
     centrox = x*width+width/2;
@@ -34,13 +31,13 @@ Nodo::Nodo(std::string& url, int nodox, int nodoy, float tamanyox, float tamanyo
     open = false;
     
     //parecela que ocupa
-    int coordenadas[4] = {0,0,50,50};
+    int coordenadas[4] = {0,0,width,height};
     parcela = new Sprite(url, coordenadas, 1);
     parcela->set_origin(0,0);
     
     //-----Añadir método de setSize para poner sprites de tamaño adecuado en mi nodo
-    parcela->set_scale(tamanyox/50,tamanyoy/50);
-    parcela->set_position(x*tamanyox,y*tamanyoy);
+    parcela->set_scale(1,1);
+    parcela->set_position(x*width,y*height);
     
     //Contadores de puntuacion para la ruta
     f=0;
@@ -58,9 +55,10 @@ Nodo::~Nodo() {
 void Nodo::colisionaObstaculo(std::string& url, int e){
     estado = e;
     
-     int coordenadas[4] = {0,0,50,50};
+    int coordenadas[4] = {0,0,width,height};
      
     parcela = new Sprite(url, coordenadas,1);
+    parcela->set_scale(1,1);
     parcela->set_origin(0,0);
     parcela->set_position(x*width,y*height);
 }
@@ -68,3 +66,14 @@ void Nodo::colisionaObstaculo(std::string& url, int e){
 Sprite* Nodo::getParcela(){
     return parcela;
 }
+
+int Nodo::getWidth(){
+    return width;
+}
+
+int Nodo::getHeight(){
+    return height;
+}
+
+float Nodo::height = 50.0f;
+float Nodo::width = 50.0f;

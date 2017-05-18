@@ -68,6 +68,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
     float dirigey = py;
     
     if(p->getVida()>0){
+        
         if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
             //-------Añadir aquí la comprobación de raycast
             //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
@@ -125,13 +126,13 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                     //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
                     nodoObjetivo =caminoActual.at(caminoActual.size()-1);
 
-                    std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+                    //std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
 
 
                     //Si colisiona con ese nodo, se coge el siguiente
                     if(nodoObjetivo->getParcela()->comprobarColision(0,spriteActual)){
                         caminoActual.pop_back();
-                        std::cout<<"nodo entrado"<<std::endl;
+                        //std::cout<<"nodo entrado"<<std::endl;
 
                         if(caminoActual.size() == 1){
                             caminoActual.clear();
@@ -148,7 +149,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                     dirigey = (float)ey / nodoObjetivo->centroy;
 
 
-                    std::cout<<"magia: "<<dirigex<<","<<dirigey<<std::endl;
+                    //std::cout<<"magia: "<<dirigex<<","<<dirigey<<std::endl;
 
                     if(dirigex <1){
                         move(1);

@@ -38,14 +38,15 @@ int main()
     window.setVerticalSyncEnabled(true);
     Personaje p1(0);
     Arma hacha("h", 750, 450);
-    Pocion pvida("v", 400, 450);
-    Pocion pmana("m", 400, 520);
+    Pocion* pvida=new Pocion("v", 400, 450);
+    Pocion* pmana=new Pocion("m", 400, 520);
     Mapa *mapa = new Mapa();
     //1 para leer el mapa 1, 2 para leer el mapa 2
     mapa->leerMapa(1);
     
     Camara *camara=new Camara(window.getSize().x, window.getSize().y, 12, *mapa);
     
+    bool recogida=true;
     int movimiento=0;
     
     //###################
@@ -69,6 +70,7 @@ int main()
         //#############
         Proyectil* disparo = NULL;
         //############
+        
         //Bucle de obtención de eventos
         sf::Event event;
         while (window.pollEvent(event))
@@ -106,10 +108,10 @@ int main()
                 option=4;
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){
-                p1.usaPocion(pvida); 
+                p1.usaPocion("vida"); 
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)){
-                p1.usaPocion(pmana);
+                p1.usaPocion("mana");
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){
                 p1.atacar();
@@ -117,17 +119,40 @@ int main()
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){
                 p1.herir(25);
             }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+                p1.activaRecogida();
+                recogida=false;
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        if(pvida!=NULL && pvida->getPosX()>p1.getXCoordinate() && pvida->getPosX()-p1.getXCoordinate()<50 && pvida->getPosY()-p1.getYCoordinate()<100 && pvida->getPosY()-p1.getYCoordinate()>-100){
+                            if(p1.getNumPVida()<3){
+                                pvida->deletePocion();
+                                pvida=NULL;
+                                p1.aumentaPVida();
+                            }
+                          }
+                    }
+                    else{
+                        if(pvida!=NULL && pvida->getPosX()<p1.getXCoordinate() && p1.getXCoordinate()-pvida->getPosX()<50 && pvida->getPosY()-p1.getYCoordinate()<100 && pvida->getPosY()-p1.getYCoordinate()>-100){
+                            if(p1.getNumPVida()<3){
+                                pvida->deletePocion();
+                                pvida=NULL;
+                                p1.aumentaPVida();                               
+                            }
+                        }
+                    }
+                }
+            }
             p1.move(option);
             if(movimiento==1){
                  camara->moverDer(p1);
             }
-            if(movimiento==2){
+            else if(movimiento==2){
                 camara->moverIzq(p1);
             }
             option=0;
             
             //######################
-            //Enemigo melee
             enemigoM.perseguir(&p1,mapa);
             
             //Enemigo de rango
@@ -163,7 +188,7 @@ int main()
         mapa->dibuja(window);
         
          //###########################################
-        //mapa->dibujaNodos(window);
+        mapa->dibujaNodos(window);
         mapa->dibujaObs(window);
         
         
@@ -181,7 +206,9 @@ int main()
         //###################
         
         window.draw(hacha.getSprite()->render(time));
-        window.draw(pvida.getSprite()->render(time));
+        if(pvida!=NULL){
+           window.draw(pvida->getSprite()->render(time));
+        }
         window.draw(p1.render(time, percentTick)->render(time));
         
         //###################
@@ -190,6 +217,7 @@ int main()
          for(int i =0; i<proyectiles.size();i++){
              window.draw(proyectiles[i]->render(time,percentTick)->render(time));
          }
+         
         //###################
          
          
