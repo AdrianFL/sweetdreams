@@ -18,7 +18,7 @@
 
 class Proyectil {
 public:
-    Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, float veloy);
+    Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy);
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
     Sprite* render(int32_t tempo, float p);
@@ -28,7 +28,7 @@ public:
     float x, y, lastx, lasty, objx, objy;
     int vida, danyo;
     float sx,sy;
-    float pendiente,vx,vy;
+    float vx,vy;
     
     bool movingborder;
     int direccion;

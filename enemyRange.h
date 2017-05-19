@@ -23,7 +23,7 @@ public:
     enemyRange(const enemyRange& orig);
     virtual ~enemyRange();
     
-    void atacar(Personaje *p);
+    void atacar();
     Proyectil* perseguir(Personaje* p,Mapa* m, int32_t tempo);
 private:
     float distDisparo;

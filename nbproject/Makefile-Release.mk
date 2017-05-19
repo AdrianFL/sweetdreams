@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Pocion.o \
 	${OBJECTDIR}/Proyectil.o \
 	${OBJECTDIR}/Sprite.o \
+	${OBJECTDIR}/enemyFinal.o \
 	${OBJECTDIR}/enemyMelee.o \
 	${OBJECTDIR}/enemyRange.o \
 	${OBJECTDIR}/main.o \
@@ -133,6 +134,11 @@ ${OBJECTDIR}/Sprite.o: Sprite.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Sprite.o Sprite.cpp
+
+${OBJECTDIR}/enemyFinal.o: enemyFinal.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyFinal.o enemyFinal.cpp
 
 ${OBJECTDIR}/enemyMelee.o: enemyMelee.cpp 
 	${MKDIR} -p ${OBJECTDIR}

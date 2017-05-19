@@ -25,6 +25,7 @@
 #include "Pocion.h"
 #include "enemyMelee.h"
 #include "enemyRange.h"
+#include "enemyFinal.h"
 #include "Proyectil.h"
 #include "Camara.h"
 
@@ -52,7 +53,7 @@ int main()
     //###################
     enemyMelee enemigoM(850,450,30,1);
     enemyRange enemigoR(100,500,30,1);
-    
+    enemyFinal enemigoFinal(1000,500,300,5);
     std::vector<Proyectil*> proyectiles;
     //###################
     
@@ -69,6 +70,7 @@ int main()
     {
         //#############
         Proyectil* disparo = NULL;
+        Proyectil* disparoFinal = NULL;
         //############
         
         //Bucle de obtención de eventos
@@ -157,10 +159,13 @@ int main()
             
             //Enemigo de rango
             disparo = enemigoR.perseguir(&p1,mapa, time);
-            
+            disparoFinal = enemigoFinal.huir(&p1,mapa,time);
             //Control de los disparos
             if(disparo!=NULL){
                 proyectiles.push_back(disparo);
+            }
+            if(disparoFinal!=NULL){
+                proyectiles.push_back(disparoFinal);
             }
             int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
             for(int i = 0; i<proyectiles.size();i++){
@@ -168,8 +173,10 @@ int main()
                     proyectiles[i]->volar(&p1);
                 }else{
                     //Destruir proyectiles muertos
+                    Proyectil* proyectilMuerto  = proyectiles.at(i-destruidos);
                     proyectiles.erase(proyectiles.begin()+i-destruidos);
                     destruidos++;
+                    delete proyectilMuerto;
                 }
             }
             //######################
@@ -188,21 +195,22 @@ int main()
         mapa->dibuja(window);
         
          //###########################################
-        mapa->dibujaNodos(window);
+        //mapa->dibujaNodos(window);
         mapa->dibujaObs(window);
         
         
         
         //Verifico que el camino va
-        for(int i = 0; i < enemigoM.caminoActual.size();i++){
+        /*for(int i = 0; i < enemigoM.caminoActual.size();i++){
             window.draw(enemigoM.caminoActual.at(i)->getParcela()->render(time));
         }
         for(int i = 0; i < enemigoR.caminoActual.size();i++){
             window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
-        }
+        }*/
         //Verifico que el raycast va
         window.draw(enemigoR.raycast->render(time));
         window.draw(enemigoM.raycast->render(time));
+        window.draw(enemigoFinal.raycast->render(time));
         //###################
         
         window.draw(hacha.getSprite()->render(time));
@@ -214,6 +222,7 @@ int main()
         //###################
          window.draw(enemigoM.render(time, percentTick)->render(time));
          window.draw(enemigoR.render(time, percentTick)->render(time));
+         window.draw(enemigoFinal.render(time, percentTick)->render(time));
          for(int i =0; i<proyectiles.size();i++){
              window.draw(proyectiles[i]->render(time,percentTick)->render(time));
          }

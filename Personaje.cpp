@@ -104,7 +104,7 @@ Personaje::Personaje(int id) {
     picktime=-1;
     vidamax=200;
     manamax=100;
-    vida=20;
+    vida=300;
     mana=10;
     numPVida=3;
     numPMana=2;

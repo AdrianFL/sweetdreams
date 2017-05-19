@@ -14,7 +14,7 @@
 #include "Proyectil.h"
 #include "Personaje.hpp"
 
-Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, float veloy) {
+Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy) {
     //Posiciones del proyectil
     x = ex;
     y = ey;
@@ -22,36 +22,81 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, 
     lasty = y;
     movingborder=false;
     
-    //Inicialización de los sprites
-    sx=3;
-    sy=3;
-    int frames=4;
-    std::string ruta("resources/proyectil.png");
-    //Sprite derecha
-    //left, top, width, height
-    int coordenadas[16]={8,4,12,15, 24,5,14,13, 42,4,13,15, 61,4,13,15};
-    movright= new Sprite(ruta, coordenadas, frames);
-    movright->set_position(x, y);
-    movright->set_framerate(100);
 
-    //Origen de coordenadas en el centro
-    movright->set_origin(6,7);
+   //Inicialización de los sprites
+    sx=1;
+    sy=1;
     
-    //Sprite izquierda
-    int coordenadas2[16]={20,4,-12,15, 38,5,-14,13, 57,4,-13,15, 72,4,-13,15};
-    movleft= new Sprite(ruta, coordenadas2, frames);
-    movleft->set_position(x, y);
-    movleft->set_framerate(100);
-    movleft->set_origin(6,7);
+    //Proyectil enemigo rango normal
+    if(id == 0){
+        sx = 3;
+        sy = 2;
+        int frames=4;
+        std::string ruta("resources/proyectil.png");
+        //Sprite derecha
+        //left, top, width, height
+        int coordenadas[16]={8,4,12,15, 24,5,14,13, 42,4,13,15, 61,4,13,15};
+        movright= new Sprite(ruta, coordenadas, frames);
+        movright->set_position(x, y);
+        movright->set_framerate(100);
+
+        //Origen de coordenadas en el centro
+        movright->set_origin(6,7);
+
+        //Sprite izquierda
+        int coordenadas2[16]={20,4,-12,15, 38,5,-14,13, 57,4,-13,15, 72,4,-13,15};
+        movleft= new Sprite(ruta, coordenadas2, frames);
+        movleft->set_position(x, y);
+        movleft->set_framerate(100);
+        movleft->set_origin(6,7);
+
+        //Sprite explosion
+        frames = 6;
+        int coordenadas3[24]={23,25,16,13, 7,27,13,9, 80,27,10,9, 80,27,10,9, 7,27,13,9, 80,27,10,9};
+        explosion= new Sprite(ruta, coordenadas3, frames);
+        explosion->set_position(x, y);
+        explosion->set_framerate(60);
+        explosion->set_origin(6,4);
+        
+    //Proyectil jefe rápido
+    }else if(id==1){
+        int frames=4;
+        std::string ruta("resources/proyectil.png");
+        //Sprite derecha
+        //left, top, width, height
+        int coordenadas[16]={8,4,12,15, 24,5,14,13, 42,4,13,15, 61,4,13,15};
+        movright= new Sprite(ruta, coordenadas, frames);
+        movright->set_position(x, y);
+        movright->set_framerate(100);
+
+        //Origen de coordenadas en el centro
+        movright->set_origin(6,7);
+
+        //Sprite izquierda
+        int coordenadas2[16]={20,4,-12,15, 38,5,-14,13, 57,4,-13,15, 72,4,-13,15};
+        movleft= new Sprite(ruta, coordenadas2, frames);
+        movleft->set_position(x, y);
+        movleft->set_framerate(100);
+        movleft->set_origin(6,7);
+
+        //Sprite explosion
+        frames = 6;
+        int coordenadas3[24]={23,25,16,13, 7,27,13,9, 80,27,10,9, 80,27,10,9, 7,27,13,9, 80,27,10,9};
+        explosion= new Sprite(ruta, coordenadas3, frames);
+        explosion->set_position(x, y);
+        explosion->set_framerate(100);
+        explosion->set_origin(6,4);
+    //Aviso de ataque de jefe
+    }else if(id == 2){
     
-    //Sprite explosion
-    frames = 6;
-    int coordenadas3[24]={23,25,16,13, 7,27,13,9, 80,27,10,9, 80,27,10,9, 7,27,13,9, 80,27,10,9};
-    explosion= new Sprite(ruta, coordenadas3, frames);
-    explosion->set_position(x, y);
-    explosion->set_framerate(60);
-    explosion->set_origin(6,4);
+        
+    //Ataque de jefe tumba
+    }else if(id == 3){
     
+    //Ataque de jefe zanahoria pocha
+    }else if(id == 4){
+        
+    }
     if(px-ex<0){
         direccion=-1;
         spriteActual = movleft;
@@ -65,7 +110,6 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, 
     objy = py;
     
     //otros detalles, como vida y daño
-    vida = v;
     danyo = d;
     explotar = false;
     muerto = false;
@@ -74,10 +118,14 @@ Proyectil::Proyectil(int px, int py, int ex, int ey, int v, int d, float velox, 
     muertetime=600;
     vuelotime = 1000;
     
-    //velocidad del proyectil
-    pendiente = std::abs( (float)(objy-y)/(objx-x));
-    vx = velox;
-    vy = veloy;
+    //velocidad del proyectil según tipos
+    if(id == 0){
+        vx = velox*( (objx-x) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
+        vy = velox*( (objy-y) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
+    }else{
+        vx = velox;
+        vy = veloy;
+    }
 }
 
 Proyectil::Proyectil(const Proyectil& orig) {
@@ -166,7 +214,7 @@ void Proyectil::volar(Personaje *p){
             }else if(objx-x<0){
                 if(x>20){
                     movingborder=false;
-                    x -= vx;
+                    x += vx;
                 }else{
                     movingborder=true;
                     lastx=x;
@@ -177,7 +225,7 @@ void Proyectil::volar(Personaje *p){
             if(objy-y<0){
                 if(y>380){
                     movingborder=false;
-                     y -= vy*pendiente;
+                     y += vy;
                 }else{
                     movingborder=true;
                     lastx=x;
@@ -187,7 +235,7 @@ void Proyectil::volar(Personaje *p){
             }else if(objy-y>0){
                 if(y<570){
                     movingborder=false;
-                     y +=  vy*pendiente;
+                     y +=  vy;
                 }else{
                     movingborder=true;
                     lastx=x;

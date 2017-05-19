@@ -45,6 +45,8 @@ public:
     
     //Sprite de raycast
     Sprite *raycast;
+    
+    bool jefe;
 protected:
     //Sprites de movimiento
     Sprite *spriteActual;
@@ -57,7 +59,7 @@ protected:
     Sprite *ataqueRight;
     Sprite *ataqueLeft;
     Sprite *muerte;
-    
+    Sprite *specialAttack;
     
     
     int x, y, lastx, lasty;
@@ -69,7 +71,7 @@ protected:
     int32_t ataquetime;
     int32_t IAtime;
     int32_t cambiatime;
-    
+    int32_t spattacktime;
     
     int  danyoAtaque;
     

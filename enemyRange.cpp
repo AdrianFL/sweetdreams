@@ -24,27 +24,18 @@ enemyRange::enemyRange(const enemyRange& orig) : Enemy(orig) {
 enemyRange::~enemyRange() {
 }
 
-void enemyRange::atacar(Personaje *p){
+void enemyRange::atacar(){
     if(ataquetime < 0){
         ataquetime = 1200;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
-            ataqueLeft->reset();
-            
-            if(ataqueRight->comprobarColision(5, p->getAnimacionActiva())){
-                p->herir(danyoAtaque);
-            }
+            ataqueRight->reset();
         }
         else{
             ataqueLeft->set_position(x,y);
             ataqueLeft->set_scale(sx, sy);
             ataqueLeft->reset();
-            
-            if(ataqueLeft->comprobarColision(5, p->getAnimacionActiva())){
-               p->herir(danyoAtaque);
-            }
-            
         }
     }
 }
@@ -70,16 +61,16 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
     if(p->getVida()>0){
         
         if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
-            //-------Añadir aquí la comprobación de raycast
             //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
             float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
-
+                
             if(distRaycast!=-1){
                 //Si está a rango de dispararle, le dispara
                 if(distRaycast <= distDisparo){
                     if(disparotime<0){
                        disparotime = 600;
-                       disparo = new Proyectil(px,py,ex,ey, 5, 10,15.0f,15.0f); 
+                       disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f);
+                       atacar();
                     }
                 }else{
                 //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente
