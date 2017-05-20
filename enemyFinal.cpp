@@ -12,8 +12,9 @@
  */
 #include "enemyFinal.h"
 
-enemyFinal::enemyFinal(int inix, int iniy, int vida, int danyo)  : Enemy(2,inix,iniy,vida,danyo) {
+enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,iniy,v,danyo) {
     distDisparo = 300;
+    disparotime = -1;
 }
 
 enemyFinal::enemyFinal(const enemyFinal& orig): Enemy(orig) {
@@ -24,7 +25,7 @@ enemyFinal::~enemyFinal() {
 
 void enemyFinal::atacar(){
     if(ataquetime < 0){
-        ataquetime = 1200;
+        ataquetime = 1000;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
@@ -39,7 +40,7 @@ void enemyFinal::atacar(){
 }
 
 void enemyFinal::atacarSpecial(){
-    if(ataquetime < 0){
+    if(spattacktime < 0){
         spattacktime = 3000;
         if(direccion>0){
             ataqueRight->set_position(x,y);
@@ -73,23 +74,31 @@ Proyectil* enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     float dirigey = py;
     
     if(p->getVida()>0){
-        std::cout<<"Distancia error: "<<vida<<std::endl;
+        //Fase 1: vida mayor a X (70% por ejemplo)
         if(vida>250){
-            //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
-            float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
-            std::cout<<"Distancia error: "<<std::endl;
-            if(distRaycast<= distDisparo){
-                if(disparotime<0){
-                   disparotime = 200;
-                   disparo = new Proyectil(0,px,py,ex,ey,5,15.0f,15.0f);
-                   atacar();
+            
+            //Lanza ataques cada X segundos
+            if(spattacktime>2000){
+                //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
+                float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
+
+                if(distRaycast<= distDisparo){
+                    std::cout<<"Distancia error: "<<distRaycast<<" y el tiempo "<<disparotime<<std::endl;
+                    if(disparotime<0){
+                       disparotime = 50;
+                       disparo = new Proyectil(0,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                       atacar();
+                    }
+                }else{
+                    if(disparotime<0){
+                        disparotime = 600;
+                        disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 1000);
+                        atacar();
+                    }
                 }
-            }else{
-                if(disparotime<0){
-                    disparotime = 600;
-                    disparo = new Proyectil(0,px,py,ex,ey, 10,5.0f,5.0f);
-                    atacar();
-                }
+            }
+            if(spattacktime<0){
+                spattacktime = 3200;
             }
         }else{
             

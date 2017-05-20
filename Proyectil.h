@@ -18,7 +18,7 @@
 
 class Proyectil {
 public:
-    Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy);
+    Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy, int32_t tiempoVida);
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
     Sprite* render(int32_t tempo, float p);

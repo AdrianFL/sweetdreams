@@ -26,7 +26,7 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
     movingborder= false;
     
     //danyo vida base
-    vida = vida;
+    vida = v;
     danyoAtaque = danyo;
     
     //si es jefe o no
@@ -196,6 +196,7 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
     ataquetime = -1;
     IAtime = -1;
     cambiatime=-1;
+    spattacktime=-1;
     
     //iniciar nodo objetivo
     nodoObjetivo = NULL;

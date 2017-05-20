@@ -13,7 +13,7 @@
 
 #include "enemyRange.h"
 
-enemyRange::enemyRange(int inix, int iniy, int vida, int danyo) : Enemy(1,inix,iniy,vida,danyo) {
+enemyRange::enemyRange(int inix, int iniy, int v, int danyo) : Enemy(1,inix,iniy,v,danyo) {
     distDisparo = 200;
     disparotime = -1;
 }
@@ -69,7 +69,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                 if(distRaycast <= distDisparo){
                     if(disparotime<0){
                        disparotime = 600;
-                       disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f);
+                       disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f, 1000);
                        atacar();
                     }
                 }else{

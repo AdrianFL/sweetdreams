@@ -20,7 +20,7 @@
 
 class enemyFinal: public Enemy {
 public:
-    enemyFinal(int inix, int iniy, int vida, int danyo);
+    enemyFinal(int inix, int iniy, int v, int danyo);
     enemyFinal(const enemyFinal& orig);
     virtual ~enemyFinal();
     

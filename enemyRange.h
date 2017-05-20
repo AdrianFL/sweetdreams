@@ -19,7 +19,7 @@
 
 class enemyRange: public Enemy{
 public:
-    enemyRange(int inix, int iniy, int vida, int danyo);
+    enemyRange(int inix, int iniy, int v, int danyo);
     enemyRange(const enemyRange& orig);
     virtual ~enemyRange();
     

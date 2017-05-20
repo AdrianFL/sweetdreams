@@ -27,7 +27,7 @@ class Mapa;
 
 class Enemy {
 public:
-    Enemy(int id, int inix, int iniy, int vida, int danyo);
+    Enemy(int id, int inix, int iniy, int v, int danyo);
     Enemy(const Enemy& orig);
     virtual ~Enemy();
     

@@ -14,7 +14,7 @@
 #include "Proyectil.h"
 #include "Personaje.hpp"
 
-Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy) {
+Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy, int32_t tiempoVida) {
     //Posiciones del proyectil
     x = ex;
     y = ey;
@@ -116,7 +116,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     
     //Inicialización del tiempo de vuelo esperado y de muerte
     muertetime=600;
-    vuelotime = 1000;
+    vuelotime = tiempoVida;
     
     //velocidad del proyectil según tipos
     if(id == 0){
