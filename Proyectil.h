@@ -38,6 +38,8 @@ public:
     int32_t vuelotime;
     int32_t muertetime;
     bool muerto;
+    
+    int type;
 private:
     Sprite* movleft;
     Sprite* movright;

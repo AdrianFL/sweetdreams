@@ -28,6 +28,7 @@ public:
     void atacarSpecial();
     std::vector<Proyectil*> huir(Personaje *p, Mapa *m, int32_t tempo);
     
+    bool spattacklanzado;
 private:
     float distDisparo;
     int32_t disparotime;

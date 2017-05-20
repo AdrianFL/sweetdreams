@@ -15,6 +15,7 @@
 enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,iniy,v,danyo) {
     distDisparo = 300;
     disparotime = -1;
+    spattacklanzado = false;
 }
 
 enemyFinal::enemyFinal(const enemyFinal& orig): Enemy(orig) {
@@ -76,7 +77,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     
     if(p->getVida()>0){
         //Fase 1: vida mayor a X (70% por ejemplo)
-        if(vida>250){
+        /*if(vida>250){
             
             //Lanza ataques cada X segundos
             if(spattacktime>2000){
@@ -103,36 +104,39 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
             if(spattacktime<0){
                 spattacktime = 3200;
             }
-        }else{
-            if(spattacktime>3000){
+        //Fase 2: vida menor a X (~70% por ejemplo)
+        }else{*/
+            if(spattacklanzado == false){
+                spattacklanzado = true;
                 std::srand(std::time(0));
                 int ataque = std::rand()%3;
                 if(ataque == 0){
                     int alerts = 0;
                     int tumbs = 0;
                     
+                    //Limites 3160 - 2007 x; 570-380 y
                     //Sector 1-1
-                    int x = std::rand()%(3160-1153)+1153;
-                    int y = std::rand()%6;
-                    Proyectil* disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    int x = std::rand()%(1153/2)+2007;
+                    int y = std::rand()%(190/2)+380;
+                    Proyectil* disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 2000);
                     conjunto.push_back(disparo);
                     
                     //Sector 1-2
-                    x =  std::rand()%6;
-                    y =  std::rand()%6;
-                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    x =  std::rand()%(1153/2)+2007+1153/2;
+                    y =  std::rand()%(190/2)+380;
+                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 2000);
                     conjunto.push_back(disparo);
                     
                     //Sector 2-1
-                    x =  std::rand()%6;
-                    y =  std::rand()%6;
-                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    x =  std::rand()%(1153/2)+2007;
+                    y =  std::rand()%(190/2)+380+190/2;
+                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 2000);
                     conjunto.push_back(disparo);
                     
                     //Sector 2-2
-                    x =  std::rand()%6;
-                    y =  std::rand()%6;
-                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    x =  std::rand()%(1153/2)+2007+1153/2;
+                    y =  std::rand()%(190/2)+380+190/2;
+                    disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 2000);
                     conjunto.push_back(disparo);
                     
                 }
@@ -145,9 +149,10 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                 
             }
             if(spattacktime<0){
-                spattacktime = 5000;
+                spattacktime = 300;
+                spattacklanzado = false;
             }
-        }
+        //}
     }
     return conjunto;
 }

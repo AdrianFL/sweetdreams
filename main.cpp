@@ -54,7 +54,7 @@ int main()
     //###################
     enemyMelee enemigoM(850,450,30,1);
     enemyRange enemigoR(100,500,30,1);
-    enemyFinal enemigoFinal(1000,500,300,5);
+    enemyFinal enemigoFinal(2500,500,300,5);
     std::vector<Proyectil*> proyectiles;
     std::vector<Proyectil*> disparoFinal;
     //###################
