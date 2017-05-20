@@ -55,6 +55,7 @@ int main()
     enemyRange enemigoR(100,500,30,1);
     enemyFinal enemigoFinal(1000,500,300,5);
     std::vector<Proyectil*> proyectiles;
+    std::vector<Proyectil*> disparoFinal;
     //###################
     
     Clock clock;
@@ -70,7 +71,6 @@ int main()
     {
         //#############
         Proyectil* disparo = NULL;
-        Proyectil* disparoFinal = NULL;
         //############
         
         //Bucle de obtención de eventos
@@ -164,8 +164,8 @@ int main()
             if(disparo!=NULL){
                 proyectiles.push_back(disparo);
             }
-            if(disparoFinal!=NULL){
-                proyectiles.push_back(disparoFinal);
+            for(int i = 0; i<disparoFinal.size();i++){
+                proyectiles.push_back(disparoFinal.pop_back());
             }
             int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
             for(int i = 0; i<proyectiles.size();i++){

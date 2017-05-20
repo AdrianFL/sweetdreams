@@ -88,11 +88,17 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         explosion->set_origin(6,4);
     //Aviso de ataque de jefe
     }else if(id == 2){
-    
+        int frames= 9;
+        std::string ruta("resources/aviso.png");
+        int coordenadas[36]={0,0,40,60, 0,40,40,60, 0,80,40,60, 0,120,40,60, 0,160,40,60, 0,200,40,60, 0,240,40,60, 0,280,40,60, 0,320,40,60};
+        explosion= new Sprite(ruta,coordenadas, frames);
+        explosion->set_position(x,y);
+        explosion->set_framerate(60);
+        explosion->set_origin(20,30);
         
     //Ataque de jefe tumba
     }else if(id == 3){
-    
+        
     //Ataque de jefe zanahoria pocha
     }else if(id == 4){
         
@@ -119,7 +125,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     vuelotime = tiempoVida;
     
     //velocidad del proyectil según tipos
-    if(id == 0){
+    if(id == 0 || id==1){
         vx = velox*( (objx-x) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
         vy = velox*( (objy-y) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
     }else{

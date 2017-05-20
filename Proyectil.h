@@ -43,6 +43,15 @@ private:
     Sprite* movright;
     Sprite* explosion;
     
+    //Para los sprites especiales
+    Sprite* tumba1;
+    Sprite* tumba2;
+    Sprite* tumba3;
+    Sprite* tumba4;
+    
+    Sprite* zanahoria1;
+    Sprite* zanahoria2;
+    
     Sprite* spriteActual;
 };
 

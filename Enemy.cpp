@@ -214,7 +214,6 @@ Sprite* Enemy::render(int32_t tempo, float per){
     cambiatime-=tempo;
     int movx = 0;
     int movy = 0;
-    //--------- Añadir animación de muerte
     //--------- Añadir condición de cambio para que no sea rápida
     
     //if(cambiatime<0){

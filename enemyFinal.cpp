@@ -55,10 +55,11 @@ void enemyFinal::atacarSpecial(){
     }
 }
 
-Proyectil* enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
+std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     spattacktime-=tempo;
     disparotime-=tempo;
-    Proyectil* disparo = NULL;
+    
+    std::vector<Proyectil*> conjunto;
     bool colisionaRaycast = false;
     
     
@@ -86,13 +87,15 @@ Proyectil* enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                     std::cout<<"Distancia error: "<<distRaycast<<" y el tiempo "<<disparotime<<std::endl;
                     if(disparotime<0){
                        disparotime = 50;
-                       disparo = new Proyectil(0,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                       Proyectil* disparo = new Proyectil(0,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                       conjunto.push_back(disparo);
                        atacar();
                     }
                 }else{
                     if(disparotime<0){
                         disparotime = 600;
-                        disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 1000);
+                        Proyectil* disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 1000);
+                        conjunto.push_back(disparo);
                         atacar();
                     }
                 }
@@ -101,8 +104,39 @@ Proyectil* enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                 spattacktime = 3200;
             }
         }else{
-            
+            if(spattacktime>3000){
+                std::srand(std::time(0));
+                int ataque = std::rand()%3;
+                if(ataque == 0){
+                    int alerts = 0;
+                    int tumbs = 0;
+                    
+                    //Sector 1-1
+                    Proyectil* disparo = new Proyectil(2,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                    conjunto.push_back(disparo);
+                    
+                    if(){
+                        
+                    }
+                    if(){
+                        
+                    }
+                    if(){
+                        
+                    }
+                }
+                if(ataque == 1){
+                    
+                }
+                if(ataque == 2){
+                    
+                }
+                
+            }
+            if(spattacktime<0){
+                spattacktime = 5000;
+            }
         }
     }
-    return disparo;
+    return conjunto;
 }
