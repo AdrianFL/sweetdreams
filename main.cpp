@@ -143,6 +143,7 @@ int main()
                                 pvida=NULL;
                                 p1.aumentaPVida();     
                                 recogida=true;
+<<<<<<< HEAD
                             }
                         }
                     }
@@ -165,12 +166,40 @@ int main()
                                 pmana=NULL;
                                 p1.aumentaPMana();
                                 recogida=true;
+=======
+>>>>>>> d361d239febaa782b338d81150fa7d0f8f5becf5
                             }
                         }
                     }
                 }
                 if(recogida==false){
                     if(p1.getDireccion()>0){
+<<<<<<< HEAD
+=======
+                        if(pmana!=NULL && pmana->getPosX()>p1.getXCoordinate() && pmana->getPosX()-p1.getXCoordinate()<50 && pmana->getPosY()-p1.getYCoordinate()<30 && pmana->getPosY()-p1.getYCoordinate()>-30){
+                            if(p1.getNumPMana()<3){
+                                pmana->deletePocion();
+                                pmana=NULL;
+                                p1.aumentaPMana();
+                                recogida=true;
+                            }
+                        }
+                    }
+                    else{
+                       if(pmana!=NULL && pmana->getPosX()<p1.getXCoordinate() && p1.getXCoordinate()-pmana->getPosX()<50 && pmana->getPosY()-p1.getYCoordinate()<30 && pmana->getPosY()-p1.getYCoordinate()>-30){
+                            if(p1.getNumPMana()<3){
+                                pmana->deletePocion();
+                                pmana=NULL;
+                                p1.aumentaPMana();
+                                recogida=true;
+                            }
+                        }
+                    }
+                }
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        std::cout << "Aux" << std::endl;
+>>>>>>> d361d239febaa782b338d81150fa7d0f8f5becf5
                         if(espada!=NULL && espada->getposX()>p1.getXCoordinate() && espada->getposX()-p1.getXCoordinate()<50 && espada->getposY()-p1.getYCoordinate()<30 && espada->getposY()-p1.getYCoordinate()>-30){
                             p1.cambiarAtaque(espada);
                             espada=NULL;
@@ -229,7 +258,7 @@ int main()
         
          //###########################################
         //mapa->dibujaNodos(window);
-        mapa->dibujaObs(window);
+        //mapa->dibujaObs(window);
         
         
         
@@ -241,9 +270,14 @@ int main()
             window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
         }*/
         //Verifico que el raycast va
+<<<<<<< HEAD
         window.draw(enemigoR.raycast->render(time));
         window.draw(enemigoM.raycast->render(time));
         window.draw(enemigoFinal.raycast->render(time));
+=======
+        //window.draw(enemigoR.raycast->render(time));
+        //window.draw(enemigoM.raycast->render(time));
+>>>>>>> d361d239febaa782b338d81150fa7d0f8f5becf5
         //###################
         
         window.draw(hacha.getSprite()->render(time));
