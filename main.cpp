@@ -38,6 +38,7 @@ int main()
     window.setVerticalSyncEnabled(true);
     Personaje p1(0);
     Arma hacha("h", 750, 450);
+    Arma* espada=new Arma("e", 850, 450);
     Pocion* pvida=new Pocion("v", 400, 450);
     Pocion* pmana=new Pocion("m", 400, 520);
     Mapa *mapa = new Mapa();
@@ -120,21 +121,54 @@ int main()
                 recogida=false;
                 if(recogida==false){
                     if(p1.getDireccion()>0){
-                        if(pvida!=NULL && pvida->getPosX()>p1.getXCoordinate() && pvida->getPosX()-p1.getXCoordinate()<50 && pvida->getPosY()-p1.getYCoordinate()<100 && pvida->getPosY()-p1.getYCoordinate()>-100){
+                        if(pvida!=NULL && pvida->getPosX()>p1.getXCoordinate() && pvida->getPosX()-p1.getXCoordinate()<50 && pvida->getPosY()-p1.getYCoordinate()<30 && pvida->getPosY()-p1.getYCoordinate()>-30){
                             if(p1.getNumPVida()<3){
                                 pvida->deletePocion();
                                 pvida=NULL;
                                 p1.aumentaPVida();
+                                recogida=true;
                             }
                           }
                     }
                     else{
-                        if(pvida!=NULL && pvida->getPosX()<p1.getXCoordinate() && p1.getXCoordinate()-pvida->getPosX()<50 && pvida->getPosY()-p1.getYCoordinate()<100 && pvida->getPosY()-p1.getYCoordinate()>-100){
+                        if(pvida!=NULL && pvida->getPosX()<p1.getXCoordinate() && p1.getXCoordinate()-pvida->getPosX()<50 && pvida->getPosY()-p1.getYCoordinate()<30 && pvida->getPosY()-p1.getYCoordinate()>-30){
                             if(p1.getNumPVida()<3){
                                 pvida->deletePocion();
                                 pvida=NULL;
-                                p1.aumentaPVida();                               
+                                p1.aumentaPVida();     
+                                recogida=true;
                             }
+                        }
+                    }
+                }
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        if(pmana!=NULL && pmana->getPosX()>p1.getXCoordinate() && pmana->getPosX()-p1.getXCoordinate()<50 && pmana->getPosY()-p1.getYCoordinate()<30 && pmana->getPosY()-p1.getYCoordinate()>-30){
+                            if(p1.getNumPMana()<3){
+                                pmana->deletePocion();
+                                pmana=NULL;
+                                p1.aumentaPMana();
+                                recogida=true;
+                            }
+                        }
+                    }
+                    else{
+                       if(pmana!=NULL && pmana->getPosX()<p1.getXCoordinate() && p1.getXCoordinate()-pmana->getPosX()<50 && pmana->getPosY()-p1.getYCoordinate()<30 && pmana->getPosY()-p1.getYCoordinate()>-30){
+                            if(p1.getNumPMana()<3){
+                                pmana->deletePocion();
+                                pmana=NULL;
+                                p1.aumentaPMana();
+                                recogida=true;
+                            }
+                        }
+                    }
+                }
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        std::cout << "Aux" << std::endl;
+                        if(espada!=NULL && espada->getposX()>p1.getXCoordinate() && espada->getposX()-p1.getXCoordinate()<50 && espada->getposY()-p1.getYCoordinate()<30 && espada->getposY()-p1.getYCoordinate()>-30){
+                            p1.cambiarAtaque(espada);
+                            espada=NULL;
                         }
                     }
                 }
@@ -168,25 +202,31 @@ int main()
         
          //###########################################
         //mapa->dibujaNodos(window);
-        mapa->dibujaObs(window);
+        //mapa->dibujaObs(window);
         
         
         
         //Verifico que el camino va
-        for(int i = 0; i < enemigoM.caminoActual.size();i++){
+        /*for(int i = 0; i < enemigoM.caminoActual.size();i++){
             window.draw(enemigoM.caminoActual.at(i)->getParcela()->render(time));
         }
         for(int i = 0; i < enemigoR.caminoActual.size();i++){
             window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
-        }
+        }*/
         //Verifico que el raycast va
-        window.draw(enemigoR.raycast->render(time));
-        window.draw(enemigoM.raycast->render(time));
+        //window.draw(enemigoR.raycast->render(time));
+        //window.draw(enemigoM.raycast->render(time));
         //###################
         
         window.draw(hacha.getSprite()->render(time));
         if(pvida!=NULL){
            window.draw(pvida->getSprite()->render(time));
+        }
+        if(pmana!=NULL){
+            window.draw(pmana->getSprite()->render(time));
+        }
+        if(espada!=NULL){
+            window.draw(espada->getSprite()->render(time));
         }
         window.draw(p1.render(time, percentTick)->render(time));
         

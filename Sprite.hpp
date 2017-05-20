@@ -23,6 +23,7 @@ public:
     virtual ~Sprite();*/
     Sprite(std::string& url, int coord[], int frames);
     void set_origin(int x, int y);
+    void set_origin_i(int x, int y, int i);
     void set_framerate(int32_t x);
     void set_position(int x, int y);
     void set_scale(float x, float y);
@@ -33,11 +34,13 @@ public:
     sf::Sprite render(int32_t t);
     sf::Sprite getFotogramaActual();
     void reset();
+    void setRepite(bool b);
 private:    
     sf::Sprite *fotogramas;
     sf::Texture textura;
     int fr;
     int puntero;
+    bool repite;
     int32_t tasa;
     int32_t frames;
 

@@ -18,6 +18,7 @@
 #include <SFML/Graphics.hpp>
 #include "Pocion.h"
 #include "Enemy.h"
+#include "Arma.h"
 class Enemy;
 
 class Personaje {
@@ -48,6 +49,8 @@ public:
     
     void aumentarMargenDer(int i);
     void aumentarMargenIzq(int i);
+    
+    void cambiarAtaque(Arma* a);
     
 private:
     Sprite *idle;

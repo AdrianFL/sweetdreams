@@ -14,6 +14,7 @@
 #include "Personaje.hpp"
 #include "Sprite.hpp"
 #include "Enemy.h"
+#include "Arma.h"
 #include <iostream>
 
 
@@ -43,7 +44,7 @@ Personaje::Personaje(int id) {
         moveleft->set_position(600,450);
         moveleft->set_framerate(100);
         //Ataques hacha
-        int coordenadas5[32] = {691,1074,55,63,749,1055,36,82,788,1062,56,75,847,1058,55,79,905,1055,77,82,985,1079,69,58,1057,1076,68,61,1128,1072,52,65};
+        int coordenadas5[32]={691, 1068, 55, 68, 749, 1047, 38, 89, 799, 1060, 64, 77, 872, 1055, 63, 82, 940, 1078, 75, 63, 1015, 1079, 71, 59, 1087, 1076, 71, 59, 1159, 1072, 65, 64};
         attackright=new Sprite(ruta, coordenadas5, frames);
         attackright->set_position(600, 450);
         attackright->set_framerate(75);
@@ -52,21 +53,21 @@ Personaje::Personaje(int id) {
         attackleft->set_position(600,450);
         attackleft->set_framerate(75);
         //pocionesvida
-        frames=6;
-        int coordenadas7[24]={699, 865, 33, 65, 734, 866, 33, 63, 769, 864, 32, 66, 804, 864, 32, 66, 836, 863, 42, 67, 904, 865, 41, 65};
+        frames=8;
+        int coordenadas7[32]={699, 865, 33, 65, 734, 866, 33, 63, 769, 864, 32, 66, 804, 864, 32, 66, 836, 863, 42, 67, 836, 863, 42, 67, 904, 865, 41, 65, 904, 865, 41, 65};
         potivida=new Sprite(ruta, coordenadas7, frames);
         potivida->set_position(600, 450);
         potivida->set_framerate(100);
-        int coordenadas8[24]={732,865,-33,65,767,866,-33,63,801,864,-32,66,836,864,-32,66,878,863,-42,67,945,865,-41,65};
+        int coordenadas8[32]={732,865,-33,65,767,866,-33,63,801,864,-32,66,836,864,-32,66,878,863,-42,67, 878,863,-42,67, 945,865,-41,65, 945,865,-41,65};
         potividaleft=new Sprite(ruta, coordenadas8, frames);
         potividaleft->set_position(600, 450);
         potividaleft->set_framerate(100);
         //pocionesmana
-        int coordenadas9[24]={699, 865, 33, 65, 734, 866, 33, 63, 769, 864, 32, 66, 804, 864, 32, 66, 731, 966, 42, 67, 799, 966, 41, 65};
+        int coordenadas9[32]={699, 865, 33, 65, 734, 866, 33, 63, 769, 864, 32, 66, 804, 864, 32, 66, 731, 966, 42, 67, 731, 966, 42, 67, 799, 966, 41, 65, 799, 966, 41, 65};
         potimana=new Sprite(ruta, coordenadas9, frames);
         potimana->set_position(600,450);
         potimana->set_framerate(100);
-        int coordenadas10[24]={732,865,-33,65,767,866,-33,63,801,864,-32,66,836,864,-32,66,773,966,-42,67,840,966,-41,65};
+        int coordenadas10[32]={732,865,-33,65,767,866,-33,63,801,864,-32,66,836,864,-32,66,773,966,-42,67, 773,966,-42,67, 840,966,-41,65, 840,966,-41,65};
         potimanaleft=new Sprite(ruta, coordenadas10, frames);
         potimanaleft->set_position(600, 450);
         potimanaleft->set_framerate(100);
@@ -75,9 +76,11 @@ Personaje::Personaje(int id) {
         int coordenadas11[40]={1259, 1552, 40, 62, 1302, 1548, 49, 56, 1355, 1545, 71, 44, 1429, 1539, 66, 36, 1499, 1535, 67, 44, 1570, 1541, 59, 54, 1633, 1575, 45, 38, 1682, 1580, 66, 30, 1751, 1581, 65, 30, 1820, 1587, 68, 28};
         muerte=new Sprite(ruta, coordenadas11, frames);
         muerte->set_framerate(125);
+        muerte->setRepite(false);
         int coordenadas12[40]={1299,1552,-40,62,1351,1548,-49,56,1426,1545,-71,44,1495,1539,-66,36,1566,1535,-67,44,1629,1541,-59,54,1678,1575,-45,38,1748,1580,-66,30,1816,1581,-65,30,1888,1587,-68,28};
         muerteleft=new Sprite(ruta, coordenadas12, frames);
         muerteleft->set_framerate(125);
+        muerteleft->setRepite(false);
         //recogida
         frames=3;
         int coordenadas13[12]={488, 347, 33, 53, 527, 351, 47, 49, 579, 348, 41, 52};
@@ -119,7 +122,7 @@ Sprite* Personaje::render(int32_t tempo, float p){
     potmanatime-=tempo;
     picktime-=tempo;
     int movx=0, movy=0;
-    if(vida<0){
+    if(vida<1){
         if(direccion>0){
             return(muerte);
         }
@@ -299,7 +302,7 @@ void Personaje::usaPocion(std::string s){
             potividaleft->set_position(x, y);
             potividaleft->set_scale(sx, sy);
         }
-        potvidatime=600;
+        potvidatime=800;
     }
     else if(potmanatime<0 && s=="mana" && numPMana>0){
         numPMana--;
@@ -314,7 +317,7 @@ void Personaje::usaPocion(std::string s){
             potimanaleft->set_position(x, y);
             potimanaleft->set_scale(sx, sy);
         }
-        potmanatime=600;
+        potmanatime=800;
     }
 }
 
@@ -414,7 +417,7 @@ void Personaje::atacar(){
 
 void Personaje::herir(int dmg){
     vida-=dmg;
-    if(vida<0){
+    if(vida<1){
         if(direccion>0){
             muerte->set_position(x, y);
             muerte->set_scale(sx, sy);
@@ -423,7 +426,6 @@ void Personaje::herir(int dmg){
             muerteleft->set_position(x, y);
             muerteleft->set_scale(sx, sy);
         }
-        std::cout<<"baia biaa"<<std::endl;
     }
 }
 
@@ -439,14 +441,12 @@ void Personaje::aumentaPVida(){
     if(numPVida<2){
         numPVida++;
     }
-    std::cout << "Tu numero actual de pociones de vida es:" << numPVida << std::endl;
 }
 
 void Personaje::aumentaPMana(){
     if(numPMana<2){
         numPMana++;
     }
-    std::cout << "Tu numero actual de pociones de mana es:" << numPMana << std::endl;
 }
 
 int Personaje::getNumPVida(){
@@ -455,4 +455,15 @@ int Personaje::getNumPVida(){
 
 int Personaje::getNumPMana(){
     return numPMana;
+}
+
+void Personaje::cambiarAtaque(Arma* a){
+    if(a!=NULL){
+        delete attackright;
+        std::string ruta("resources/Agony.png");
+        int fr=a->getFrames();
+        attackright=new Sprite(ruta, a->getCoordenadasSprite(), fr);
+        delete attackleft;
+        attackleft=new Sprite(ruta, a->getCoordenadasSpriteLeft(), fr);
+    }
 }

@@ -18,6 +18,10 @@ class Arma{
         
         int posy;
         
+        int* coordarma;
+        
+        int* coordarmaleft;
+        
         Sprite *spritearma;
         
     
@@ -36,6 +40,12 @@ class Arma{
         std::string getTipo();
         
         Sprite* getSprite();
+        
+        int* getCoordenadasSprite();
+        
+        int* getCoordenadasSpriteLeft();
+        
+        int getFrames();
         
         
 };
