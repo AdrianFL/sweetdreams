@@ -29,9 +29,16 @@ public:
     std::vector<Proyectil*> huir(Personaje *p, Mapa *m, int32_t tempo);
     
     bool spattacklanzado;
+    bool tombalert;
 private:
     float distDisparo;
     int32_t disparotime;
+    
+    //Atriutos de las tumbas
+    int danyotumba;
+    int aparicionTumba;
+    int duracionTumba;
+    int tomblastx1,tomblastx2,tomblastx3,tomblastx4,tomblasty1,tomblasty2,tomblasty3,tomblasty4;
 };
 
 #endif /* ENEMYFINAL_H */

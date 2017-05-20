@@ -93,9 +93,9 @@ Personaje::Personaje(int id) {
     else if(id==1){
         
     }
-    x=600;
+    x=1100;
     y=450;
-    lastx=600;
+    lastx=3000;
     lasty=450;
     sx=1.0;
     sy=1.0;
@@ -107,7 +107,7 @@ Personaje::Personaje(int id) {
     picktime=-1;
     vidamax=200;
     manamax=100;
-    vida=20;
+    vida=500;
     mana=10;
     numPVida=3;
     numPMana=2;

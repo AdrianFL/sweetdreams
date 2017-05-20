@@ -11,7 +11,7 @@
  * Created on 28 de febrero de 2017, 13:46
  */
 
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -34,6 +34,8 @@
 
 int main()
 {
+    //Tiempo aleatorio
+    std::srand(std::time(0));
     //Creamos una ventana 
     sf::RenderWindow window(sf::VideoMode(1200, 640), "Ejecutable Hito 2");
     window.setVerticalSyncEnabled(true);
@@ -189,9 +191,13 @@ int main()
             if(disparo!=NULL){
                 proyectiles.push_back(disparo);
             }
-            for(int i = 0; i<disparoFinal.size();i++){
-                //proyectiles.push_back(disparoFinal.pop_back());
+            if(disparoFinal.size()>0){
+                for(int i = 0; i<disparoFinal.size();i++){
+                    Proyectil* aux = disparoFinal.at(i);
+                    proyectiles.push_back(aux);
+                }
             }
+            
             int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
             for(int i = 0; i<proyectiles.size();i++){
                 if(!proyectiles[i]->muerto){
@@ -204,6 +210,7 @@ int main()
                     delete proyectilMuerto;
                 }
             }
+            
             //######################
         }
 
@@ -215,10 +222,10 @@ int main()
        
         
         //Bloque Render
-        float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
+ /*       float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
         window.clear();
         mapa->dibuja(window);
-        
+ */       
          //###########################################
         //mapa->dibujaNodos(window);
         //mapa->dibujaObs(window);
@@ -232,7 +239,7 @@ int main()
         for(int i = 0; i < enemigoR.caminoActual.size();i++){
             window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
         }*/
-        //Verifico que el raycast va
+ /*       //Verifico que el raycast va
         window.draw(enemigoR.raycast->render(time));
         window.draw(enemigoM.raycast->render(time));
         window.draw(enemigoFinal.raycast->render(time));
@@ -267,4 +274,4 @@ int main()
     }
 
     return 0;
-}
+}*/

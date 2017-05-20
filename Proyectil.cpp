@@ -61,6 +61,13 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         explosion->set_framerate(60);
         explosion->set_origin(6,4);
         
+        if(px-ex<0){
+            direccion=-1;
+            spriteActual = movleft;
+        }else{
+            direccion=1;
+            spriteActual = movright;
+        }
     //Proyectil jefe rápido
     }else if(id==1){
         int frames=4;
@@ -89,20 +96,77 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         explosion->set_position(x, y);
         explosion->set_framerate(100);
         explosion->set_origin(6,4);
+        
+        if(px-ex<0){
+            direccion=-1;
+            spriteActual = movleft;
+        }else{
+            direccion=1;
+            spriteActual = movright;
+        }
     //Aviso de ataque de jefe
     }else if(id == 2){
-        sx = 2;
-        sy = 2;
+        sx = 1.2;
+        sy = 1.2;
         int frames= 9;
         std::string ruta("resources/aviso.png");
-        int coordenadas[36]={0,0,40,60, 0,40,40,60, 0,80,40,60, 0,120,40,60, 0,160,40,60, 0,200,40,60, 0,240,40,60, 0,280,40,60, 0,320,40,60};
+        int coordenadas[36]={0,0,60,40, 0,40,60,40, 0,80,60,40, 0,120,60,40, 0,160,60,40, 0,200,60,40, 0,240,60,40, 0,280,60,40, 0,320,60,40};
         explosion= new Sprite(ruta,coordenadas, frames);
         explosion->set_position(x,y);
-        explosion->set_framerate(60);
+        explosion->set_framerate(100);
         explosion->set_origin(20,30);
         
+        spriteActual = explosion;
     //Ataque de jefe tumba
     }else if(id == 3){
+        //Asignamos un tamaño pequeño para dar efecto de "salir del suelo"
+        sx = 1;
+        sy = 0.01;
+        
+        //Un solo frame, animamos el tamaño
+        int frames= 1;
+        std::string ruta("resources/graves.png");
+        
+        //El tipo de tumba será aleatorio
+
+        int tipoTumba = std::rand()%4;
+        
+        if(tipoTumba == 0){
+            int coordenadas[4]={0,0,75,107};
+            explosion= new Sprite(ruta,coordenadas, frames);
+            explosion->set_position(x,y);
+            explosion->set_framerate(100);
+            explosion->set_origin(33,107);
+
+            spriteActual = explosion;
+        }
+        else if(tipoTumba == 1){
+            int coordenadas[4]={90,0,70,107};
+            explosion= new Sprite(ruta,coordenadas, frames);
+            explosion->set_position(x,y);
+            explosion->set_framerate(100);
+            explosion->set_origin(33,107);
+
+            spriteActual = explosion;
+        }
+        else if(tipoTumba == 2){
+            int coordenadas[4]{0,122,75,108};
+            explosion= new Sprite(ruta,coordenadas, frames);
+            explosion->set_position(x,y);
+            explosion->set_framerate(100);
+            explosion->set_origin(33,108);
+
+            spriteActual = explosion;
+        }
+        else if(tipoTumba == 3){
+            int coordenadas[4]={85,122,75,113};
+            explosion= new Sprite(ruta,coordenadas, frames);
+            explosion->set_position(x,y);
+            explosion->set_framerate(100);
+            explosion->set_origin(33,113);
+
+            spriteActual = explosion;
+        }
         
     //Ataque de jefe zanahoria pocha
     }else if(id == 4){
@@ -110,13 +174,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     }
     
     
-    if(px-ex<0){
-        direccion=-1;
-        spriteActual = movleft;
-    }else{
-        direccion=1;
-        spriteActual = movright;
-    }
+
     
     //Posición a la que tiene que ir
     objx = px;
@@ -128,8 +186,8 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     muerto = false;
     
     //Inicialización del tiempo de vuelo esperado y de muerte
-    muertetime=600;
-    vuelotime = tiempoVida;
+    muertetime = 600;
+    vuelotime  = tiempoVida;
     
     //velocidad del proyectil según tipos
     if(id == 0 || id==1){
@@ -151,7 +209,9 @@ Sprite* Proyectil::render(int32_t tempo, float p){
     vuelotime-=tempo;
    
     int movx=0,movy=0;
+    //Si es de tipo 1, es una bala normal
     if(type == 0 || type == 1){
+        //Si ha explotado, mostramos la animación de explosión
         if(explotar){
             muertetime-=tempo;
             if(muertetime>0){
@@ -164,7 +224,7 @@ Sprite* Proyectil::render(int32_t tempo, float p){
                 return(explosion);
             }
         }
-
+        //Si no ha explotado, movimiento interpolado
         if(p<1.0f && (lastx!=x||lasty!=y)){
             if(direccion>0){
                 movx=(lastx*(1-p))+(x*p);
@@ -205,9 +265,33 @@ Sprite* Proyectil::render(int32_t tempo, float p){
                return(movleft);
            }
         }
-    }else{
-        muertetime-=tempo;
-        if(muertetime>0){
+        
+    //Si es de tipo 2, solamente mostramos el objeto apareciendo
+    }else if(type == 2){
+        if(vuelotime>0){
+            explosion->set_position(x,y);
+            explosion->set_scale(sx,sy);
+            spriteActual = explosion;
+            return(explosion);
+        }else{
+            muerto = true;
+            return(explosion);
+        }
+        
+    //Si es de tipo tumba, también crece de tamaño hasta llegar a 1
+    }else if(type == 3){
+        if(vuelotime>0){
+            if(sy<1){
+                sy +=0.16;
+            }else{
+                sy = 1;
+            }
+            if(vuelotime<200){
+                sy -=0.5;
+                if(sy<0){
+                    sy = 0;
+                }
+            }
             explosion->set_position(x,y);
             explosion->set_scale(sx,sy);
             spriteActual = explosion;
@@ -222,8 +306,11 @@ Sprite* Proyectil::render(int32_t tempo, float p){
 void Proyectil::volar(Personaje *p){
     lastx=x;
     lasty=y;
+    //Si la bala es de tipo 1, se mueve y comprueba colisiones con el personaje
     if(type == 0 || type == 1){
+        //Si no se le ha acabado el tiempo, o ha muerto o explotado
         if(vuelotime>=0 && !muerto && !explotar){
+            //Comprobamos colision con el personaje
             if(spriteActual->comprobarColision(0,p->getAnimacionActiva())){
                 p->herir(danyo);
                 explotar = true;
@@ -279,8 +366,24 @@ void Proyectil::volar(Personaje *p){
         }else{
             muerto = true;
         }
+    //Si es de tipo alerta solo aparece
     }else if(type == 2){
         x = objx;
         y = objy;
+        lastx = objx;
+        lasty = objy;
+    }else if(type == 3){
+        x = objx;
+        y = objy;
+        lastx = objx;
+        lasty = objy;
+        if(!explotar && !muerto){
+            if(spriteActual->comprobarColision(0,p->getAnimacionActiva())){
+                p->herir(danyo);
+                explotar = true;
+            } 
+        }
+        //Si el Sprite de tumba colisiona una base, provoca 1 daño
+
     }
 }

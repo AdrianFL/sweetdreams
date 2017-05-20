@@ -7,7 +7,14 @@
       <itemPath>Arma.h</itemPath>
       <itemPath>Camara.h</itemPath>
       <itemPath>Clock.hpp</itemPath>
+      <itemPath>E1jugador.h</itemPath>
+      <itemPath>E2jugador.h</itemPath>
+      <itemPath>Eintroduccion.h</itemPath>
+      <itemPath>Emenu.h</itemPath>
       <itemPath>Enemy.h</itemPath>
+      <itemPath>Eopciones.h</itemPath>
+      <itemPath>Epausa.h</itemPath>
+      <itemPath>Juego.h</itemPath>
       <itemPath>Mapa.h</itemPath>
       <itemPath>Nodo.h</itemPath>
       <itemPath>Obstaculo.h</itemPath>
@@ -15,6 +22,7 @@
       <itemPath>Pocion.h</itemPath>
       <itemPath>Proyectil.h</itemPath>
       <itemPath>Sprite.hpp</itemPath>
+      <itemPath>State.h</itemPath>
       <itemPath>enemyFinal.h</itemPath>
       <itemPath>enemyMelee.h</itemPath>
       <itemPath>enemyRange.h</itemPath>
@@ -31,7 +39,14 @@
       <itemPath>Arma.cpp</itemPath>
       <itemPath>Camara.cpp</itemPath>
       <itemPath>Clock.cpp</itemPath>
+      <itemPath>E1jugador.cpp</itemPath>
+      <itemPath>E2jugador.cpp</itemPath>
+      <itemPath>Eintroduccion.cpp</itemPath>
+      <itemPath>Emenu.cpp</itemPath>
       <itemPath>Enemy.cpp</itemPath>
+      <itemPath>Eopciones.cpp</itemPath>
+      <itemPath>Epausa.cpp</itemPath>
+      <itemPath>Juego.cpp</itemPath>
       <itemPath>Mapa.cpp</itemPath>
       <itemPath>Nodo.cpp</itemPath>
       <itemPath>Obstaculo.cpp</itemPath>
@@ -39,10 +54,12 @@
       <itemPath>Pocion.cpp</itemPath>
       <itemPath>Proyectil.cpp</itemPath>
       <itemPath>Sprite.cpp</itemPath>
+      <itemPath>State.cpp</itemPath>
       <itemPath>enemyFinal.cpp</itemPath>
       <itemPath>enemyMelee.cpp</itemPath>
       <itemPath>enemyRange.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
+      <itemPath>newmain.cpp</itemPath>
       <itemPath>tinystr.cpp</itemPath>
       <itemPath>tinyxml.cpp</itemPath>
       <itemPath>tinyxmlerror.cpp</itemPath>
@@ -99,9 +116,37 @@
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="E1jugador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="E1jugador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="E2jugador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="E2jugador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Eintroduccion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Eintroduccion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Emenu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Emenu.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Enemy.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Enemy.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Eopciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Eopciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Epausa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Epausa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Juego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Juego.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -131,6 +176,10 @@
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="State.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="State.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">
@@ -144,6 +193,8 @@
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="newmain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tinystr.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -190,9 +241,37 @@
       </item>
       <item path="Clock.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="E1jugador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="E1jugador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="E2jugador.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="E2jugador.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Eintroduccion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Eintroduccion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Emenu.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Emenu.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Enemy.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Enemy.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Eopciones.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Eopciones.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Epausa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Epausa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Juego.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Juego.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -222,6 +301,10 @@
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="State.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="State.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">
@@ -235,6 +318,8 @@
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="newmain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tinystr.cpp" ex="false" tool="1" flavor2="0">
       </item>

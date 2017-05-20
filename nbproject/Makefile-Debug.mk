@@ -38,7 +38,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/Arma.o \
 	${OBJECTDIR}/Camara.o \
 	${OBJECTDIR}/Clock.o \
+	${OBJECTDIR}/E1jugador.o \
+	${OBJECTDIR}/E2jugador.o \
+	${OBJECTDIR}/Eintroduccion.o \
+	${OBJECTDIR}/Emenu.o \
 	${OBJECTDIR}/Enemy.o \
+	${OBJECTDIR}/Eopciones.o \
+	${OBJECTDIR}/Epausa.o \
+	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/Mapa.o \
 	${OBJECTDIR}/Nodo.o \
 	${OBJECTDIR}/Obstaculo.o \
@@ -46,10 +53,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/Pocion.o \
 	${OBJECTDIR}/Proyectil.o \
 	${OBJECTDIR}/Sprite.o \
+	${OBJECTDIR}/State.o \
 	${OBJECTDIR}/enemyFinal.o \
 	${OBJECTDIR}/enemyMelee.o \
 	${OBJECTDIR}/enemyRange.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/newmain.o \
 	${OBJECTDIR}/tinystr.o \
 	${OBJECTDIR}/tinyxml.o \
 	${OBJECTDIR}/tinyxmlerror.o \
@@ -105,10 +114,45 @@ ${OBJECTDIR}/Clock.o: Clock.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Clock.o Clock.cpp
 
+${OBJECTDIR}/E1jugador.o: E1jugador.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/E1jugador.o E1jugador.cpp
+
+${OBJECTDIR}/E2jugador.o: E2jugador.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/E2jugador.o E2jugador.cpp
+
+${OBJECTDIR}/Eintroduccion.o: Eintroduccion.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Eintroduccion.o Eintroduccion.cpp
+
+${OBJECTDIR}/Emenu.o: Emenu.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Emenu.o Emenu.cpp
+
 ${OBJECTDIR}/Enemy.o: Enemy.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Enemy.o Enemy.cpp
+
+${OBJECTDIR}/Eopciones.o: Eopciones.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Eopciones.o Eopciones.cpp
+
+${OBJECTDIR}/Epausa.o: Epausa.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Epausa.o Epausa.cpp
+
+${OBJECTDIR}/Juego.o: Juego.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Juego.o Juego.cpp
 
 ${OBJECTDIR}/Mapa.o: Mapa.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -145,6 +189,11 @@ ${OBJECTDIR}/Sprite.o: Sprite.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Sprite.o Sprite.cpp
 
+${OBJECTDIR}/State.o: State.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/State.o State.cpp
+
 ${OBJECTDIR}/enemyFinal.o: enemyFinal.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -164,6 +213,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/newmain.o: newmain.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/newmain.o newmain.cpp
 
 ${OBJECTDIR}/tinystr.o: tinystr.cpp 
 	${MKDIR} -p ${OBJECTDIR}
