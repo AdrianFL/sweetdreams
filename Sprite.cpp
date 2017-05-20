@@ -33,6 +33,7 @@ Sprite::Sprite(std::string& url, int coord[], int frames)
     puntero=0;
     tasa=75;
     frames=75;
+    repite=true;
 }
 
 //Coloca la coordenada origen para cada frame de la animacion
@@ -73,8 +74,11 @@ sf::Sprite Sprite::render(int32_t t){
     if(frames<0){
         frames=tasa;
         puntero++;
-        if(puntero>=fr){
+        if(puntero>=fr&&repite==true){
             puntero=0;
+        }
+        else if(puntero>=fr&&repite==false){
+            puntero=fr-1;
         }
     }
     return fotogramas[puntero];
@@ -112,4 +116,14 @@ void Sprite::rotate(float x)
 void Sprite::reset()
 {
     puntero=0;
+}
+
+void Sprite::set_origin_i(int x, int y, int i){
+    if(i>=0 && i<fr){
+        fotogramas[i].setOrigin(x, y);
+    }
+}
+
+void Sprite::setRepite(bool b){
+    repite=b;
 }

@@ -26,7 +26,7 @@ public:
     
     void atacar();
     void atacarSpecial();
-    Proyectil* huir(Personaje *p, Mapa *m, int32_t tempo);
+    std::vector<Proyectil*> huir(Personaje *p, Mapa *m, int32_t tempo);
     
 private:
     float distDisparo;

@@ -112,18 +112,29 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                     int tumbs = 0;
                     
                     //Sector 1-1
-                    Proyectil* disparo = new Proyectil(2,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                    int x = std::rand()%(3160-1153)+1153;
+                    int y = std::rand()%6;
+                    Proyectil* disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
                     conjunto.push_back(disparo);
                     
-                    if(){
-                        
-                    }
-                    if(){
-                        
-                    }
-                    if(){
-                        
-                    }
+                    //Sector 1-2
+                    x =  std::rand()%6;
+                    y =  std::rand()%6;
+                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    conjunto.push_back(disparo);
+                    
+                    //Sector 2-1
+                    x =  std::rand()%6;
+                    y =  std::rand()%6;
+                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    conjunto.push_back(disparo);
+                    
+                    //Sector 2-2
+                    x =  std::rand()%6;
+                    y =  std::rand()%6;
+                     disparo = new Proyectil(2,x,y,ex,ey,5, 10.0f,10.0f, 1500);
+                    conjunto.push_back(disparo);
+                    
                 }
                 if(ataque == 1){
                     
