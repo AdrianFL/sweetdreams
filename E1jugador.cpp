@@ -44,6 +44,7 @@
 #include "Proyectil.h"
 #include "Camara.h"
 #include "hechizo.h"
+#include "Musica.hpp"
 
 #define UPDATE_TICK_TIME 1000.0/15.0
 
@@ -69,6 +70,15 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     pvida=new Pocion("v", 400, 450);
     pmana=new Pocion("m", 400, 520);
     mapa= new Mapa;
+    
+    //Música
+    std::string rutamusica("resources/sweetdreams.ogg");
+    Musica* musica = new Musica(rutamusica);
+    
+    musica->setLoop(true);
+    musica->Play();
+    
+    
     //1 para leer el mapa 1, 2 para leer el mapa 2
     mapa->leerMapa(1);
     
@@ -146,33 +156,33 @@ void E1jugador::Update(){
     
     updatetime=updateclock.restart();
     //Bloque update
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Joystick::getAxisPosition(0, sf::Joystick::X)>50){
         option=1;
         movimiento=1;                
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Joystick::getAxisPosition(0, sf::Joystick::X)<-50){
         option=2;
         movimiento=2;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y)<-50){
         option=3;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y)>50){
         option=4;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) || sf::Joystick::isButtonPressed(0, 4)){
         p1->usaPocion("vida"); 
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) || sf::Joystick::isButtonPressed(0, 5)){
         p1->usaPocion("mana");
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U) || sf::Joystick::isButtonPressed(0, 0)){
         p1->atacar();
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){
         p1->herir(25);
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I) || sf::Joystick::isButtonPressed(0, 2)){
         p1->activaRecogida();
         recogida=false;
         if(recogida==false){
@@ -253,8 +263,8 @@ void E1jugador::Update(){
                 }
             }
         }
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
-        disparoHechizo = p1->lanzarHechizo();
+    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y) || sf::Joystick::isButtonPressed(0, 3)){
+                p1->lanzarHechizo();
     }
     p1->move(option);
     if(movimiento == 0){

@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Epausa.o \
 	${OBJECTDIR}/Juego.o \
 	${OBJECTDIR}/Mapa.o \
+	${OBJECTDIR}/Musica.o \
 	${OBJECTDIR}/Nodo.o \
 	${OBJECTDIR}/Obstaculo.o \
 	${OBJECTDIR}/Personaje.o \
@@ -149,6 +150,11 @@ ${OBJECTDIR}/Mapa.o: Mapa.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa.o Mapa.cpp
+
+${OBJECTDIR}/Musica.o: Musica.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Musica.o Musica.cpp
 
 ${OBJECTDIR}/Nodo.o: Nodo.cpp 
 	${MKDIR} -p ${OBJECTDIR}

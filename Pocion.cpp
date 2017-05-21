@@ -67,6 +67,6 @@
             return 30;
         }
         else if(s=="mana"){
-            return 20;
+            return 50;
         }
     }
