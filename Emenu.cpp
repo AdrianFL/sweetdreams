@@ -85,7 +85,6 @@ void Emenu::Handle(){
     
 }
 void Emenu::Update(){
-    std::cout << "UPDATE YOKESE" << std::endl;
     _context=_context;
 }
 int Emenu::CUpdate2(sf::Event event){
@@ -143,7 +142,6 @@ int Emenu::CUpdate2(sf::Event event){
                                     if(selected2==0){
                                         //LANZAMOS STATE E1JUGADOR
                                         salida=true;
-                                        std::cout << "DEBERIAMOS CAMBIAR DE ESTADO A E1JUGADOR" << std::endl;
                                         E1jugador::Instance(Juego::Instance(),window)->Handle();
                                         //E1jugador::Instance(Juego::Instance())->Handle();
                                         
@@ -152,7 +150,6 @@ int Emenu::CUpdate2(sf::Event event){
                                     else if(selected2==1){
                                         salida=true;
                                         //LANZAMOS STATE E2JUGADOR
-                                        std::cout << "DEBERIAMOS CAMBIAR DE ESTADO A E222JUGADOR" << std::endl;
                                         E2jugador::Instance(Juego::Instance(),window)->Handle();
                                     }
                                     break;
@@ -179,7 +176,6 @@ Juego* Emenu::getContext(){
     
 }
 int Emenu::run(sf::RenderWindow &window){
-    std::cout << "Cuantas veces pasamos por aqui?" << std::endl;
     //buclue principal del juego  
     while(window.isOpen() && !salida){
         sf::Event event;

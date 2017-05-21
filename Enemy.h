@@ -47,6 +47,7 @@ public:
     Sprite *raycast;
     
     bool jefe;
+    int vida;
 protected:
     //Sprites de movimiento
     Sprite *spriteActual;
@@ -65,7 +66,7 @@ protected:
     int x, y, lastx, lasty;
     float sx, sy;
     
-    int vida;
+
     int direccion;
     
     int32_t ataquetime;

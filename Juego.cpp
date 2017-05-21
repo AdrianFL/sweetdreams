@@ -30,14 +30,14 @@ Juego* Juego::Instance(){
     return pinstance;
 }
 Juego::Juego(){
-    
+    windowWidth = 1200;
+    windowHeight = 600;
     _state = 0;
     
 }
 void Juego::Update(){
 
     _state->Init();
-    std::cout << "UPDATE DE CAMBIO DE ESTADO" << std::endl;
     
 }
 
@@ -48,7 +48,6 @@ State* Juego::currentState(){
 }
 
 void Juego::setState(State* state){
-    std::cout << state<<"--ESTADOOOO"<< std::endl;
     _state = state;
     Update();
         

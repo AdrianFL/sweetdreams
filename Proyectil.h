@@ -15,6 +15,10 @@
 #define PROYECTIL_H
 #include "Sprite.hpp"
 #include "Personaje.hpp"
+#include "Enemy.h"
+
+class Personaje;
+class Enemy;
 
 class Proyectil {
 public:
@@ -24,6 +28,7 @@ public:
     Sprite* render(int32_t tempo, float p);
     void atacar();
     void volar(Personaje* p);
+    void volarP(std::vector<Enemy*> enemigos);
     
     float x, y, lastx, lasty, objx, objy;
     int vida, danyo;

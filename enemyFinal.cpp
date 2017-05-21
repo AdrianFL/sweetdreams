@@ -15,6 +15,7 @@
 enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,iniy,v,danyo) {
     distDisparo = 300;
     disparotime = -1;
+    //spattacktime = -1;
     //Alerta de que un ataque final ha sido lanzado
     spattacklanzado = false;
     
@@ -23,8 +24,14 @@ enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,ini
     aparicionTumba = 3000;
     duracionTumba = 1500;
     
+    //Alerta y duraciones de las zanahorias
+    zanahoriaalert = false;
+    aparicionZanahoria = 3000;
+    duracionZanahoria  = 1000;
+            
     //Daño de los hechizos
-    danyotumba = 25;
+    danyotumba      = 25;
+    danyoZanahoria  = 50;
 }
 
 enemyFinal::enemyFinal(const enemyFinal& orig): Enemy(orig) {
@@ -52,6 +59,7 @@ void enemyFinal::atacar(){
 void enemyFinal::atacarSpecial(){
     if(spattacktime < 0){
         spattacktime = 3000;
+        spattacklanzado = false;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
@@ -122,7 +130,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
             //Si un ataque final no ha sido lanzado, lánzalo
             if(spattacklanzado == false){
                 spattacklanzado = true;
-                //int ataque = std::rand()%3;
+                //int ataque = std::rand()%2;
                 int ataque = 0;
                 if(ataque == 0){
                     tombalert = true;
@@ -154,10 +162,28 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                     tomblasty4 =  std::rand()%(190/2)+380+190/2;
                     Proyectil* alerta4 = new Proyectil(2,tomblastx4,tomblasty4,ex,ey, 0, 0.0f, 0.0f, aparicionTumba);
                     conjunto.push_back(alerta4);
-                    
+                    //atacarSpecial();
                 }
                 if(ataque == 1){
+                    zanahoriaalert = true;
+                    //6 y pueden aparecer en zonas variables, se pueden superponer en  valores diferentes
+                    //Lado izquierda
+                    int zona = std::rand()%6+1;
+                    zanalastx1 = zona*1153/6+2040;
+                    zanalasty1 = 545;
+                   
+                    Proyectil* alerta = new Proyectil(2,zanalastx1,zanalasty1,ex,ey, 1, 0.0f, 0.0f, aparicionZanahoria);
+                    conjunto.push_back(alerta);
                     
+                    
+                    //Lado derecha
+                    int zona2 = std::rand()%6+1;
+                    zanalastx2 =  zona2*1153/6+2040;
+                    zanalasty2 =  545;
+                    
+                    Proyectil* alerta2 = new Proyectil(2,zanalastx2,zanalasty2,ex,ey, 1, 0.0f, 0.0f, aparicionZanahoria);
+                    conjunto.push_back(alerta2);
+                    //atacarSpecial();
                 }
                 if(ataque == 2){
                     
@@ -179,6 +205,16 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                                     
                 Proyectil* disparo4 = new Proyectil(3,tomblastx4,tomblasty4,ex,ey, danyotumba, 0.0f, 0.0f, duracionTumba);
                 conjunto.push_back(disparo4);
+            }
+            
+            //Si se ha lanzado un ataque zanahoria, se controla su existencia
+            if(zanahoriaalert == true && spattacktime<aparicionZanahoria - 500){
+                zanahoriaalert = false;
+                Proyectil*  disparo = new Proyectil(4,zanalastx1,zanalasty1,zanalastx1,zanalasty1, danyoZanahoria, 0.0f, 20.0f, duracionZanahoria);
+                conjunto.push_back(disparo);
+                
+                Proyectil* disparo2 = new Proyectil(4,zanalastx2,zanalasty2,zanalastx2,zanalasty2, danyoZanahoria, 0.0f, 20.0f, duracionZanahoria);
+                conjunto.push_back(disparo2);
             }
             
             //Si se ha acabado el tiempo de espera del lanzamiento de ataque, reinícialo

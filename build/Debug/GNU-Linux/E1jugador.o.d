@@ -1,16 +1,14 @@
-build/Debug/GNU-Linux/Emenu.o: Emenu.cpp Emenu.h State.h Juego.h \
- E1jugador.h Personaje.hpp Sprite.hpp Pocion.h Enemy.h Clock.hpp Nodo.h \
+build/Debug/GNU-Linux/E1jugador.o: E1jugador.cpp E1jugador.h Juego.h \
+ State.h Personaje.hpp Sprite.hpp Pocion.h Enemy.h Clock.hpp Nodo.h \
  Mapa.h Obstaculo.h Arma.h hechizo.h Proyectil.h enemyMelee.h \
- enemyRange.h enemyFinal.h Camara.h E2jugador.h Eintroduccion.h \
- Eopciones.h Epausa.h
+ enemyRange.h enemyFinal.h Camara.h E2jugador.h Eintroduccion.h Emenu.h \
+ Epausa.h
 
-Emenu.h:
-
-State.h:
+E1jugador.h:
 
 Juego.h:
 
-E1jugador.h:
+State.h:
 
 Personaje.hpp:
 
@@ -46,6 +44,6 @@ E2jugador.h:
 
 Eintroduccion.h:
 
-Eopciones.h:
+Emenu.h:
 
 Epausa.h:

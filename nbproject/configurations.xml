@@ -26,6 +26,7 @@
       <itemPath>enemyFinal.h</itemPath>
       <itemPath>enemyMelee.h</itemPath>
       <itemPath>enemyRange.h</itemPath>
+      <itemPath>hechizo.h</itemPath>
       <itemPath>tinystr.h</itemPath>
       <itemPath>tinyxml.h</itemPath>
     </logicalFolder>
@@ -58,6 +59,7 @@
       <itemPath>enemyFinal.cpp</itemPath>
       <itemPath>enemyMelee.cpp</itemPath>
       <itemPath>enemyRange.cpp</itemPath>
+      <itemPath>hechizo.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>newmain.cpp</itemPath>
       <itemPath>tinystr.cpp</itemPath>
@@ -192,6 +194,10 @@
       </item>
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="hechizo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hechizo.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="newmain.cpp" ex="false" tool="1" flavor2="0">
@@ -316,6 +322,10 @@
       <item path="enemyRange.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="hechizo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hechizo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

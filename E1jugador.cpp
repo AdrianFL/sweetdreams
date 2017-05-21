@@ -43,6 +43,7 @@
 #include "enemyFinal.h"
 #include "Proyectil.h"
 #include "Camara.h"
+#include "hechizo.h"
 
 #define UPDATE_TICK_TIME 1000.0/15.0
 
@@ -63,6 +64,8 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     p1= new Personaje(0);
     hacha=new Arma("h", 750, 450);
     espada=new Arma("e", 850, 450);
+    meteoro=new Hechizo("m", 650, 500);
+    escupitajo=new Hechizo("e", 300, 500);
     pvida=new Pocion("v", 400, 450);
     pmana=new Pocion("m", 400, 520);
     mapa= new Mapa;
@@ -75,11 +78,15 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     movimiento=0;
     
     //###################
+    //Instanciacion enemigos
     enemigoM= new enemyMelee(850,450,30,1);
     enemigoR= new enemyRange(100,500,30,1);
     enemigoFinal= new enemyFinal(2500,500,300,5);
-    std::vector<Proyectil*> proyectiles;
-    std::vector<Proyectil*> disparoFinal;
+    
+    //Añadirlos al array de enemigos del mapa
+    enemigos.push_back(enemigoM);
+    enemigos.push_back(enemigoR);
+    enemigos.push_back(enemigoFinal);
     //###################
     
     clock;
@@ -98,7 +105,6 @@ void E1jugador::Handle(){
    // std::cout << "E1JUGADOR: "  << this << std::endl;
     _context->setState(this);   //Al hacer Handle, se activa este estado en el contexto.
    // std::cout << _context<< std::endl;
-    std::cout << "E1JUGADOR handle!"<< std::endl;
     
     
 }
@@ -109,8 +115,8 @@ Juego* E1jugador::getContext(){
 }
 
 void E1jugador::Init(){
-    std::cout << "init E1jugador" << std::endl;
-    salida=false;
+   std::cout << "init E1jugador" << std::endl;
+   salida=false;
    run(*Juego::Instance()->window);
    
 }
@@ -134,7 +140,10 @@ int E1jugador::run(sf::RenderWindow &window){
     
 }
 void E1jugador::Update(){
+    
     Proyectil* disparo = NULL;
+    Proyectil* disparoHechizo = NULL;
+    
     updatetime=updateclock.restart();
     //Bloque update
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
@@ -210,27 +219,82 @@ void E1jugador::Update(){
                 }
             }
         }
+         if(recogida==false){
+            if(p1->getDireccion()>0){
+                if(espada!=NULL && espada->getposX()>p1->getXCoordinate() && espada->getposX()-p1->getXCoordinate()<50 && espada->getposY()-p1->getYCoordinate()<30 && espada->getposY()-p1->getYCoordinate()>-30){
+                    recogida=true;
+                    p1->cambiarAtaque(espada);
+                    espada=NULL;
+                }
+            }
+            else{
+                if(espada!=NULL && espada->getposX()<p1->getXCoordinate() && p1->getXCoordinate()-espada->getposX()<50 && espada->getposY()-p1->getYCoordinate()<30 && espada->getposY()-p1->getYCoordinate()>-30){
+                    recogida=true;
+                    p1->cambiarAtaque(espada);
+                    espada=NULL;
+                }
+            }
+        }
+        if(recogida==false){
+            if(p1->getDireccion()>0){
+                if(meteoro!=NULL && meteoro->getPosX()>p1->getXCoordinate() && meteoro->getPosX()-p1->getXCoordinate()<50 && meteoro->getPosY()-p1->getYCoordinate()<30 && meteoro->getPosY()-p1->getYCoordinate()>-30){
+                    recogida=true;
+                    p1->recogeHechizo(meteoro);
+                    meteoro=NULL;
+                }
+            }
+        }
+        if(recogida==false){
+            if(p1->getDireccion()>0){
+                if(escupitajo!=NULL && escupitajo->getPosX()>p1->getXCoordinate() && escupitajo->getPosX()-p1->getXCoordinate()<50 && escupitajo->getPosY()-p1->getYCoordinate()<30 && escupitajo->getPosY()-p1->getYCoordinate()>-30){
+                    recogida=true;
+                    p1->recogeHechizo(escupitajo);
+                    escupitajo=NULL;
+                }
+            }
+        }
+    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
+        disparoHechizo = p1->lanzarHechizo();
     }
     p1->move(option);
-    if(movimiento==1){
+    if(movimiento == 0){
+        camara->fija();
+    }
+    else if(movimiento==1){
          camara->moverDer(*p1);
     }
     else if(movimiento==2){
         camara->moverIzq(*p1);
     }
     option=0;
-
+    movimiento = 0;
+    
     //######################
-    //Enemigo melee
-    enemigoM->perseguir(p1,mapa);
-
-    //Enemigo de rango
-    disparo = enemigoR->perseguir(p1,mapa, time);
-
-    //Enemigo Final
-    disparoFinal = enemigoFinal->huir(p1,mapa,time);
-
+    //Control total de los enemigos
+    int muertos=0; //Cuenta los destruidos, por si se da más de un enemigo destruido a la vez (casi imposible pero por si acaso)
+    for(int i = 0; i<enemigos.size();i++){
+        //Si el enemigo está vivo
+        if(enemigos[i]->vida>0){
+            if(dynamic_cast<enemyMelee*>(enemigos[i]) != NULL){
+                dynamic_cast<enemyMelee*>(enemigos[i])->perseguir(p1,mapa);
+            }
+            if(dynamic_cast<enemyRange*>(enemigos[i]) != NULL){
+                disparo = dynamic_cast<enemyRange*>(enemigos[i])->perseguir(p1,mapa, time);
+            }
+            if(dynamic_cast<enemyFinal*>(enemigos[i]) != NULL){
+                disparoFinal = dynamic_cast<enemyFinal*>(enemigos[i])->huir(p1,mapa,time);
+            }
+        }else{
+            //Destruir enemigos muertos
+            Enemy* enemigoMuerto  = enemigos.at(i-muertos);
+            enemigos.erase(enemigos.begin()+i-muertos);
+            muertos++;
+            delete enemigoMuerto;
+        }
+    }
+    
     //Control de los disparos
+    //Enemigos
     if(disparo!=NULL){
         proyectiles.push_back(disparo);
     }
@@ -238,17 +302,30 @@ void E1jugador::Update(){
         Proyectil* aux = disparoFinal.at(i);
         proyectiles.push_back(aux);
     }
+    
+    //Personaje
+    if(disparoHechizo!=NULL){
+        proyectiles.push_back(disparoHechizo);
+    }
+    
+    
     int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
     for(int i = 0; i<proyectiles.size();i++){
         if(!proyectiles[i]->muerto){
-            proyectiles[i]->volar(p1);
+            if(proyectiles[i]->type<10){
+                proyectiles[i]->volar(p1);
+            }else{
+                proyectiles[i]->volarP(enemigos);
+            }
         }else{
             //Destruir proyectiles muertos
             Proyectil* proyectilMuerto  = proyectiles.at(i-destruidos);
             proyectiles.erase(proyectiles.begin()+i-destruidos);
             destruidos++;
             delete proyectilMuerto;
+            
         }
+        
     }
     //######################
 }
@@ -283,8 +360,6 @@ void E1jugador::Render(){
     //mapa->dibujaNodos(window);
     //mapa->dibujaObs(window);
 
-
-
     //Verifico que el camino va
     /*for(int i = 0; i < enemigoM.caminoActual.size();i++){
         window.draw(enemigoM.caminoActual.at(i)->getParcela()->render(time));
@@ -293,12 +368,11 @@ void E1jugador::Render(){
         window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
     }*/
     //Verifico que el raycast va
-    window->draw(enemigoR->raycast->render(time));
+    /*window->draw(enemigoR->raycast->render(time));
     window->draw(enemigoM->raycast->render(time));
-    window->draw(enemigoFinal->raycast->render(time));
+    window->draw(enemigoFinal->raycast->render(time));*/
     //###################
 
-    window->draw(hacha->getSprite()->render(time));
     if(pvida!=NULL){
        window->draw(pvida->getSprite()->render(time));
     }
@@ -307,6 +381,12 @@ void E1jugador::Render(){
     }
     if(espada!=NULL){
         window->draw(espada->getSprite()->render(time));
+    }
+    if(meteoro!=NULL){
+        window->draw(meteoro->getSpriteHechizo()->render(time));
+    }
+    if(escupitajo!=NULL){
+        window->draw(escupitajo->getSpriteHechizo()->render(time));
     }
     window->draw(p1->render(time, percentTick)->render(time));
 
@@ -320,7 +400,7 @@ void E1jugador::Render(){
 
     //###################
 
-
+    camara->move(percentTick);
     camara->draw(*window);
 
     window->display();

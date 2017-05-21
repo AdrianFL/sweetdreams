@@ -57,6 +57,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/enemyFinal.o \
 	${OBJECTDIR}/enemyMelee.o \
 	${OBJECTDIR}/enemyRange.o \
+	${OBJECTDIR}/hechizo.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/newmain.o \
 	${OBJECTDIR}/tinystr.o \
@@ -208,6 +209,11 @@ ${OBJECTDIR}/enemyRange.o: enemyRange.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyRange.o enemyRange.cpp
+
+${OBJECTDIR}/hechizo.o: hechizo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/hechizo.o hechizo.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

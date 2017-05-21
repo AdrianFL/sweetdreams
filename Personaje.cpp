@@ -89,13 +89,16 @@ Personaje::Personaje(int id) {
         int coordenadas14[12]={521,347,-33,53,574,351,-47,49,620,348,-41,52};
         recogidaleft=new Sprite(ruta, coordenadas14, frames);
         recogidaleft->set_framerate(100);
+        //hechizo
+        hechizo=NULL;
+        hechizoleft=NULL;
     }
     else if(id==1){
         
     }
-    x=1100;
+    x=600;
     y=450;
-    lastx=3000;
+    lastx=600;
     lasty=450;
     sx=1.0;
     sy=1.0;
@@ -104,15 +107,16 @@ Personaje::Personaje(int id) {
     atctime=-1;
     potvidatime=-1;
     potmanatime=-1;
+    spelltime=-1;
     picktime=-1;
     vidamax=200;
     manamax=100;
-    vida=500;
-    mana=10;
+    vida=200;
+    mana=110;
     numPVida=3;
     numPMana=2;
     movingborder=false;
-    
+    hactivo=NULL;
     margen=0;
 }
 
@@ -121,6 +125,7 @@ Sprite* Personaje::render(int32_t tempo, float p){
     potvidatime-=tempo;
     potmanatime-=tempo;
     picktime-=tempo;
+    spelltime-=tempo;
     int movx=0, movy=0;
     if(vida<1){
         if(direccion>0){
@@ -166,6 +171,14 @@ Sprite* Personaje::render(int32_t tempo, float p){
         }
         else{
             return(recogidaleft);
+        }
+    }
+    else if(spelltime>=0){
+        if(direccion>0){
+            return(hechizo);
+        }
+        else{
+            return hechizoleft;
         }
     }
     if(p<1.0f && (lastx!=x||lasty!=y)){
@@ -459,11 +472,33 @@ int Personaje::getNumPMana(){
 
 void Personaje::cambiarAtaque(Arma* a){
     if(a!=NULL){
-        delete attackright;
-        std::string ruta("resources/Agony.png");
-        int fr=a->getFrames();
-        attackright=new Sprite(ruta, a->getCoordenadasSprite(), fr);
-        delete attackleft;
-        attackleft=new Sprite(ruta, a->getCoordenadasSpriteLeft(), fr);
+        attackright=a->getAttackRight();
+        attackleft=a->getAttackLeft();
+    }
+}
+
+Proyectil* Personaje::lanzarHechizo(){
+    if(hactivo!=NULL && hactivo->getGastoMana()<=mana && spelltime<0){
+        spelltime=675;
+        mana-=hactivo->getGastoMana();
+        if(direccion>0){
+            hechizo->reset();
+            hechizo->set_position(x, y);
+            hechizo->set_scale(sx, sy);
+        }
+        else{
+            hechizoleft->reset();
+            hechizoleft->set_position(x, y);
+            hechizoleft->set_scale(sx, sy);
+        }
+    }
+    return NULL;
+}
+
+void Personaje::recogeHechizo(Hechizo* h){
+    if(h!=NULL){
+        hactivo=new Hechizo(h->getTipo());
+        hechizo=h->getHechizoRight();
+        hechizoleft=h->getHechizoLeft();
     }
 }

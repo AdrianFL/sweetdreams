@@ -25,8 +25,13 @@ public:
     ~Camara();
     
     void draw(sf::RenderWindow &window);
+    void render(sf::RenderWindow &window, float p, Personaje personaje,int movimiento);
+    void move(float p);
     void moverDer(Personaje personaje);
     void moverIzq(Personaje personaje);
+    void fija();
+    
+    
     
 private:
     sf::Clock updateClock;
@@ -40,11 +45,17 @@ private:
     
     int ancho;
     int alto;
-    int desp;
+    float desp;
     int posorigen;
-    int kvel;
+    float kvel;
+    
+    float lastdesp;
+    
+    float posactual;
     
     sf::View *camara;
+    
+
     Mapa *mapa;
 
 };
@@ -52,3 +63,4 @@ private:
 
 
 #endif /* CAMARA_H */
+

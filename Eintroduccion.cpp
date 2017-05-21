@@ -34,8 +34,7 @@ Eintroduccion* Eintroduccion::Instance(Juego* context){
 }
 
 void Eintroduccion::Handle(){
-    
-    std::cout << "Eintroduccion: "  << this << std::endl;
+  
     _context->setState(this);   //Al hacer Handle, se activa este estado en el contexto.
     
 }
@@ -70,8 +69,7 @@ Juego* Eintroduccion::getContext(){
 }
 
 Eintroduccion::~Eintroduccion(){
-                            //Destruccion de la instancia 
-    std::cout << "Eliminamos Eintroduccion "  << std::endl;
+    //Destruccion de la instancia 
     _context = 0;
     pinstance = 0;
     

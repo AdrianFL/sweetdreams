@@ -30,6 +30,7 @@ public:
     
     bool spattacklanzado;
     bool tombalert;
+    bool zanahoriaalert;
 private:
     float distDisparo;
     int32_t disparotime;
@@ -39,6 +40,12 @@ private:
     int aparicionTumba;
     int duracionTumba;
     int tomblastx1,tomblastx2,tomblastx3,tomblastx4,tomblasty1,tomblasty2,tomblasty3,tomblasty4;
+    
+    //Atributos zanahorias
+    int danyoZanahoria;
+    int aparicionZanahoria;
+    int duracionZanahoria;
+    int zanalastx1,zanalasty1,zanalastx2,zanalasty2;
 };
 
 #endif /* ENEMYFINAL_H */

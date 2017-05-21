@@ -19,7 +19,9 @@ Camara::Camara(int width, int height,int despl,Mapa &map){
     camara=new sf::View(sf::FloatRect(0,0,ancho,alto));
     desp=0;
     posorigen=camara->getCenter().x;
+    posactual=0;
     kvel=despl;
+    lastdesp=desp;
     mapa=new Mapa();
     
     mapa->_tileWidth=map._tileWidth;
@@ -37,38 +39,65 @@ Camara::~Camara(){
     
 }
 
+void Camara::render(sf::RenderWindow& window,float p,Personaje p1,int movimiento){
+    
+    int movecamara=0;
+    
+    if(p<1.0f && lastdesp!=kvel){
+        if(movimiento==1){
+            movecamara=(lastdesp*(1-p))+(desp*p);
+            std::cout<<"ENTRO2";
+        }
+        if(movimiento==2){
+            movecamara=(lastdesp*(1-p))+(desp*p);
+            std::cout<<"ENTRO3";
+            //moverIzq(p1,movecamara);
+            
+        }
+    }
+    
+}
+
+void Camara::move(float p){ 
+    float movecamara=0;
+    
+    if(p<1.0f && lastdesp!=kvel){
+        movecamara=(lastdesp*(1.0-p))+(desp*p); 
+        camara->move(movecamara-posactual, 0);
+        posactual=movecamara;
+    }
+    
+}
+
 void Camara::draw(sf::RenderWindow& window){
     window.setView(*camara);
 }
 
-void Camara::moverDer(Personaje personaje){
-    if(desp==0){
-        if(personaje.getXCoordinate()>=camara->getSize().x*0.5 && camara->getCenter().x <=(fondo.getGlobalBounds().width*0.79)){
-            camara->move(kvel,0);
-            desp=desp+kvel;
-            
-            personaje.aumentarMargenDer(kvel);
-        }
-    }else{
-        int margen=fondo.getGlobalBounds().width-(fondo.getGlobalBounds().width*0.79);
-        if(personaje.getXCoordinate()>=camara->getSize().x*0.5+desp && camara->getCenter().x<=(personaje.getXCoordinate()+margen)&& (personaje.getXCoordinate()+margen)<(mapa->_tileWidth*mapa->_width)){
-            //std::cout<<"ENTRO2"<<std::endl;
+void Camara::fija(){
+    lastdesp=desp;
+}
 
-            camara->move(kvel,0);
+void Camara::moverDer(Personaje personaje){
+
+        int margen=fondo.getGlobalBounds().width-(fondo.getGlobalBounds().width*0.810);
+        
+        if(personaje.getXCoordinate()>=2600){
+            lastdesp=desp;
+        }else if(personaje.getXCoordinate()>=camara->getSize().x*0.5+desp && camara->getCenter().x<=(personaje.getXCoordinate()+margen)&& (personaje.getXCoordinate()+margen)<(mapa->_tileWidth*mapa->_width)){
+            //camara->move(kvel,0);
+            lastdesp=desp;
             desp=desp+kvel;
-            personaje.aumentarMargenDer(kvel);
-            
+            //personaje.aumentarMargenIzq(kvel);
         }
-    }
+        
+        
 }
 
 void Camara::moverIzq(Personaje personaje){
     if(desp!=0){
         if(personaje.getXCoordinate()<=camara->getSize().x*0.5+desp && camara->getCenter().x!=posorigen){
-            camara->move(-kvel,0);
+            lastdesp=desp;
             desp=desp-kvel;
-            personaje.aumentarMargenIzq(kvel);
         }
     }
 }
-

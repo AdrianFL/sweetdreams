@@ -13,6 +13,7 @@
 
 #include "Enemy.h"
 
+class Proyectil;
 
 //Le pasamos el tipo de enemigo que se crea, y su posición inicial
 Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {

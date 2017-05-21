@@ -42,9 +42,9 @@ public:
     
     sf::Event event;
     
-    int windowWidth = 1080; //Width de la window
+    int windowWidth; //Width de la window
     
-    int windowHeight = 800; //Height de la window
+    int windowHeight; //Height de la window
     
 private:
 	State* _state;

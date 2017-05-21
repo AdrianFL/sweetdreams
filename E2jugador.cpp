@@ -42,7 +42,6 @@ void E2jugador::Handle(){
     
  //   std::cout << "E1JUGADOR: "  << this << std::endl;
     _context->setState(this);   //Al hacer Handle, se activa este estado en el contexto.
-    std::cout << "E2JUGADOR handle!"<< std::endl;
     
 }
 Juego* E2jugador::getContext(){
@@ -55,8 +54,8 @@ Juego* E2jugador::getContext(){
 void E2jugador::Init(){
     
   // run(*Juego::Instance()->window);
-    std::cout << "init E2jugador" << std::endl;
-    salida=false;
+   std::cout<<"init E2jugador"<<std::endl;
+   salida=false;
    run(*Juego::Instance()->window);
    
 }

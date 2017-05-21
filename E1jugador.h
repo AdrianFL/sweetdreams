@@ -56,7 +56,7 @@ public:
         
     
 private:
-    
+    //Personaje
     Personaje* p1;
     Arma* hacha;
     Arma* espada;
@@ -64,20 +64,26 @@ private:
     Pocion* pmana;
     Mapa* mapa;
     Camara *camara;
-    bool recogida;
-    int movimiento;
+    Hechizo* meteoro;
+    Hechizo* escupitajo;
+    
+    //Enemigos
     enemyMelee* enemigoM;
     enemyRange* enemigoR;
     enemyFinal* enemigoFinal;
     std::vector<Proyectil*> proyectiles;
     std::vector<Proyectil*> disparoFinal;
+    std::vector<Enemy*> enemigos;
+    
+    //Helpers
     Clock clock;
     Clock updateclock;
     int32_t time;
     int32_t updatetime;
     int prueba;
     int option;
-    
+    bool recogida;
+    int movimiento;
     
     sf::RenderWindow* window;
     static E1jugador* pinstance;
