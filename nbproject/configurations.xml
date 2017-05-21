@@ -15,8 +15,10 @@
       <itemPath>Pocion.h</itemPath>
       <itemPath>Proyectil.h</itemPath>
       <itemPath>Sprite.hpp</itemPath>
+      <itemPath>enemyFinal.h</itemPath>
       <itemPath>enemyMelee.h</itemPath>
       <itemPath>enemyRange.h</itemPath>
+      <itemPath>hechizo.h</itemPath>
       <itemPath>tinystr.h</itemPath>
       <itemPath>tinyxml.h</itemPath>
     </logicalFolder>
@@ -38,8 +40,10 @@
       <itemPath>Pocion.cpp</itemPath>
       <itemPath>Proyectil.cpp</itemPath>
       <itemPath>Sprite.cpp</itemPath>
+      <itemPath>enemyFinal.cpp</itemPath>
       <itemPath>enemyMelee.cpp</itemPath>
       <itemPath>enemyRange.cpp</itemPath>
+      <itemPath>hechizo.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>tinystr.cpp</itemPath>
       <itemPath>tinyxml.cpp</itemPath>
@@ -129,6 +133,10 @@
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="enemyMelee.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyMelee.h" ex="false" tool="3" flavor2="0">
@@ -136,6 +144,10 @@
       <item path="enemyRange.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="hechizo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hechizo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -216,6 +228,10 @@
       </item>
       <item path="Sprite.hpp" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="enemyMelee.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyMelee.h" ex="false" tool="3" flavor2="0">
@@ -223,6 +239,10 @@
       <item path="enemyRange.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyRange.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="hechizo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="hechizo.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

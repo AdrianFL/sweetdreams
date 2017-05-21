@@ -18,19 +18,18 @@ class Arma{
         
         int posy;
         
-        int* coordarma;
-        
-        int* coordarmaleft;
-        
         Sprite *spritearma;
+        
+        Sprite *attackright;
+        
+        Sprite *attackleft;
+        
         
     
     public:
     
         Arma(std::string t, int x, int y);
-    
-       // void quitaVida(Pj& p);
-        
+            
         int getDanyo();
         
         int getposY();
@@ -40,12 +39,10 @@ class Arma{
         std::string getTipo();
         
         Sprite* getSprite();
+
+        Sprite* getAttackRight();
         
-        int* getCoordenadasSprite();
-        
-        int* getCoordenadasSpriteLeft();
-        
-        int getFrames();
+        Sprite* getAttackLeft();
         
         
 };

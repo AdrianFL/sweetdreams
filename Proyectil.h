@@ -13,14 +13,46 @@
 
 #ifndef PROYECTIL_H
 #define PROYECTIL_H
+#include "Sprite.hpp"
+#include "Personaje.hpp"
 
 class Proyectil {
 public:
-    Proyectil();
+    Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy, int32_t tiempoVida);
     Proyectil(const Proyectil& orig);
     virtual ~Proyectil();
+    Sprite* render(int32_t tempo, float p);
+    void atacar();
+    void volar(Personaje* p);
+    
+    float x, y, lastx, lasty, objx, objy;
+    int vida, danyo;
+    float sx,sy;
+    float vx,vy;
+    
+    bool movingborder;
+    int direccion;
+    
+    bool explotar;
+    
+    int32_t vuelotime;
+    int32_t muertetime;
+    bool muerto;
 private:
-
+    Sprite* movleft;
+    Sprite* movright;
+    Sprite* explosion;
+    
+    //Para los sprites especiales
+    Sprite* tumba1;
+    Sprite* tumba2;
+    Sprite* tumba3;
+    Sprite* tumba4;
+    
+    Sprite* zanahoria1;
+    Sprite* zanahoria2;
+    
+    Sprite* spriteActual;
 };
 
 #endif /* PROYECTIL_H */

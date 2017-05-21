@@ -196,12 +196,15 @@ void Mapa::leerMapa(int mapa){
     
     //-------Añadir el tamaño del enemigo para regular el tamaño del nodo
     //Carga de los nodos mágicos para la IA
+    Nodo::height = 50.0f;
+    Nodo::width = 50.0f;
+
     grid = new Nodo**[rows];
     for(int i = 0; i<_cols; i++){
         grid[i] = new Nodo*[_cols];
         for(int j = 0; j< _rows; j++){
             //----------El tamanyo del nodo debería de ser el tamanyo del enemigo que lo usa
-            grid[i][j] = new Nodo(verde,i,j,50.0f,50.0f,0);
+            grid[i][j] = new Nodo(verde,i,j,0);
         }
     }
     
@@ -283,9 +286,10 @@ std::vector<Nodo*> Mapa::CalcRoute(int px, int py, int ex, int ey){
     
     //Cogemos el nodo q que será con el que trabajaremos
     Nodo* q = grid[ex][ey];
+    Nodo* f = NULL;
     
     //Si no nos salimos del límite
-    if(px<_width*_cols && px>=0 && ex<_width*_cols && ex>=0 && py<_height*_rows && py>=0 && ey<_height*_rows && ey>=0){
+    if(px<_cols && px>=0 && ex<_cols && ex>=0 && py<_rows && py>=0 && ey< _rows && ey>=0){
         //Metemos en la lista abierta el nodo inicial
         open.push_back(grid[ex][ey]);
         
@@ -504,9 +508,9 @@ std::vector<Nodo*> Mapa::CalcRoute(int px, int py, int ex, int ey){
             
             }
         }
-        
+       f = grid[px][py];
     }
-   
+    
     std::vector<Nodo*> caminoProv;
     std::vector<Nodo*> caminoFinal;
     
@@ -514,37 +518,37 @@ std::vector<Nodo*> Mapa::CalcRoute(int px, int py, int ex, int ey){
     caminoFinal.clear();
     
     
-    Nodo* f = grid[px][py];
-    
-    //Por algún motivo no calcula bien condiciones dentro del while, usar siempre booleans
-    bool iguales = false;
-    if(f->x == ex && f->y == ey){
-         iguales = true;
-    }
-    if(f->estado==1){
-        iguales = true;
-    }
-    //Mientras no sean ambos puntos iguales, es decir, que se llegue al destino
-    while(!iguales){
-        iguales=false;
+    //Si se coloca el nodo
+    if(f!=NULL){
+        //Por algún motivo no calcula bien condiciones dentro del while, usar siempre booleans
+        bool iguales = false;
         if(f->x == ex && f->y == ey){
-            iguales=true;
+             iguales = true;
         }
-        if(!f->padre){
+        if(f->estado==1){
             iguales = true;
         }
-        if(!iguales){
-             //std::cout<<"Camino trazado: "<<f->x <<","<<f->y<<std::endl;
-            caminoProv.push_back(f);
-            f = f->padre;
+        //Mientras no sean ambos puntos iguales, es decir, que se llegue al destino
+        while(!iguales){
+            iguales=false;
+            if(f->x == ex && f->y == ey){
+                iguales=true;
+            }
+            if(!f->padre){
+                iguales = true;
+            }
+            if(!iguales){
+                 //std::cout<<"Camino trazado: "<<f->x <<","<<f->y<<std::endl;
+                caminoProv.push_back(f);
+                f = f->padre;
+            }
+        }
+
+        //Se reordenan dado que se almacen de delante para atrás
+        for(int i = 0; i<caminoProv.size();i++){
+            caminoFinal.push_back(caminoProv.at(i));
         }
     }
-    
-    //Se reordenan dado que se almacen de delante para atrás
-    for(int i = 0; i<caminoProv.size();i++){
-        caminoFinal.push_back(caminoProv.at(i));
-    }
-    
     limpiaIA();
     
      //---- Añadir optimización de ruta y linealizado

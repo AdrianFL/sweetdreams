@@ -46,8 +46,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/Pocion.o \
 	${OBJECTDIR}/Proyectil.o \
 	${OBJECTDIR}/Sprite.o \
+	${OBJECTDIR}/enemyFinal.o \
 	${OBJECTDIR}/enemyMelee.o \
 	${OBJECTDIR}/enemyRange.o \
+	${OBJECTDIR}/hechizo.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/tinystr.o \
 	${OBJECTDIR}/tinyxml.o \
@@ -73,11 +75,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/versionalpha
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/versionalpha: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/versionalpha ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/Arma.o: Arma.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -134,6 +136,11 @@ ${OBJECTDIR}/Sprite.o: Sprite.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Sprite.o Sprite.cpp
 
+${OBJECTDIR}/enemyFinal.o: enemyFinal.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyFinal.o enemyFinal.cpp
+
 ${OBJECTDIR}/enemyMelee.o: enemyMelee.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -143,6 +150,11 @@ ${OBJECTDIR}/enemyRange.o: enemyRange.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/enemyRange.o enemyRange.cpp
+
+${OBJECTDIR}/hechizo.o: hechizo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/hechizo.o hechizo.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -175,7 +187,7 @@ ${OBJECTDIR}/tinyxmlparser.o: tinyxmlparser.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/entregablepersonajes
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/versionalpha
 
 # Subprojects
 .clean-subprojects:

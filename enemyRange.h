@@ -14,19 +14,20 @@
 #ifndef ENEMYRANGE_H
 #define ENEMYRANGE_H
 #include "Enemy.h"
+#include "Mapa.h"
 #include "Proyectil.h"
 
 class enemyRange: public Enemy{
 public:
-    enemyRange(int inix, int iniy, int vida, int danyo);
+    enemyRange(int inix, int iniy, int v, int danyo);
     enemyRange(const enemyRange& orig);
     virtual ~enemyRange();
     
-    void atacar(Personaje *p);
-    Proyectil* perseguir(Personaje* p,Mapa* m);
-    
+    void atacar();
+    Proyectil* perseguir(Personaje* p,Mapa* m, int32_t tempo);
 private:
     float distDisparo;
+    int32_t disparotime;
 };
 
 #endif /* ENEMYRANGE_H */

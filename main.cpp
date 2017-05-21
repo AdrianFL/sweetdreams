@@ -25,8 +25,10 @@
 #include "Pocion.h"
 #include "enemyMelee.h"
 #include "enemyRange.h"
+#include "enemyFinal.h"
 #include "Proyectil.h"
 #include "Camara.h"
+#include "hechizo.h"
 
 #define UPDATE_TICK_TIME 1000.0/15.0
 
@@ -39,6 +41,8 @@ int main()
     Personaje p1(0);
     Arma hacha("h", 750, 450);
     Arma* espada=new Arma("e", 850, 450);
+    Hechizo* meteoro=new Hechizo("m", 650, 500);
+    Hechizo* escupitajo=new Hechizo("e", 300, 500);
     Pocion* pvida=new Pocion("v", 400, 450);
     Pocion* pmana=new Pocion("m", 400, 520);
     Mapa *mapa = new Mapa();
@@ -53,8 +57,9 @@ int main()
     //###################
     enemyMelee enemigoM(850,450,30,1);
     enemyRange enemigoR(100,500,30,1);
-    
+    enemyFinal enemigoFinal(1000,500,300,5);
     std::vector<Proyectil*> proyectiles;
+    std::vector<Proyectil*> disparoFinal;
     //###################
     
     Clock clock;
@@ -68,6 +73,10 @@ int main()
     //Bucle del juego
     while (window.isOpen())
     {
+        //#############
+        Proyectil* disparo = NULL;
+        //############
+        
         //Bucle de obtención de eventos
         sf::Event event;
         while (window.pollEvent(event))
@@ -117,7 +126,7 @@ int main()
                 p1.herir(25);
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I)){
-                p1.activaRecogida();
+             p1.activaRecogida();
                 recogida=false;
                 if(recogida==false){
                     if(p1.getDireccion()>0){
@@ -163,15 +172,43 @@ int main()
                         }
                     }
                 }
-                if(recogida==false){
+                 if(recogida==false){
                     if(p1.getDireccion()>0){
-                        std::cout << "Aux" << std::endl;
                         if(espada!=NULL && espada->getposX()>p1.getXCoordinate() && espada->getposX()-p1.getXCoordinate()<50 && espada->getposY()-p1.getYCoordinate()<30 && espada->getposY()-p1.getYCoordinate()>-30){
+                            recogida=true;
+                            p1.cambiarAtaque(espada);
+                            espada=NULL;
+                        }
+                    }
+                    else{
+                        if(espada!=NULL && espada->getposX()<p1.getXCoordinate() && p1.getXCoordinate()-espada->getposX()<50 && espada->getposY()-p1.getYCoordinate()<30 && espada->getposY()-p1.getYCoordinate()>-30){
+                            recogida=true;
                             p1.cambiarAtaque(espada);
                             espada=NULL;
                         }
                     }
                 }
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        if(meteoro!=NULL && meteoro->getPosX()>p1.getXCoordinate() && meteoro->getPosX()-p1.getXCoordinate()<50 && meteoro->getPosY()-p1.getYCoordinate()<30 && meteoro->getPosY()-p1.getYCoordinate()>-30){
+                            recogida=true;
+                            p1.recogeHechizo(meteoro);
+                            meteoro=NULL;
+                        }
+                    }
+                }
+                if(recogida==false){
+                    if(p1.getDireccion()>0){
+                        if(escupitajo!=NULL && escupitajo->getPosX()>p1.getXCoordinate() && escupitajo->getPosX()-p1.getXCoordinate()<50 && escupitajo->getPosY()-p1.getYCoordinate()<30 && escupitajo->getPosY()-p1.getYCoordinate()>-30){
+                            recogida=true;
+                            p1.recogeHechizo(escupitajo);
+                            escupitajo=NULL;
+                        }
+                    }
+                }
+            }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y)){
+                p1.lanzarHechizo();
             }
             p1.move(option);
             if(movimiento==1){
@@ -184,7 +221,29 @@ int main()
             
             //######################
             enemigoM.perseguir(&p1,mapa);
-            enemigoR.perseguir(&p1,mapa);
+            
+            //Enemigo de rango
+            disparo = enemigoR.perseguir(&p1,mapa, time);
+            disparoFinal = enemigoFinal.huir(&p1,mapa,time);
+            //Control de los disparos
+            if(disparo!=NULL){
+                proyectiles.push_back(disparo);
+            }
+            for(int i = 0; i<disparoFinal.size();i++){
+                //proyectiles.push_back(disparoFinal.pop_back());
+            }
+            int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
+            for(int i = 0; i<proyectiles.size();i++){
+                if(!proyectiles[i]->muerto){
+                    proyectiles[i]->volar(&p1);
+                }else{
+                    //Destruir proyectiles muertos
+                    Proyectil* proyectilMuerto  = proyectiles.at(i-destruidos);
+                    proyectiles.erase(proyectiles.begin()+i-destruidos);
+                    destruidos++;
+                    delete proyectilMuerto;
+                }
+            }
             //######################
         }
 
@@ -216,9 +275,9 @@ int main()
         //Verifico que el raycast va
         //window.draw(enemigoR.raycast->render(time));
         //window.draw(enemigoM.raycast->render(time));
+        //window.draw(enemigoFinal.raycast->render(time));
         //###################
         
-        window.draw(hacha.getSprite()->render(time));
         if(pvida!=NULL){
            window.draw(pvida->getSprite()->render(time));
         }
@@ -228,14 +287,23 @@ int main()
         if(espada!=NULL){
             window.draw(espada->getSprite()->render(time));
         }
+        if(meteoro!=NULL){
+            window.draw(meteoro->getSpriteHechizo()->render(time));
+        }
+        if(escupitajo!=NULL){
+            window.draw(escupitajo->getSpriteHechizo()->render(time));
+        }
         window.draw(p1.render(time, percentTick)->render(time));
         
         //###################
          window.draw(enemigoM.render(time, percentTick)->render(time));
          window.draw(enemigoR.render(time, percentTick)->render(time));
+         //window.draw(enemigoFinal.render(time, percentTick)->render(time));
+         for(int i =0; i<proyectiles.size();i++){
+             window.draw(proyectiles[i]->render(time,percentTick)->render(time));
+         }
+         
         //###################
-         
-         
          camara->draw(window);
          
         window.display();

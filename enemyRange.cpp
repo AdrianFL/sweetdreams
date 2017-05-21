@@ -13,8 +13,9 @@
 
 #include "enemyRange.h"
 
-enemyRange::enemyRange(int inix, int iniy, int vida, int danyo) : Enemy(1,inix,iniy,vida,danyo) {
-    distDisparo = 500;
+enemyRange::enemyRange(int inix, int iniy, int v, int danyo) : Enemy(1,inix,iniy,v,danyo) {
+    distDisparo = 200;
+    disparotime = -1;
 }
 
 enemyRange::enemyRange(const enemyRange& orig) : Enemy(orig) {
@@ -23,32 +24,25 @@ enemyRange::enemyRange(const enemyRange& orig) : Enemy(orig) {
 enemyRange::~enemyRange() {
 }
 
-void enemyRange::atacar(Personaje *p){
+void enemyRange::atacar(){
     if(ataquetime < 0){
         ataquetime = 1200;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
-            ataqueLeft->reset();
-            
-            if(ataqueRight->comprobarColision(5, p->getAnimacionActiva())){
-                p->herir(danyoAtaque);
-            }
+            ataqueRight->reset();
         }
         else{
             ataqueLeft->set_position(x,y);
             ataqueLeft->set_scale(sx, sy);
             ataqueLeft->reset();
-            
-            if(ataqueLeft->comprobarColision(5, p->getAnimacionActiva())){
-               p->herir(danyoAtaque);
-            }
-            
         }
     }
 }
 
-Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
+Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
+    disparotime-=tempo;
+    
     Proyectil* disparo = NULL;
     bool colisionaRaycast = false;
     
@@ -64,44 +58,48 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
     float dirigex = px;
     float dirigey = py;
     
-    if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
-        //-------Añadir aquí la comprobación de raycast
-        //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
-        float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
-   
-        if(distRaycast!=-1){
-            //Si está a rango de dispararle, le dispara
-            if(distRaycast >= distDisparo){
-                //disparo = new Proyectil(px,py,ex,ey);
-            }else{
-            //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente
-                dirigex = ex;
-                dirigey = ey;
-
-                if(dirigex <px){
-                    move(1);
-                }
-                else if(dirigex>px){
-                    move(2);
-                }
-                if(dirigey>py){
-                    move(3);
-                }
-                else if(dirigey<py){
-                    move(4);
-                }
-                //Limpiamos el camino anteriormente recordado
-                if(caminoActual.size()>0){
-                    caminoActual.clear();
-                }
-            }
-        }else{
+    if(p->getVida()>0){
         
-            //-------Añadir previamente el cálculo del personaje más cercano si se
-            //le pasa un array de personajes 
-            //Discernir también por quien tiene menos vida y cosas así
+        if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
+            //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
+            float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
+                
+            if(distRaycast!=-1){
+                //Si está a rango de dispararle, le dispara
+                if(distRaycast <= distDisparo){
+                    if(disparotime<0){
+                       disparotime = 600;
+                       disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f, 1000);
+                       atacar();
+                    }
+                }else{
+                //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente
+                    dirigex = ex;
+                    dirigey = ey;
 
-            //if(IAtime<0){
+                    if(dirigex <px){
+                        move(1);
+                    }
+                    else if(dirigex>px){
+                        move(2);
+                    }
+                    if(dirigey>py){
+                        move(3);
+                    }
+                    else if(dirigey<py){
+                        move(4);
+                    }
+                    //Limpiamos el camino anteriormente recordado
+                    if(caminoActual.size()>0){
+                        caminoActual.clear();
+                    }
+                }
+            }else{
+
+                //-------Añadir previamente el cálculo del personaje más cercano si se
+                //le pasa un array de personajes 
+                //Discernir también por quien tiene menos vida y cosas así
+
                 nodoObjetivo = NULL;
                 //IAtime = 200;
 
@@ -133,43 +131,34 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m){
                     }
 
                 }
-           //}
+                if(!nodoObjetivo){
+                    nodoObjetivo = m->devuelveNodo(nodoEx,nodoEy);
 
-            
-            //Si hay un nodo siguiente, hace cosas, y sino se queda quieto
-            if(!nodoObjetivo){
-
-                /*//Cogemos el punto del nodo en el array de nodos
-                int nodoEx = ex/50;
-                int nodoEy = ey/50;
-
-                std::cout<<"Que pasa aqui: "<<nodoEx<<","<<nodoEy<<std::endl;
-                 */
-                nodoObjetivo = m->devuelveNodo(nodoEx,nodoEy);
-                //Movimiento
-                
-                move(0);
-            }else{
-                dirigex = (float)ex / nodoObjetivo->centrox;
-                dirigey = (float)ey / nodoObjetivo->centroy;
+                    move(0);
+                }else{
+                    dirigex = (float)ex / nodoObjetivo->centrox;
+                    dirigey = (float)ey / nodoObjetivo->centroy;
 
 
-                //std::cout<<"magia: "<<dirigex<<","<<dirigey<<std::endl;
+                    //std::cout<<"magia: "<<dirigex<<","<<dirigey<<std::endl;
 
-                if(dirigex <1){
-                    move(1);
-                }
-                else if(dirigex>1){
-                    move(2);
-                }
-                if(dirigey>1){
-                    move(3);
-                }
-                else if(dirigey<1){
-                    move(4);
+                    if(dirigex <1){
+                        move(1);
+                    }
+                    else if(dirigex>1){
+                        move(2);
+                    }
+                    if(dirigey>1){
+                        move(3);
+                    }
+                    else if(dirigey<1){
+                        move(4);
+                    }
                 }
             }
         }
     }
     return disparo;
 }
+
+

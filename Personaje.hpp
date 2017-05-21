@@ -19,6 +19,8 @@
 #include "Pocion.h"
 #include "Enemy.h"
 #include "Arma.h"
+#include "hechizo.h"
+#include "Proyectil.h"
 class Enemy;
 
 class Personaje {
@@ -46,6 +48,8 @@ public:
     void aumentaPMana();
     int getNumPVida();
     int getNumPMana();
+    Proyectil* lanzarHechizo();
+    void recogeHechizo(Hechizo* h);
     
     void aumentarMargenDer(int i);
     void aumentarMargenIzq(int i);
@@ -67,6 +71,8 @@ private:
     Sprite *muerteleft;
     Sprite *recogida;
     Sprite *recogidaleft;
+    Sprite *hechizo;
+    Sprite *hechizoleft;
     
     int vida;
     int mana;
@@ -75,6 +81,8 @@ private:
     int numPVida;
     int numPMana;
     
+    Hechizo *hactivo;
+    
     int x, y;
     int lastx, lasty;
     float sx, sy;
@@ -82,7 +90,7 @@ private:
     
     bool movingborder;
     
-    int32_t atctime, potvidatime, potmanatime, picktime;
+    int32_t atctime, potvidatime, potmanatime, picktime, spelltime;
     
     int direccion;
     
