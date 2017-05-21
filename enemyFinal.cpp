@@ -32,6 +32,7 @@ enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,ini
     //Daño de los hechizos
     danyotumba      = 25;
     danyoZanahoria  = 50;
+
 }
 
 enemyFinal::enemyFinal(const enemyFinal& orig): Enemy(orig) {
@@ -60,6 +61,7 @@ void enemyFinal::atacarSpecial(){
     if(spattacktime < 0){
         spattacktime = 3000;
         spattacklanzado = false;
+
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
@@ -78,7 +80,6 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     spattacktime-=tempo;
     disparotime-=tempo;
     
-    //Array que devolverá al final
     std::vector<Proyectil*> conjunto;
     bool colisionaRaycast = false;
     
@@ -94,7 +95,6 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     float dirigex = px;
     float dirigey = py;
     
-    //Ataca mientras el personaje enemigo tenga vida
     if(p->getVida()>0){
         //Fase 1: vida mayor a X (70% por ejemplo)
         /*if(vida>250){
@@ -225,8 +225,6 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
             
 
         //}
-            
-            
     }
     return conjunto;
 }

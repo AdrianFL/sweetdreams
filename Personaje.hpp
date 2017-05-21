@@ -22,6 +22,7 @@
 #include "hechizo.h"
 #include "Proyectil.h"
 class Enemy;
+class Proyectil;
 
 class Personaje {
 public:

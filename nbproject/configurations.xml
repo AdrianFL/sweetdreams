@@ -24,6 +24,7 @@
       <itemPath>Proyectil.h</itemPath>
       <itemPath>Sprite.hpp</itemPath>
       <itemPath>State.h</itemPath>
+
       <itemPath>enemyFinal.h</itemPath>
       <itemPath>enemyMelee.h</itemPath>
       <itemPath>enemyRange.h</itemPath>
@@ -188,6 +189,7 @@
       </item>
       <item path="State.h" ex="false" tool="3" flavor2="0">
       </item>
+
       <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">
@@ -321,6 +323,7 @@
       </item>
       <item path="State.h" ex="false" tool="3" flavor2="0">
       </item>
+
       <item path="enemyFinal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="enemyFinal.h" ex="false" tool="3" flavor2="0">

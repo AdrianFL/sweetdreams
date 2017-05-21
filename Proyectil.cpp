@@ -17,7 +17,6 @@
 Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox, float veloy, int32_t tiempoVida) {
     //id del proyectil
     type = id;
-    
     //Posiciones del proyectil
     x = ex;
     y = ey;
@@ -29,7 +28,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
    //Inicialización de los sprites
     sx=1;
     sy=1;
-    
+   
     //Posición a la que tiene que ir
     objx = px;
     objy = py;
@@ -63,6 +62,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         explosion= new Sprite(ruta, coordenadas3, frames);
         explosion->set_position(x, y);
         explosion->set_framerate(60);
+
         explosion->set_origin(8,6);
         
         if(px-ex<0){
@@ -72,6 +72,10 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
             direccion=1;
             spriteActual = movright;
         }
+
+        explosion->set_origin(6,4);
+        
+
     //Proyectil jefe rápido
     }else if(id==1){
         int frames=4;
@@ -422,8 +426,7 @@ Sprite* Proyectil::render(int32_t tempo, float p){
             muerto = true;
             return(explosion);
         }
-                //Si no ha explotado, movimiento interpolado
-
+     //Si no ha explotado, movimiento interpolado
     }
 }
 
@@ -603,6 +606,5 @@ void Proyectil::volarP(std::vector<Enemy*> enemigos){
         }else{
             muerto = true;
         }
-    //Si es de tipo alerta solo aparece
     }
 }

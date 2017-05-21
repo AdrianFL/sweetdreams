@@ -29,6 +29,7 @@ public:
     void atacar();
     void volar(Personaje* p);
     void volarP(std::vector<Enemy*> enemigos);
+
     
     float x, y, lastx, lasty, objx, objy;
     int vida, danyo;
@@ -43,7 +44,7 @@ public:
     int32_t vuelotime;
     int32_t muertetime;
     bool muerto;
-    
+
     int type;
 private:
     Sprite* movleft;

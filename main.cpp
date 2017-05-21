@@ -28,6 +28,8 @@
 #include "enemyFinal.h"
 #include "Proyectil.h"
 #include "Camara.h"
+#include "hechizo.h"
+#include "Musica.hpp"
 
 #define UPDATE_TICK_TIME 1000.0/15.0
 
@@ -42,9 +44,22 @@ int main()
     Personaje p1(0);
     Arma hacha("h", 750, 450);
     Arma* espada=new Arma("e", 850, 450);
+    Hechizo* meteoro=new Hechizo("m", 650, 500);
+    Hechizo* escupitajo=new Hechizo("e", 300, 500);
     Pocion* pvida=new Pocion("v", 400, 450);
     Pocion* pmana=new Pocion("m", 400, 520);
     Mapa *mapa = new Mapa();
+    
+    std::string rutamusica("resources/sweetdreams.ogg");
+    Musica* musica = new Musica(rutamusica);
+    
+    musica->setLoop(true);
+    musica->Play();
+    
+    if(sf::Joystick::isConnected(0)){
+        std::cout << "mando conectado" << std::endl;
+        std::cout << "Botones:" << sf::Joystick::getButtonCount(0) << std::endl;
+    }
     //1 para leer el mapa 1, 2 para leer el mapa 2
     mapa->leerMapa(1);
     
@@ -57,6 +72,7 @@ int main()
     enemyMelee enemigoM(850,450,30,1);
     enemyRange enemigoR(100,500,30,1);
     enemyFinal enemigoFinal(2500,500,300,5);
+
     std::vector<Proyectil*> proyectiles;
     std::vector<Proyectil*> disparoFinal;
     //###################
@@ -98,27 +114,27 @@ int main()
         {
             updatetime=updateclock.restart();
         //Bloque update
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Joystick::getAxisPosition(0, sf::Joystick::X)>50){
                 option=1;
                 movimiento=1;                
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Joystick::getAxisPosition(0, sf::Joystick::X)<-50){
                 option=2;
                 movimiento=2;
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y)<-50){
                 option=3;
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Joystick::getAxisPosition(0, sf::Joystick::Y)>50){
                 option=4;
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) || sf::Joystick::isButtonPressed(0, 4)){
                 p1.usaPocion("vida"); 
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) || sf::Joystick::isButtonPressed(0, 5)){
                 p1.usaPocion("mana");
             }
-            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U)){
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U) || sf::Joystick::isButtonPressed(0, 0)){
                 p1.atacar();
             }
             else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){
@@ -172,6 +188,9 @@ int main()
                     }
                 }
             }
+            else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y) || sf::Joystick::isButtonPressed(0, 3)){
+                p1.lanzarHechizo();
+            }
             p1.move(option);
             if(movimiento==1){
                  camara->moverDer(p1);
@@ -191,6 +210,7 @@ int main()
             if(disparo!=NULL){
                 proyectiles.push_back(disparo);
             }
+
             if(disparoFinal.size()>0){
                 for(int i = 0; i<disparoFinal.size();i++){
                     Proyectil* aux = disparoFinal.at(i);
@@ -210,7 +230,6 @@ int main()
                     delete proyectilMuerto;
                 }
             }
-            
             //######################
         }
 
@@ -225,6 +244,7 @@ int main()
  /*       float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
         window.clear();
         mapa->dibuja(window);
+
  */       
          //###########################################
         //mapa->dibujaNodos(window);
@@ -239,13 +259,14 @@ int main()
         for(int i = 0; i < enemigoR.caminoActual.size();i++){
             window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
         }*/
+
  /*       //Verifico que el raycast va
         window.draw(enemigoR.raycast->render(time));
         window.draw(enemigoM.raycast->render(time));
         window.draw(enemigoFinal.raycast->render(time));
+
         //###################
         
-        window.draw(hacha.getSprite()->render(time));
         if(pvida!=NULL){
            window.draw(pvida->getSprite()->render(time));
         }
@@ -254,6 +275,12 @@ int main()
         }
         if(espada!=NULL){
             window.draw(espada->getSprite()->render(time));
+        }
+        if(meteoro!=NULL){
+            window.draw(meteoro->getSpriteHechizo()->render(time));
+        }
+        if(escupitajo!=NULL){
+            window.draw(escupitajo->getSpriteHechizo()->render(time));
         }
         window.draw(p1.render(time, percentTick)->render(time));
         
@@ -266,8 +293,6 @@ int main()
          }
          
         //###################
-         
-         
          camara->draw(window);
          
         window.display();

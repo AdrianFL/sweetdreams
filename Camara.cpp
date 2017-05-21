@@ -79,16 +79,16 @@ void Camara::fija(){
 
 void Camara::moverDer(Personaje personaje){
 
-        int margen=fondo.getGlobalBounds().width-(fondo.getGlobalBounds().width*0.810);
-        
-        if(personaje.getXCoordinate()>=2600){
-            lastdesp=desp;
-        }else if(personaje.getXCoordinate()>=camara->getSize().x*0.5+desp && camara->getCenter().x<=(personaje.getXCoordinate()+margen)&& (personaje.getXCoordinate()+margen)<(mapa->_tileWidth*mapa->_width)){
-            //camara->move(kvel,0);
-            lastdesp=desp;
-            desp=desp+kvel;
-            //personaje.aumentarMargenIzq(kvel);
-        }
+    int margen=fondo.getGlobalBounds().width-(fondo.getGlobalBounds().width*0.810);
+
+    if(personaje.getXCoordinate()>=2600){
+        lastdesp=desp;
+    }else if(personaje.getXCoordinate()>=camara->getSize().x*0.5+desp && camara->getCenter().x<=(personaje.getXCoordinate()+margen)&& (personaje.getXCoordinate()+margen)<(mapa->_tileWidth*mapa->_width)){
+        //camara->move(kvel,0);
+        lastdesp=desp;
+        desp=desp+kvel;
+        //personaje.aumentarMargenIzq(kvel);
+    }
         
         
 }
