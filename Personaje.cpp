@@ -48,7 +48,7 @@ Personaje::Personaje(int id) {
         attackright=new Sprite(ruta, coordenadas5, frames);
         attackright->set_position(600, 450);
         attackright->set_framerate(75);
-        int coordenadas6[32] = {746,1074,-55,63,785,1055,-36,82,844,1062,-56,75,902,1058,-55,79,982,1055,-77,82,1054,1079,-69,58,1125,1076,-68,61,1180,1072,-52,65};
+        int coordenadas6[32] = {746, 1068, -55, 68, 787, 1047, -38, 89, 863, 1060, -64, 77, 935, 1055,-63, 82, 1015, 1078, -75, 63, 1086, 1079, -71, 59, 1158, 1076, -71, 59,1224, 1072, -65, 64};
         attackleft=new Sprite(ruta,coordenadas6, frames);
         attackleft->set_position(600,450);
         attackleft->set_framerate(75);
@@ -478,7 +478,7 @@ void Personaje::cambiarAtaque(Arma* a){
 }
 
 Proyectil* Personaje::lanzarHechizo(){
-    if(hactivo!=NULL && hactivo->getGastoMana()<=mana){
+    if(hactivo!=NULL && hactivo->getGastoMana()<=mana && spelltime<0){
         spelltime=675;
         mana-=hactivo->getGastoMana();
         if(direccion>0){

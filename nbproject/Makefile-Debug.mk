@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Clock.o \
 	${OBJECTDIR}/Enemy.o \
 	${OBJECTDIR}/Mapa.o \
+	${OBJECTDIR}/Musica.o \
 	${OBJECTDIR}/Nodo.o \
 	${OBJECTDIR}/Obstaculo.o \
 	${OBJECTDIR}/Personaje.o \
@@ -115,6 +116,11 @@ ${OBJECTDIR}/Mapa.o: Mapa.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mapa.o Mapa.cpp
+
+${OBJECTDIR}/Musica.o: Musica.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I/usr/include/SFML -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Musica.o Musica.cpp
 
 ${OBJECTDIR}/Nodo.o: Nodo.cpp 
 	${MKDIR} -p ${OBJECTDIR}
