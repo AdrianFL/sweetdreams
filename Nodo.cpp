@@ -15,7 +15,7 @@
 
 
  
-Nodo::Nodo(std::string& url, int nodox, int nodoy, int e) {
+Nodo::Nodo(std::string& url, int nodoy, int nodox, int e) {
     
     //posicion x, y en el array de nodos
     x = nodox;

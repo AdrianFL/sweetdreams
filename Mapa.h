@@ -39,7 +39,7 @@ public:
     
     int _rows;
     int _cols;
-    std::vector<Nodo*> CalcRoute(int px, int py, int ex, int ey);
+    std::vector<Nodo*> CalcRoute(int px, int py, int ex, int ey, int zona);
     void limpiaIA();
     Nodo* devuelveNodo(int x, int y);
     bool colisionaObs(Sprite *colisionador);

@@ -97,7 +97,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     
     if(p->getVida()>0){
         //Fase 1: vida mayor a X (70% por ejemplo)
-        /*if(vida>250){
+        if(vida>250){
             
             //Lanza ataques cada X segundos
             if(spattacktime>2000){
@@ -105,7 +105,6 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                 float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
 
                 if(distRaycast<= distDisparo){
-                    std::cout<<"Distancia error: "<<distRaycast<<" y el tiempo "<<disparotime<<std::endl;
                     if(disparotime<0){
                        disparotime = 50;
                        Proyectil* disparo = new Proyectil(0,px,py,ex,ey,5, 10.0f,10.0f, 1500);
@@ -125,7 +124,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                 spattacktime = 3200;
             }
         //Fase 2: vida menor a X (~70% por ejemplo)
-        }else{*/
+        }else{
         
             //Si un ataque final no ha sido lanzado, lánzalo
             if(spattacklanzado == false){
@@ -224,7 +223,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
             }
             
 
-        //}
+        }
     }
     return conjunto;
 }

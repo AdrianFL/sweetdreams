@@ -67,7 +67,6 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
     //Primordial, si tiene vida, atacar
     if(p->getVida()>0){
         if(!spriteActual->comprobarColision(2,p->getAnimacionActiva())){
-            //-------Añadir aquí la comprobación de raycast
             //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
             float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
 
@@ -108,7 +107,15 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                     int nodoEx = ex/Nodo::width;
                     int nodoEy = ey/Nodo::height;
 
-                    caminoActual =  m->CalcRoute(nodoPx,nodoPy, nodoEx, nodoEy);
+                    //Calcular en base a la zona en la que se encuentre
+                    if(ex>=0 && ex<1200){
+                        caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 0);
+                    }else if(ex>=1200 && ex<2000){
+                        caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 1);
+                    }else{
+                        caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 2);
+                    }
+                    
 
 
                     //Si el camino es mayor que 1, 
@@ -116,7 +123,7 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                         //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
                         nodoObjetivo =caminoActual.at(caminoActual.size()-1);
 
-                        //std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+                        std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
 
 
                         //Si colisiona con ese nodo, se coge el siguiente
@@ -136,13 +143,9 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                 //Si hay un nodo siguiente, hace cosas, y sino se queda quieto
                 if(!nodoObjetivo){
 
-                    /*//Cogemos el punto del nodo en el array de nodos
-                    int nodoEx = ex/50;
-                    int nodoEy = ey/50;
+                    //Cogemos el punto del nodo en el array de nodos
 
-                    std::cout<<"Que pasa aqui: "<<nodoEx<<","<<nodoEy<<std::endl;
-                     */
-                    nodoObjetivo = m->devuelveNodo(nodoEx,nodoEy);
+                    nodoObjetivo = m->devuelveNodo(nodoEy,nodoEx);
                     //Movimiento
 
                     move(0);

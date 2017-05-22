@@ -15,11 +15,11 @@
 
 Obstaculo::Obstaculo(std::string& url, int posx, int posy, int width, int height) {
     //------Reemplazar las coordenadas por las que serían de la textura
-    int coordenadas[4] = {0,0,Nodo::getWidth(),Nodo::getHeight()};
+    int coordenadas[4] = {0,0,1,1};
     sprite = new Sprite(url,coordenadas,1);
     sprite->set_origin(0,0);
     sprite->set_position(posx,posy);
-    sprite->set_scale(width,height);
+    sprite->set_scale(width*Nodo::width,height*Nodo::height);
 }
 
 Obstaculo::Obstaculo(const Obstaculo& orig) {

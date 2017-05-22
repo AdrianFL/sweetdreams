@@ -59,7 +59,8 @@ protected:
     //Sprites relacionados con ataque
     Sprite *ataqueRight;
     Sprite *ataqueLeft;
-    Sprite *muerte;
+    Sprite *muerteleft;
+    Sprite *muerteright;
     Sprite *specialAttack;
     
     

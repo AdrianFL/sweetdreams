@@ -9,17 +9,13 @@
         <group>
             <file>file:/home/alexei/Escritorio/FV/sweetdreams/Mapa.cpp</file>
             <file>file:/home/alexei/Escritorio/FV/sweetdreams/Proyectil.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Camara.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Nodo.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/newmain.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/main.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Enemy.h</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/E1jugador.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/enemyFinal.h</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Obstaculo.cpp</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/enemyMelee.cpp</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Mapa.h</file>
             <file>file:/home/alexei/Escritorio/FV/sweetdreams/Personaje.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/enemyFinal.cpp</file>
-            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Proyectil.h</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Enemy.h</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/Enemy.cpp</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/enemyRange.cpp</file>
+            <file>file:/home/alexei/Escritorio/FV/sweetdreams/E1jugador.cpp</file>
         </group>
     </open-files>
 </project-private>

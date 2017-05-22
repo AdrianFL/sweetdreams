@@ -297,7 +297,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     vuelotime  = tiempoVida;
     
     //velocidad del proyectil según tipos
-    if(id == 0 || id==1){
+    if(id == 0 || id==1 || id == 10 || id == 11){
         vx = velox*( (objx-x) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
         vy = velox*( (objy-y) / std::sqrt( (objx-x)*(objx-x) + (objy-y)*(objy-y) ));
     }else{

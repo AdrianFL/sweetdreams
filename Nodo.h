@@ -17,7 +17,7 @@
 
 class Nodo {
 public:
-    Nodo(std::string& url, int nodox, int nodoy, int e);
+    Nodo(std::string& url, int nodoy, int nodox, int e);
     Nodo(const Nodo& orig);
     virtual ~Nodo();
     void colisionaObstaculo(std::string& url, int e);

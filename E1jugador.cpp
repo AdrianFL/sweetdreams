@@ -89,8 +89,8 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     
     //###################
     //Instanciacion enemigos
-    enemigoM= new enemyMelee(850,450,30,1);
-    enemigoR= new enemyRange(100,500,30,1);
+    enemigoM= new enemyMelee(850,430,30,1);
+    enemigoR= new enemyRange(850,530,30,1);
     enemigoFinal= new enemyFinal(2500,500,300,5);
     
     //Añadirlos al array de enemigos del mapa
@@ -264,7 +264,7 @@ void E1jugador::Update(){
             }
         }
     }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y) || sf::Joystick::isButtonPressed(0, 3)){
-                p1->lanzarHechizo();
+                disparoHechizo = p1->lanzarHechizo();
     }
     p1->move(option);
     if(movimiento == 0){
@@ -279,6 +279,7 @@ void E1jugador::Update(){
     option=0;
     movimiento = 0;
     
+     
     //######################
     //Control total de los enemigos
     int muertos=0; //Cuenta los destruidos, por si se da más de un enemigo destruido a la vez (casi imposible pero por si acaso)
@@ -286,7 +287,7 @@ void E1jugador::Update(){
         //Si el enemigo está vivo
         if(enemigos[i]->vida>0){
             if(dynamic_cast<enemyMelee*>(enemigos[i]) != NULL){
-                dynamic_cast<enemyMelee*>(enemigos[i])->perseguir(p1,mapa);
+                dynamic_cast<enemyMelee*>(enemigos[i])->perseguir(p1,mapa);              
             }
             if(dynamic_cast<enemyRange*>(enemigos[i]) != NULL){
                 disparo = dynamic_cast<enemyRange*>(enemigos[i])->perseguir(p1,mapa, time);
@@ -302,7 +303,7 @@ void E1jugador::Update(){
             delete enemigoMuerto;
         }
     }
-    
+     
     //Control de los disparos
     //Enemigos
     if(disparo!=NULL){
@@ -337,6 +338,7 @@ void E1jugador::Update(){
         }
         
     }
+    
     //######################
 }
 
@@ -367,20 +369,20 @@ void E1jugador::Render(){
     mapa->dibuja(*window);
 
      //###########################################
-    //mapa->dibujaNodos(window);
-    //mapa->dibujaObs(window);
+    mapa->dibujaNodos(*window);
+    mapa->dibujaObs(*window);
 
     //Verifico que el camino va
-    /*for(int i = 0; i < enemigoM.caminoActual.size();i++){
-        window.draw(enemigoM.caminoActual.at(i)->getParcela()->render(time));
+    for(int i = 0; i < enemigoM->caminoActual.size();i++){
+        window->draw(enemigoM->caminoActual.at(i)->getParcela()->render(time));
     }
-    for(int i = 0; i < enemigoR.caminoActual.size();i++){
-        window.draw(enemigoR.caminoActual.at(i)->getParcela()->render(time));
-    }*/
+    for(int i = 0; i < enemigoR->caminoActual.size();i++){
+        window->draw(enemigoR->caminoActual.at(i)->getParcela()->render(time));
+    }
     //Verifico que el raycast va
-    /*window->draw(enemigoR->raycast->render(time));
+    window->draw(enemigoR->raycast->render(time));
     window->draw(enemigoM->raycast->render(time));
-    window->draw(enemigoFinal->raycast->render(time));*/
+    window->draw(enemigoFinal->raycast->render(time));
     //###################
 
     if(pvida!=NULL){
@@ -401,9 +403,10 @@ void E1jugador::Render(){
     window->draw(p1->render(time, percentTick)->render(time));
 
     //###################
-    window->draw(enemigoM->render(time, percentTick)->render(time));
-    window->draw(enemigoR->render(time, percentTick)->render(time));
-    window->draw(enemigoFinal->render(time, percentTick)->render(time));
+    for(int i =0; i<enemigos.size();i++){
+        window->draw(enemigos[i]->render(time,percentTick)->render(time));
+    }
+
     for(int i =0; i<proyectiles.size();i++){
         window->draw(proyectiles[i]->render(time,percentTick)->render(time));
     }
