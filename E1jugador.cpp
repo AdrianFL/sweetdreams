@@ -76,12 +76,15 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
         enemigos.push_back(enemigoM);
         enemigoR= new enemyRange(1000, 520, 40, 5);
         enemigos.push_back(enemigoR);
-       /* enemigoM= new enemyMelee(200, 400, 40, 5);
+        enemigoM= new enemyMelee(200, 400, 40, 5);
         enemigos.push_back(enemigoM);
-       enemigoM=new enemyMelee(1800, 520, 40, 10);
+        enemigoM=new enemyMelee(1800, 520, 40, 10);
         enemigos.push_back(enemigoM);
         enemigoR=new enemyRange(1870, 470, 60, 10);
-        enemigos.push_back(enemigoR);*/
+        enemigos.push_back(enemigoR);
+        
+        enemigoFinal = new enemyFinal(2500,450,500,20);
+        enemigos.push_back(enemigoFinal);
     }
     //###################
     
@@ -311,6 +314,11 @@ void E1jugador::Update(){
             }
             if(dynamic_cast<enemyRange*>(enemigos[i]) != NULL){
                 disparo = dynamic_cast<enemyRange*>(enemigos[i])->perseguir(p1,mapa, time);
+                
+                //Control de los disparos, se pueden dar dos disparos a la vez por enemigo
+                if(disparo!=NULL){
+                    proyectiles.push_back(disparo);
+                }
             }
             if(dynamic_cast<enemyFinal*>(enemigos[i]) != NULL){
                 disparoFinal = dynamic_cast<enemyFinal*>(enemigos[i])->huir(p1,mapa,time);
@@ -326,9 +334,7 @@ void E1jugador::Update(){
      
     //Control de los disparos
     //Enemigos
-    if(disparo!=NULL){
-        proyectiles.push_back(disparo);
-    }
+
     for(int i = 0; i<disparoFinal.size();i++){
         Proyectil* aux = disparoFinal.at(i);
         proyectiles.push_back(aux);

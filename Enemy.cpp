@@ -84,14 +84,14 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         int coordenadas7[16] = {1440, 324, 57, 76,   1357, 330, 79, 70,  1272, 335, 81, 69,   1190, 334, 79, 97};
         muerteright=new Sprite(ruta, coordenadas7, frames);
         muerteright->set_position(x,y);
-        muerteright->set_framerate(150);
+        muerteright->set_framerate(200);
         muerteright->set_origin(28,35);
         muerteright->setRepite(false);
         
         int coordenadas8[16] = {1497, 324, -57, 76,   1436, 330, -79, 70,  1353, 335, -81, 69,   1269, 334, -79, 97};
         muerteleft=new Sprite(ruta, coordenadas8, frames);
         muerteleft->set_position(x,y);
-        muerteleft->set_framerate(150);
+        muerteleft->set_framerate(200);
         muerteleft->set_origin(28,35);
         muerteleft->setRepite(false);
         
@@ -149,14 +149,14 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         int coordenadas7[16]={1439, 323, 58, 78,   1356, 330, 80, 70,  1273, 334, 80, 68,   1189, 334, 80, 72};
         muerteright=new Sprite(ruta, coordenadas7, frames);
         muerteright->set_position(x,y);
-        muerteright->set_framerate(150);
+        muerteright->set_framerate(200);
         muerteright->set_origin(28,35);
         muerteright->setRepite(false);
         
         int coordenadas8[16] = {1497, 323, -58, 78,   1436, 330, -80, 70,  1353, 334, -80, 68,   1269, 334, -80, 72};
         muerteleft=new Sprite(ruta, coordenadas8, frames);
         muerteleft->set_position(x,y);
-        muerteleft->set_framerate(150);
+        muerteleft->set_framerate(200);
         muerteleft->set_origin(29,35);
         muerteleft->setRepite(false);
         spriteActual = idle;
@@ -245,6 +245,7 @@ Sprite* Enemy::render(int32_t tempo, float per){
     ataquetime-=tempo;
     disparotime-=tempo;
     cambiatime-=tempo;
+    
     int movx = 0;
     int movy = 0;
     //--------- Añadir condición de cambio para que no sea rápida
@@ -326,12 +327,21 @@ Sprite* Enemy::render(int32_t tempo, float per){
         }
     //}
     }else{
+        //Si muere
+        if(vida<=0){
+            specialAttack->set_position(x,y);
+            specialAttack->set_scale(sx, sy);
+            spriteActual = specialAttack;
+            return(specialAttack);
+        }
+        //Si lanza ataque especial
         if(spattacktime>=0){
            specialAttack->set_position(x,y);
            specialAttack->set_scale(sx, sy);
            spriteActual = specialAttack;
            return(specialAttack); 
         }
+        //Si ataca normal
         if(ataquetime>=0){
             if(direccion>0){
                 ataqueRight->set_position(x,y);
@@ -346,6 +356,8 @@ Sprite* Enemy::render(int32_t tempo, float per){
                 return(ataqueLeft);
             }
         }
+        
+        //Si se mueve
         if(per<1.0f && (lastx!=x||lasty!=y)){
             if(direccion>0){
                 movx=(lastx*(1-per))+(x*per);
@@ -396,9 +408,9 @@ Sprite* Enemy::render(int32_t tempo, float per){
 
 void Enemy::herir(int h){
     vida-=h;
-    if(vida<=0){
+    /*if(vida<=0){
         std::cout<<"Me he muerto colegui"<<std::endl;
-    }
+    }*/
 }
 
 
@@ -408,7 +420,7 @@ void Enemy::move(int i){
     if(ataquetime<0){
         if(i==1){
             direccion=1;
-            if(x<1153){
+            if(x<3200){
                 movingborder=false;
                 x+=6;
             } 

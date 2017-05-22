@@ -74,19 +74,49 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                 //Si no colisiona con el raycast, se mueve hasta la posición del personaje directamente
                 dirigex = ex;
                 dirigey = ey;
-
-                if(dirigex <px){
-                    move(1);
+                if(ex>=0 && ex<1200 && px>=0 && px<1200){
+                    if(dirigex <px){
+                        move(1);
+                    }
+                    else if(dirigex>px){
+                        move(2);
+                    }
+                    if(dirigey>py){
+                        move(3);
+                    }
+                    else if(dirigey<py){
+                        move(4);
+                    }
+                }else if(ex>=1200 && ex<2000 && px>=1200 && px<2000){
+                    if(dirigex <px){
+                        move(1);
+                    }
+                    else if(dirigex>px){
+                        move(2);
+                    }
+                    if(dirigey>py){
+                        move(3);
+                    }
+                    else if(dirigey<py){
+                        move(4);
+                    }
+                }else if(ex>=2000 && ex<3200 && px>=2000 && px<3200){
+                    if(dirigex <px){
+                        move(1);
+                    }
+                    else if(dirigex>px){
+                        move(2);
+                    }
+                    if(dirigey>py){
+                        move(3);
+                    }
+                    else if(dirigey<py){
+                        move(4);
+                    }
+                }else{
+                    move(0);
                 }
-                else if(dirigex>px){
-                    move(2);
-                }
-                if(dirigey>py){
-                    move(3);
-                }
-                else if(dirigey<py){
-                    move(4);
-                }
+                
                 //Limpiamos el camino anteriormente recordado
                 if(caminoActual.size()>0){
                     caminoActual.clear();

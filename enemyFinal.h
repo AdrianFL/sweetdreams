@@ -31,9 +31,10 @@ public:
     bool spattacklanzado;
     bool tombalert;
     bool zanahoriaalert;
+    
+    bool ataquelanzado;
 private:
     float distDisparo;
-    int32_t disparotime;
     
     //Atriutos de las tumbas
     int danyotumba;

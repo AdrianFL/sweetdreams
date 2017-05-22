@@ -14,10 +14,11 @@
 
 enemyFinal::enemyFinal(int inix, int iniy, int v, int danyo)  : Enemy(2,inix,iniy,v,danyo) {
     distDisparo = 300;
-    disparotime = -1;
+    
     //spattacktime = -1;
-    //Alerta de que un ataque final ha sido lanzado
+    //Alerta de que un ataque ha sido lanzado
     spattacklanzado = false;
+    ataquelanzado = false;
     
     //Alerta de que las alertas de las tumbas han sido lanzadas
     tombalert = false;
@@ -43,7 +44,8 @@ enemyFinal::~enemyFinal() {
 
 void enemyFinal::atacar(){
     if(ataquetime < 0){
-        ataquetime = 1000;
+        //ataquetime = 1000;
+        ataquetime = 200;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
@@ -59,7 +61,7 @@ void enemyFinal::atacar(){
 
 void enemyFinal::atacarSpecial(){
     if(spattacktime < 0){
-        spattacktime = 3000;
+        spattacktime = 2000;
         spattacklanzado = false;
 
         if(direccion>0){
@@ -77,8 +79,8 @@ void enemyFinal::atacarSpecial(){
 
 std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
     //Controladores de iteraciones de disparo y ataques finales
-    spattacktime-=tempo;
-    disparotime-=tempo;
+    //spattacktime-=tempo;
+    //disparotime-=tempo;
     
     std::vector<Proyectil*> conjunto;
     bool colisionaRaycast = false;
@@ -100,7 +102,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
         if(vida>250){
             
             //Lanza ataques cada X segundos
-            if(spattacktime>2000){
+            /*if(spattacktime>2000){
                 //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
                 float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
 
@@ -114,7 +116,7 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
                 }else{
                     if(disparotime<0){
                         disparotime = 600;
-                        Proyectil* disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 1000);
+                        Proyectil* disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 2000);
                         conjunto.push_back(disparo);
                         atacar();
                     }
@@ -122,6 +124,34 @@ std::vector<Proyectil*> enemyFinal::huir(Personaje *p, Mapa *m, int32_t tempo){
             }
             if(spattacktime<0){
                 spattacktime = 3200;
+            }*/
+            
+            //Los ataques se hacen cada 3 segundos
+            if(cambiatime<0){
+                cambiatime = 3000;
+            }else{
+                std::cout<<"fuck enemy"<<cambiatime<<std::endl;
+                //La duración del ataque es de 2 segundos
+                if(cambiatime>=1000){
+                    //Añadimos raycast, que verificará si se puede ir en linea recta hasta el objetivo
+                    float distRaycast = distanciaAEnemigo(m,px,py,ex,ey);
+                    std::cout<<"fuck enemy distancia "<<distRaycast<<std::endl;
+                    if(distRaycast<= distDisparo){
+                        if(disparotime<0){
+                           disparotime = 50;
+                           atacar();
+                           Proyectil* disparo = new Proyectil(0,px,py,ex,ey,5, 10.0f,10.0f, 1500);
+                           conjunto.push_back(disparo);
+                        }
+                    }else{
+                        if(disparotime<0){
+                            disparotime = 600;
+                            atacar();
+                            Proyectil* disparo = new Proyectil(0,px,py,ex,ey,10, 5.0f,5.0f, 2000);
+                            conjunto.push_back(disparo);
+                        }
+                    }
+                }
             }
         //Fase 2: vida menor a X (~70% por ejemplo)
         }else{
