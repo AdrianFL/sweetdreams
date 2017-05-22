@@ -71,7 +71,7 @@ protected:
     int direccion;
     
     int32_t ataquetime;
-    int32_t IAtime;
+    int32_t disparotime;
     int32_t cambiatime;
     int32_t spattacktime;
     

@@ -39,6 +39,17 @@
         }
 
     }
+    
+    Arma::Arma(std::string t){
+        if(t=="espaada"){
+            tipo="espada";
+            danyo=15;
+        }
+        else if(t=="hacha"){
+            tipo="hacha";
+            danyo=25;
+        }
+    }
 
     int Arma::getDanyo(){
         return danyo;

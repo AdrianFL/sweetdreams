@@ -27,7 +27,7 @@ public:
     Proyectil* perseguir(Personaje* p,Mapa* m, int32_t tempo);
 private:
     float distDisparo;
-    int32_t disparotime;
+    bool disparado;
 };
 
 #endif /* ENEMYRANGE_H */

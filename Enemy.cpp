@@ -86,12 +86,14 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         muerteright->set_position(x,y);
         muerteright->set_framerate(150);
         muerteright->set_origin(28,35);
+        muerteright->setRepite(false);
         
         int coordenadas8[16] = {1497, 324, -57, 76,   1436, 330, -79, 70,  1353, 335, -81, 69,   1269, 334, -79, 97};
         muerteleft=new Sprite(ruta, coordenadas8, frames);
         muerteleft->set_position(x,y);
         muerteleft->set_framerate(150);
         muerteleft->set_origin(28,35);
+        muerteleft->setRepite(false);
         
         spriteActual = idle;
         
@@ -134,12 +136,14 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         ataqueRight->set_position(x,y);
         ataqueRight->set_framerate(100);
         ataqueRight->set_origin(32,39);
+        ataqueRight->setRepite(false);
         
         int coordenadas6[40]={64,755,-63,83,  132,754,-64,85,   201,756,-65,82,  274,751,-69,88,   360,764,-82,74,   465,763,-82,75,   1058,760,-58,75,   1212,760,-58,78,   1362,761,-55,77,   1506,761,-54,77};
         ataqueLeft=new Sprite(ruta, coordenadas6, frames);
         ataqueLeft->set_position(x,y);
         ataqueLeft->set_framerate(100);
         ataqueLeft->set_origin(32,39);
+        ataqueLeft->setRepite(false);
         
         frames=4;
         int coordenadas7[16]={1439, 323, 58, 78,   1356, 330, 80, 70,  1273, 334, 80, 68,   1189, 334, 80, 72};
@@ -147,12 +151,14 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         muerteright->set_position(x,y);
         muerteright->set_framerate(150);
         muerteright->set_origin(28,35);
+        muerteright->setRepite(false);
         
         int coordenadas8[16] = {1497, 323, -58, 78,   1436, 330, -80, 70,  1353, 334, -80, 68,   1269, 334, -80, 72};
         muerteleft=new Sprite(ruta, coordenadas8, frames);
         muerteleft->set_position(x,y);
         muerteleft->set_framerate(150);
         muerteleft->set_origin(29,35);
+        muerteleft->setRepite(false);
         spriteActual = idle;
         
         //sprites de jefe
@@ -221,7 +227,7 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
     
     //Iniciar variables de tiempo
     ataquetime = -1;
-    IAtime = -1;
+    disparotime = -1;
     cambiatime=-1;
     spattacktime=-1;
     
@@ -237,7 +243,7 @@ Enemy::~Enemy() {
 
 Sprite* Enemy::render(int32_t tempo, float per){
     ataquetime-=tempo;
-    IAtime-=tempo;
+    disparotime-=tempo;
     cambiatime-=tempo;
     int movx = 0;
     int movy = 0;
@@ -246,6 +252,19 @@ Sprite* Enemy::render(int32_t tempo, float per){
     //if(cambiatime<0){
      //   cambiatime=20;
     if(!jefe){
+        if(vida<=0){
+            if(direccion>0){
+                muerteright->set_position(x,y);
+                muerteright->set_scale(sx, sy);
+                spriteActual = muerteright;
+                return(muerteright);
+            }else{
+                muerteleft->set_position(x,y);
+                muerteleft->set_scale(sx, sy);
+                spriteActual = muerteleft;
+                return(muerteleft);
+            }
+        }
         if(ataquetime>=0){
             if(direccion>0){
                 ataqueRight->set_position(x,y);
@@ -456,7 +475,6 @@ float Enemy::distanciaAEnemigo(Mapa* m, int px, int py, int ex,int ey){
     if(!m->colisionaObs(raycast)){
         result = scalex;
     }
-    std::cout<<"Valores distancia: "<<result<<","<<scalex<<std::endl;
     return result;
 }
 int Enemy::getDireccion(){

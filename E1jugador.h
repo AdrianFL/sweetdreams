@@ -34,6 +34,8 @@
 #include "enemyFinal.h"
 #include "Proyectil.h"
 #include "Camara.h"
+#include "Musica.hpp"
+#include "hechizo.h"
 
 class E1jugador: public State {
 public:
@@ -74,21 +76,26 @@ private:
     std::vector<Proyectil*> proyectiles;
     std::vector<Proyectil*> disparoFinal;
     std::vector<Enemy*> enemigos;
+    std::vector<bool> golpeados;
     
     //Helpers
     Clock clock;
     Clock updateclock;
     int32_t time;
     int32_t updatetime;
+    int32_t hittime;
     int prueba;
     int option;
     bool recogida;
     int movimiento;
+    Musica* musica;
     
     sf::RenderWindow* window;
     static E1jugador* pinstance;
     Juego* _context;
     bool salida;
+    bool ataca;
+    int lvl;
 };
 
 #endif /* E1JUGADOR_H */

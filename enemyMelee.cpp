@@ -123,7 +123,7 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                         //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
                         nodoObjetivo =caminoActual.at(caminoActual.size()-1);
 
-                        std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+                        //std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
 
 
                         //Si colisiona con ese nodo, se coge el siguiente

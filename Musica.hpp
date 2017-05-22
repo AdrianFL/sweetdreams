@@ -21,6 +21,7 @@ public:
     Musica(std::string s);
     void Play();
     void setLoop(bool b);
+    void Stop();
 private:
     sf::Music musica;
 };

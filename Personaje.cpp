@@ -117,6 +117,7 @@ Personaje::Personaje(int id) {
     numPMana=2;
     movingborder=false;
     hactivo=NULL;
+    aactiva=new Arma("hacha");
     margen=0;
 }
 
@@ -419,11 +420,13 @@ void Personaje::atacar(){
             attackright->set_position(x,y);
             attackright->set_scale(sx, sy);
             attackright->reset();
+            activa=4;
         }
         else{
             attackleft->set_position(x,y);
             attackleft->set_scale(sx, sy);
             attackleft->reset();
+            activa=5;
         }
     }
 }
@@ -474,6 +477,7 @@ void Personaje::cambiarAtaque(Arma* a){
     if(a!=NULL){
         attackright=a->getAttackRight();
         attackleft=a->getAttackLeft();
+        aactiva=new Arma(a->getTipo());
     }
 }
 
@@ -485,11 +489,27 @@ Proyectil* Personaje::lanzarHechizo(){
             hechizo->reset();
             hechizo->set_position(x, y);
             hechizo->set_scale(sx, sy);
+            if(hactivo->getTipo()=="meteoro"){
+                Proyectil* p=new Proyectil(10, x+100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                return p;
+            }
+            else if(hactivo->getTipo()=="escupitajo"){
+                Proyectil* p=new Proyectil(11, x+100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                return p;
+            }
         }
         else{
             hechizoleft->reset();
             hechizoleft->set_position(x, y);
             hechizoleft->set_scale(sx, sy);
+            if(hactivo->getTipo()=="meteoro"){
+                Proyectil* p=new Proyectil(10, x-100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                return p;
+            }
+            else if(hactivo->getTipo()=="escupitajo"){
+                Proyectil* p=new Proyectil(11, x-100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                return p;
+            }
         }
     }
     return NULL;
@@ -501,4 +521,8 @@ void Personaje::recogeHechizo(Hechizo* h){
         hechizo=h->getHechizoRight();
         hechizoleft=h->getHechizoLeft();
     }
+}
+
+int Personaje::getDanyo(){
+    return(aactiva->getDanyo());
 }

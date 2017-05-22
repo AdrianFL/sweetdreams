@@ -29,6 +29,8 @@ class Arma{
     public:
     
         Arma(std::string t, int x, int y);
+        
+        Arma(std::string);
             
         int getDanyo();
         

@@ -29,3 +29,6 @@ void Musica::setLoop(bool b){
     musica.setLoop(b);
 }
 
+void Musica::Stop(){
+    musica.stop();
+}

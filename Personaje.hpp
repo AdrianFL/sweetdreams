@@ -57,6 +57,8 @@ public:
     
     void cambiarAtaque(Arma* a);
     
+    int getDanyo();
+    
 private:
     Sprite *idle;
     Sprite *idleleft;
@@ -83,6 +85,7 @@ private:
     int numPMana;
     
     Hechizo *hactivo;
+    Arma *aactiva;
     
     int x, y;
     int lastx, lasty;

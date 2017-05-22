@@ -15,7 +15,7 @@
 
 enemyRange::enemyRange(int inix, int iniy, int v, int danyo) : Enemy(1,inix,iniy,v,danyo) {
     distDisparo = 200;
-    disparotime = -1;
+    disparado= false;
 }
 
 enemyRange::enemyRange(const enemyRange& orig) : Enemy(orig) {
@@ -27,6 +27,7 @@ enemyRange::~enemyRange() {
 void enemyRange::atacar(){
     if(ataquetime < 0){
         ataquetime = 1000;
+        disparado = true;
         if(direccion>0){
             ataqueRight->set_position(x,y);
             ataqueRight->set_scale(sx, sy);
@@ -41,7 +42,6 @@ void enemyRange::atacar(){
 }
 
 Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
-    disparotime-=tempo;
     
     Proyectil* disparo = NULL;
     bool colisionaRaycast = false;
@@ -67,10 +67,17 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
             if(distRaycast!=-1){
                 //Si está a rango de dispararle, le dispara
                 if(distRaycast <= distDisparo){
-                    if(disparotime<0){
-                       disparotime = 700;
-                       disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f, 1000);
+                    if(ataquetime<0){
                        atacar();
+                       if(disparado){
+                            disparotime = 400;
+                            disparado=false;
+                       }
+                    }
+                    if(!disparado){
+                       if(disparotime<0){
+                           disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f, 1000);
+                       }
                     }else{
                         dirigex = ex;
                         dirigey = ey;
@@ -146,7 +153,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                     //El nodo siguiente es el último de esta lista, y al cogerlo lo sacamos de la misma
                     nodoObjetivo =caminoActual.at(caminoActual.size()-1);
 
-                    std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
+                    //std::cout<<"nodo actual: "<<nodoObjetivo->x<<":"<<nodoObjetivo->y<< " en pos " << (nodoObjetivo->centrox) <<","<< (nodoObjetivo->centroy) << " y el enemigo "<<ex<<","<<ey<<std::endl;
 
                     //Si colisiona con ese nodo, se coge el siguiente
                     if(nodoObjetivo->getParcela()->comprobarColision(0,spriteActual)){

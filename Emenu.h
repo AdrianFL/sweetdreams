@@ -19,6 +19,7 @@
 #include <iostream>
 #include "State.h"
 #include "Juego.h"
+#include "Musica.hpp"
 
 #include <SFML/Graphics.hpp>
 class Emenu: public State {
@@ -48,7 +49,7 @@ public:
     int run(sf::RenderWindow &window);
     
     ~Emenu();
-    
+        
     protected:
         
     Emenu(Juego* context,sf::RenderWindow *w);
@@ -65,8 +66,9 @@ private:
     sf::Font font;
     sf::Text opcion[MAX_NUMBER_ITEMS];
     sf::Text opcionj[MAX_NUMBER_ITEMS_J];
-    
-    
+        
+    Musica* music;
+
 
     static Emenu* pinstance;
     Juego* _context;

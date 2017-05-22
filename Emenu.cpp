@@ -75,6 +75,10 @@ Emenu::Emenu(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     selected=0;
     selected2=0;
 
+    string ruta("resources/menu.ogg");
+    
+    music=new Musica(ruta);
+    music->setLoop(true);
 }
 void Emenu::Handle(){
     
@@ -141,6 +145,7 @@ int Emenu::CUpdate2(sf::Event event){
                                     
                                     if(selected2==0){
                                         //LANZAMOS STATE E1JUGADOR
+                                        music->Stop();
                                         salida=true;
                                         E1jugador::Instance(Juego::Instance(),window)->Handle();
                                         //E1jugador::Instance(Juego::Instance())->Handle();
@@ -148,6 +153,7 @@ int Emenu::CUpdate2(sf::Event event){
                                         
                                     }
                                     else if(selected2==1){
+                                        music->Stop();
                                         salida=true;
                                         //LANZAMOS STATE E2JUGADOR
                                         E2jugador::Instance(Juego::Instance(),window)->Handle();
@@ -177,6 +183,7 @@ Juego* Emenu::getContext(){
 }
 int Emenu::run(sf::RenderWindow &window){
     //buclue principal del juego  
+    music->Play();
     while(window.isOpen() && !salida){
         sf::Event event;
         while(window.pollEvent(event)){ 

@@ -26,26 +26,6 @@
 #include "Juego.h"
 
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <SFML/Graphics.hpp>
-#include "Personaje.hpp"
-#include "Clock.hpp"
-#include "Mapa.h"
-#include <fstream>
-#include <cstring>
-#include "Arma.h"
-#include "Pocion.h"
-#include "enemyMelee.h"
-#include "enemyRange.h"
-#include "enemyFinal.h"
-#include "Proyectil.h"
-#include "Camara.h"
-#include "hechizo.h"
-#include "Musica.hpp"
-
 #define UPDATE_TICK_TIME 1000.0/15.0
 
 
@@ -63,12 +43,12 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     //08080808080808080808080808080808080808080808080808080808080808080808080808080808080808
     window->setVerticalSyncEnabled(true);
     p1= new Personaje(0);
-    hacha=new Arma("h", 750, 450);
+   /* hacha=new Arma("h", 750, 450);
     espada=new Arma("e", 850, 450);
     meteoro=new Hechizo("m", 650, 500);
     escupitajo=new Hechizo("e", 300, 500);
     pvida=new Pocion("v", 400, 450);
-    pmana=new Pocion("m", 400, 520);
+    pmana=new Pocion("m", 400, 520);*/
     mapa= new Mapa;
     
     //Música
@@ -78,31 +58,39 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     musica->setLoop(true);
     musica->Play();
     
-    
     //1 para leer el mapa 1, 2 para leer el mapa 2
-    mapa->leerMapa(1);
+    lvl = 1;
+    mapa->leerMapa(lvl);
     
     camara=new Camara(window->getSize().x, window->getSize().y, 12, *mapa);
     
     recogida=true;
     movimiento=0;
     
+    ataca=false;
+    
     //###################
     //Instanciacion enemigos
-    enemigoM= new enemyMelee(850,430,30,1);
-    enemigoR= new enemyRange(850,530,30,1);
-    enemigoFinal= new enemyFinal(2500,500,300,5);
-    
-    //Añadirlos al array de enemigos del mapa
-    enemigos.push_back(enemigoM);
-    enemigos.push_back(enemigoR);
-    enemigos.push_back(enemigoFinal);
+    if(lvl==1){
+        enemigoM= new enemyMelee(1000, 400, 5, 10);
+        enemigos.push_back(enemigoM);
+        enemigoR= new enemyRange(1000, 520, 40, 5);
+        enemigos.push_back(enemigoR);
+       /* enemigoM= new enemyMelee(200, 400, 40, 5);
+        enemigos.push_back(enemigoM);
+       enemigoM=new enemyMelee(1800, 520, 40, 10);
+        enemigos.push_back(enemigoM);
+        enemigoR=new enemyRange(1870, 470, 60, 10);
+        enemigos.push_back(enemigoR);*/
+    }
     //###################
     
     clock;
     updateclock;
     time;
     updatetime;
+    
+    hittime=-1;
     
     prueba=0;
     option=0;
@@ -155,6 +143,17 @@ void E1jugador::Update(){
     Proyectil* disparoHechizo = NULL;
     
     updatetime=updateclock.restart();
+    
+    //Coordinación del ataque del protagonista
+    if(ataca==true && hittime<0){
+        ataca=false;
+        for(int i=0; i<enemigos.size(); i++){
+            if(golpeados[i]==true){
+                enemigos[i]->herir(p1->getDanyo());
+            }
+        }
+    }
+    
     //Bloque update
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Joystick::getAxisPosition(0, sf::Joystick::X)>50){
         option=1;
@@ -177,10 +176,31 @@ void E1jugador::Update(){
         p1->usaPocion("mana");
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::U) || sf::Joystick::isButtonPressed(0, 0)){
-        p1->atacar();
-    }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)){
-        p1->herir(25);
+       //Falta comprobar que atctime<0
+        if(ataca==false){
+            p1->atacar();
+            ataca=true;
+            hittime=300;
+            golpeados.clear();
+            for(int i=0; i<enemigos.size(); i++){
+                if(p1->getDireccion()>0){
+                    if(enemigos[i]->vida>0 && enemigos[i]->getXCoordinate()>p1->getXCoordinate() && enemigos[i]->getXCoordinate()-p1->getXCoordinate()<150 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()<100 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()>-100){
+                         golpeados.push_back(true);
+                    }
+                        else{
+                             golpeados.push_back(false);
+                        }
+                }
+                else{
+                    if(enemigos[i]->vida>0 && enemigos[i]->getXCoordinate()<p1->getXCoordinate() && p1->getXCoordinate()-enemigos[i]->getXCoordinate()<150 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()<100 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()>-100){
+                        golpeados.push_back(true);
+                    }
+                    else{
+                        golpeados.push_back(false);
+                    }
+                }
+            }
+        }
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I) || sf::Joystick::isButtonPressed(0, 2)){
         p1->activaRecogida();
@@ -295,13 +315,13 @@ void E1jugador::Update(){
             if(dynamic_cast<enemyFinal*>(enemigos[i]) != NULL){
                 disparoFinal = dynamic_cast<enemyFinal*>(enemigos[i])->huir(p1,mapa,time);
             }
-        }else{
+        }/*else{
             //Destruir enemigos muertos
             Enemy* enemigoMuerto  = enemigos.at(i-muertos);
             enemigos.erase(enemigos.begin()+i-muertos);
             muertos++;
             delete enemigoMuerto;
-        }
+        }*/
     }
      
     //Control de los disparos
@@ -364,14 +384,14 @@ int E1jugador::CUpdate2(sf::Event event){
 }
 
 void E1jugador::Render(){
+    hittime-=time;
     float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
     window->clear();
     mapa->dibuja(*window);
 
      //###########################################
-    mapa->dibujaNodos(*window);
+    //mapa->dibujaNodos(*window);
     mapa->dibujaObs(*window);
-
     //Verifico que el camino va
     for(int i = 0; i < enemigoM->caminoActual.size();i++){
         window->draw(enemigoM->caminoActual.at(i)->getParcela()->render(time));
@@ -380,12 +400,11 @@ void E1jugador::Render(){
         window->draw(enemigoR->caminoActual.at(i)->getParcela()->render(time));
     }
     //Verifico que el raycast va
-    window->draw(enemigoR->raycast->render(time));
+    /*window->draw(enemigoR->raycast->render(time));
     window->draw(enemigoM->raycast->render(time));
-    window->draw(enemigoFinal->raycast->render(time));
+    window->draw(enemigoFinal->raycast->render(time));*/
     //###################
-
-    if(pvida!=NULL){
+    /*if(pvida!=NULL){
        window->draw(pvida->getSprite()->render(time));
     }
     if(pmana!=NULL){
@@ -399,7 +418,7 @@ void E1jugador::Render(){
     }
     if(escupitajo!=NULL){
         window->draw(escupitajo->getSpriteHechizo()->render(time));
-    }
+    }*/
     window->draw(p1->render(time, percentTick)->render(time));
 
     //###################
@@ -410,7 +429,6 @@ void E1jugador::Render(){
     for(int i =0; i<proyectiles.size();i++){
         window->draw(proyectiles[i]->render(time,percentTick)->render(time));
     }
-
     //###################
 
     camara->move(percentTick);

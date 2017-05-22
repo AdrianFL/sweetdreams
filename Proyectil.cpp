@@ -33,6 +33,16 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
     objx = px;
     objy = py;
     
+        
+    //otros detalles, como vida y daño
+    danyo = d;
+    explotar = false;
+    muerto = false;
+    
+    //Inicialización del tiempo de vuelo esperado y de muerte
+    muertetime = 600;
+    vuelotime  = tiempoVida;
+    
     //Proyectil enemigo rango normal
     if(id == 0){
         sx = 3;
@@ -286,15 +296,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         
     }
     
-    
-    //otros detalles, como vida y daño
-    danyo = d;
-    explotar = false;
-    muerto = false;
-    
-    //Inicialización del tiempo de vuelo esperado y de muerte
-    muertetime = 600;
-    vuelotime  = tiempoVida;
+
     
     //velocidad del proyectil según tipos
     if(id == 0 || id==1 || id == 10 || id == 11){
@@ -407,6 +409,7 @@ Sprite* Proyectil::render(int32_t tempo, float p){
             muerto = true;
             return(explosion);
         }
+    //De tipo zanahoria, interpolando el movimiento hasta el suelo
     }else if(type == 4){
         if(vuelotime>0){
             if(p<1.0f && (lastx!=x||lasty!=y)){
