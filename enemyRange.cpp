@@ -77,6 +77,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                     if(!disparado){
                        if(disparotime<0){
                            disparo = new Proyectil(0,px,py,ex,ey, 10,15.0f,15.0f, 1000);
+                           disparado=true;
                        }
                     }else{
                         dirigex = ex;
@@ -193,6 +194,8 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                 }
             }
         }
+    }else{
+        move(0);
     }
     return disparo;
 }

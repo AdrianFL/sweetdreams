@@ -173,6 +173,8 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
         }else{
             atacar(p);
         }
+    }else{
+        move(0);
     }
     return dirc;
 }
