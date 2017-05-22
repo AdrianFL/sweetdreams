@@ -21,7 +21,7 @@
 #include <string> 
 #include "Emenu.h"
 #include "Epausa.h"
-
+#include "E1jugador.h"
 using namespace std;
 
 Eopciones* Eopciones::pinstance = 0;
@@ -46,16 +46,14 @@ Eopciones::Eopciones(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     opciono[0].setString("Musica On");
     opciono[0].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMSO+1)*1);
     opciono[1].setFont(font);
-    opciono[1].setColor(sf::Color::White);
-    opciono[1].setString("Sonido On");
+    opciono[1].setColor(sf::Color::Black);
+    opciono[1].setString("Volver");
     opciono[1].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMSO+1)*2);
-    opciono[2].setFont(font);
-    opciono[2].setColor(sf::Color::White);
-    opciono[2].setString("Volver");
-    opciono[2].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMSO+1)*3);
     
    
     selected=0;
+    musica = true;
+    musicaencendida = true;
 }
 
 
@@ -73,7 +71,8 @@ void Eopciones::Handle(){
 void Eopciones::Update(){
 }
 void Eopciones::Update2( sf::Event event){
-            
+    
+
         //    switch(menustate){ //para cada pantalla o estado del menu
             //    case menu1:
                     switch(event.type){
@@ -98,17 +97,6 @@ void Eopciones::Update2( sf::Event event){
                                         }
                                     }
                                     else if(selected==1){
-                                        if(!sonido){
-                                            sonido=true;
-                                            opciono[1].setString("Sonido On");
-                                        }
-                                        else{
-                                            sonido=false;
-                                            opciono[1].setString("Sonido Off");
-                                        }
-                                        
-                                    }
-                                    else if(selected==2){
                                         salida=true;
                                         if(!donde){
                                             Emenu::Instance(Juego::Instance(),window)->Handle();
@@ -146,7 +134,19 @@ void Eopciones::Init(){
    
 }
 int Eopciones::run(sf::RenderWindow &window){
+    
     while(window.isOpen() && !salida){
+        //Manejador de música
+        Musica* music =  Emenu::Instance(Juego::Instance(),&window)->music;
+        if(musica && !musicaencendida){
+            music->Play();
+            musicaencendida = true;
+        }
+        if(!musica && musicaencendida){
+            music->Stop();
+            musicaencendida = false;
+        }
+        
         sf::Event event;
         while(window.pollEvent(event)){ 
             Update2( event); //llamamos a la funcion teclas /update
@@ -160,25 +160,27 @@ void Eopciones::Render(){
     
     //aqui mostramos en la ventana las diferentes opciones
     Juego::Instance()->window->clear();
-            for(int i=0; i<MAX_NUMBER_ITEMSO; i++){
-                window->draw(opciono[i]);
-            }  
+            
+    Sprite* fondo = Juego::Instance()->fondo;
+    //int xD=E1jugador::Instance(Juego::Instance(),window)->xD;
+    fondo->set_position(E1jugador::Instance(Juego::Instance(),window)->xD,0);
+    window->draw(fondo->render(0)); 
+    
+    opciono[0].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,200);
+    window->draw(opciono[0]);
+    
+    opciono[1].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,350);
+    window->draw(opciono[1]);
+    
+    opciono[2].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,500);
+    window->draw(opciono[2]);
+    
+   
           
     Juego::Instance()->window->display();
 
 }
-//void Emenu::Update(){
-    
- //   if(!initState){
- //       Init();
- //       initState = true;
- //   }
-    
-    //ACCIONES DE UPDATE
- //   run(*Juego::Instance()->window);
- //   Render();
 
-//}
 Juego* Eopciones::getContext(){
     
     return _context;    //Para recuperar el contexto
@@ -188,12 +190,12 @@ Juego* Eopciones::getContext(){
 
 void Eopciones::moveUp(){
     if (selected -1 >=0){
-        opciono[selected].setColor(sf::Color::White);
+        opciono[selected].setColor(sf::Color::Black);
         selected--;
         opciono[selected].setColor(sf::Color::Red);
     }
     else{
-        opciono[selected].setColor(sf::Color::White);
+        opciono[selected].setColor(sf::Color::Black);
         selected=MAX_NUMBER_ITEMSO-1;
         opciono[selected].setColor(sf::Color::Red);
     }
@@ -201,12 +203,12 @@ void Eopciones::moveUp(){
 
 void Eopciones::moveDown(){
     if (selected  <MAX_NUMBER_ITEMSO-1){
-        opciono[selected].setColor(sf::Color::White);
+        opciono[selected].setColor(sf::Color::Black);
         selected++;
         opciono[selected].setColor(sf::Color::Red);
     }
     else{
-        opciono[selected].setColor(sf::Color::White);
+        opciono[selected].setColor(sf::Color::Black);
         selected=0;
         opciono[selected].setColor(sf::Color::Red);
     }

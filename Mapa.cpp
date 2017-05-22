@@ -191,8 +191,8 @@ void Mapa::leerMapa(int mapa){
     std::string amarillo("resources/amarillo.png");
     
     //Carga de los nodos mágicos para la IA
-    Nodo::height = 50.0f;
-    Nodo::width = 50.0f;
+    Nodo::height = 32.0f;
+    Nodo::width = 32.0f;
     grid = new Nodo**[_height];
     for(int i = 0; i<_height; i++){
         grid[i] = new Nodo*[_width];
@@ -201,21 +201,23 @@ void Mapa::leerMapa(int mapa){
         }
     }
     //Carga de los obstaculos para la IA
-    obstaculos = new Obstaculo*[2];
-    obstaculos[0] = new Obstaculo(rojo,300,200,1,3);
-    obstaculos[1] = new Obstaculo(rojo,500,500,4,1);
+    /*obstaculos = new Obstaculo*[4];
+    obstaculos[0] = new Obstaculo(rojo,593,435,1.9,3.5);
+    obstaculos[1] = new Obstaculo(rojo,1871,531,1.9,1.9);
+    obstaculos[2] = new Obstaculo(rojo,2003,465,1.9,1.9);
+    obstaculos[3] = new Obstaculo(rojo,1886,416,1.9,1.9);
     
     //Pintar los nodos que coinciden con los obstáculos como bloqueados
     for(int i = 0; i<_height; i++){
         for(int j = 0; j< _width; j++){
-            for(int k = 0; k<2;k++){
+            for(int k = 0; k<4;k++){
                if(grid[i][j]->getParcela()->comprobarColision(0,obstaculos[k]->getSprite())){
                    grid[i][j]->colisionaObstaculo(amarillo,1);
                } 
             }
             
         }
-    }
+    }*/
     //###########################################
     
     cout<<endl;
@@ -259,7 +261,7 @@ void Mapa::dibujaNodos(sf::RenderWindow& window){
 }
 
 void Mapa::dibujaObs(sf::RenderWindow& window){
-    for(int i = 0; i< 2; i++){
+    for(int i = 0; i< 0; i++){
         window.draw(obstaculos[i]->getSprite()->render(0));
     }
 }
@@ -585,7 +587,7 @@ Nodo* Mapa::devuelveNodo(int x, int y){
 }
 
 bool Mapa::colisionaObs(Sprite *colisionador){
-    for(int i = 0; i< 2; i++){
+    for(int i = 0; i< 0; i++){
         if(obstaculos[i]->getSprite()->comprobarColision(0,colisionador)){
             return true;
         }

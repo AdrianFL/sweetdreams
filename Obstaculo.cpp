@@ -13,7 +13,7 @@
 
 #include "Obstaculo.h"
 
-Obstaculo::Obstaculo(std::string& url, int posx, int posy, int width, int height) {
+Obstaculo::Obstaculo(std::string& url, int posx, int posy, float width, float height) {
     //------Reemplazar las coordenadas por las que serían de la textura
     int coordenadas[4] = {0,0,1,1};
     sprite = new Sprite(url,coordenadas,1);

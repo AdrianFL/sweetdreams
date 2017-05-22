@@ -55,11 +55,11 @@ Emenu::Emenu(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     opcion[0].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS+1)*1);
    // opcion[0].setPosition(2,2);
     opcion[1].setFont(font);
-    opcion[1].setColor(sf::Color::White);
+    opcion[1].setColor(sf::Color::Black);
     opcion[1].setString("Opciones");
     opcion[1].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS+1)*2);
     opcion[2].setFont(font);
-    opcion[2].setColor(sf::Color::White);
+    opcion[2].setColor(sf::Color::Black);
     opcion[2].setString("Salir");
     opcion[2].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS+1)*3);
     
@@ -69,7 +69,7 @@ Emenu::Emenu(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     opcionj[0].setString("Un Jugador");
     opcionj[0].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS+1)*1);
     opcionj[1].setFont(font);
-    opcionj[1].setColor(sf::Color::White);
+    opcionj[1].setColor(sf::Color::Black);
     opcionj[1].setString("Dos Jugadores");
     opcionj[1].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS+1)*2);
     selected=0;
@@ -79,10 +79,11 @@ Emenu::Emenu(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     
     music=new Musica(ruta);
     music->setLoop(true);
+    music->Play();
+    musicaencendida = true;
 }
 void Emenu::Handle(){
     
- //   std::cout << "Emenu: "  << this << std::endl;
     std::cout << _context<< std::endl;
     _context->setState(this);   //Al hacer Handle, se activa este estado en el contexto.
     std::cout << _context<< std::endl;
@@ -147,6 +148,7 @@ int Emenu::CUpdate2(sf::Event event){
                                         //LANZAMOS STATE E1JUGADOR
                                         music->Stop();
                                         salida=true;
+                                        menustate=menu1;
                                         E1jugador::Instance(Juego::Instance(),window)->Handle();
                                         //E1jugador::Instance(Juego::Instance())->Handle();
                                         
@@ -155,6 +157,7 @@ int Emenu::CUpdate2(sf::Event event){
                                     else if(selected2==1){
                                         music->Stop();
                                         salida=true;
+                                        menustate=menu1;
                                         //LANZAMOS STATE E2JUGADOR
                                         E2jugador::Instance(Juego::Instance(),window)->Handle();
                                     }
@@ -182,9 +185,18 @@ Juego* Emenu::getContext(){
     
 }
 int Emenu::run(sf::RenderWindow &window){
-    //buclue principal del juego  
-    music->Play();
+    //buclue principal del juego 
+    bool musica = Eopciones::Instance(Juego::Instance(),&window)->musica;
     while(window.isOpen() && !salida){
+        //Manejador música
+        if(Eopciones::Instance(Juego::Instance(),&window)->musica && !musicaencendida){
+            music->Play();
+            musicaencendida = true;
+        }
+        if(!Eopciones::Instance(Juego::Instance(),&window)->musica && musicaencendida){
+            music->Stop();
+            musicaencendida = false;
+        }
         sf::Event event;
         while(window.pollEvent(event)){ 
             
@@ -202,19 +214,29 @@ void Emenu::Render(){
     
     
     //aqui mostramos en la ventana las diferentes opciones
-    Juego::Instance()->window->clear();
+    window->clear();
+    Sprite* fondo = Juego::Instance()->fondo;
+    window->draw(fondo->render(0));
     switch(menustate){ //menu solo tiene la pantalla principal y la de selccion de personaje
         case menu1:
-            for(int i=0; i<MAX_NUMBER_ITEMS; i++){
-                window->draw(opcion[i]);
-                
-            }
+            
+            opcion[0].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,200);
+            window->draw(opcion[0]);
+    
+            opcion[1].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,350);
+            window->draw(opcion[1]);
+    
+            opcion[2].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,500);
+            window->draw(opcion[2]);
             break;
             
         case jugar:
-            for(int i=0; i<MAX_NUMBER_ITEMS_J; i++){
-                window->draw(opcionj[i]);
-            }
+            
+            opcionj[0].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,250);
+            window->draw(opcionj[0]);
+    
+            opcionj[1].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,400);
+            window->draw(opcionj[1]);
             break;
          
     }
@@ -235,14 +257,14 @@ void Emenu::moveUp(){
             
             if (selected -1 >=0){
                 
-                opcion[selected].setColor(sf::Color::White);
+                opcion[selected].setColor(sf::Color::Black);
                 selected--;
                 
                 opcion[selected].setColor(sf::Color::Red);
             }
             else{
                 
-                opcion[selected].setColor(sf::Color::White);
+                opcion[selected].setColor(sf::Color::Black);
                 selected=MAX_NUMBER_ITEMS-1;
                 
                 opcion[selected].setColor(sf::Color::Red);
@@ -253,13 +275,13 @@ void Emenu::moveUp(){
             
             if (selected2 -1 >=0){
                 //std::cout << "selected2>=1"  << std::endl;
-                opcionj[selected2].setColor(sf::Color::White);
+                opcionj[selected2].setColor(sf::Color::Black);
                 selected2--;
                 opcionj[selected2].setColor(sf::Color::Red);
             }
             else{
                 
-                opcionj[selected2].setColor(sf::Color::White);
+                opcionj[selected2].setColor(sf::Color::Black);
                 selected2=MAX_NUMBER_ITEMS_J-1;
                 opcionj[selected2].setColor(sf::Color::Red);
             }
@@ -273,12 +295,12 @@ void Emenu::moveDown(){
     switch(menustate){ //menu solo tiene la pantalla principal y la de selccion de personaje
         case menu1:
             if (selected  <MAX_NUMBER_ITEMS-1){
-                opcion[selected].setColor(sf::Color::White);
+                opcion[selected].setColor(sf::Color::Black);
                 selected++;
                 opcion[selected].setColor(sf::Color::Red);
             }
           else{
-                opcion[selected].setColor(sf::Color::White);
+                opcion[selected].setColor(sf::Color::Black);
                 selected=0;
                 opcion[selected].setColor(sf::Color::Red);
             }
@@ -286,12 +308,12 @@ void Emenu::moveDown(){
             
         case jugar:
             if (selected2  <MAX_NUMBER_ITEMS_J-1){
-                opcionj[selected2].setColor(sf::Color::White);
+                opcionj[selected2].setColor(sf::Color::Black);
                 selected2++;
                 opcionj[selected2].setColor(sf::Color::Red);
             }
           else{
-                opcionj[selected2].setColor(sf::Color::White);
+                opcionj[selected2].setColor(sf::Color::Black);
                 selected2=0;
                 opcionj[selected2].setColor(sf::Color::Red);
             }

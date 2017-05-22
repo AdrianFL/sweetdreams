@@ -41,6 +41,8 @@ class Pocion{
         int getPosX();
         int getPosY();
         
+        void cambiarPos(int x, int y);
+        
             
 };
 

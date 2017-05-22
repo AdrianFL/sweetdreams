@@ -36,6 +36,7 @@
 #include "Camara.h"
 #include "Musica.hpp"
 #include "hechizo.h"
+#include "hud.h"
 
 class E1jugador: public State {
 public:
@@ -49,6 +50,10 @@ public:
     int run(sf::RenderWindow &window);
     void reiniciar();
     
+    int xD;
+    
+    void cambiaNivel();
+    
     ~E1jugador();
     
     protected:
@@ -60,10 +65,11 @@ public:
 private:
     //Personaje
     Personaje* p1;
-    Arma* hacha;
     Arma* espada;
     Pocion* pvida;
+    Pocion* pvida2;
     Pocion* pmana;
+    Pocion* pmana2;
     Mapa* mapa;
     Camara *camara;
     Hechizo* meteoro;
@@ -71,30 +77,55 @@ private:
     
     //Enemigos
     enemyMelee* enemigoM;
+    enemyMelee* enemigoM2;
+    enemyMelee* enemigoM3;
+    enemyMelee* enemigoM4;
+    enemyMelee* enemigoM5;
+    enemyMelee* enemigoM6;
+    enemyMelee* enemigoM7;
     enemyRange* enemigoR;
+    enemyRange* enemigoR2;
+    enemyRange* enemigoR3;
+    enemyRange* enemigoR4;
     enemyFinal* enemigoFinal;
     std::vector<Proyectil*> proyectiles;
     std::vector<Proyectil*> disparoFinal;
     std::vector<Enemy*> enemigos;
     std::vector<bool> golpeados;
-    
+    std::vector<Pocion*> pociones;
+    std::vector<Hechizo*> hechizos;
+    std::vector<Arma*> armas;
     //Helpers
     Clock clock;
     Clock updateclock;
     int32_t time;
     int32_t updatetime;
     int32_t hittime;
+    int32_t niveltime;
+    int32_t fintime;
     int prueba;
     int option;
+    
+    //interfaz
+    hud* interfaz;
+    sf::Text* texto1;
+    sf::Text* texto2;
+    
+    
     bool recogida;
     int movimiento;
     Musica* musica;
+    bool musicaencendida;
     
     sf::RenderWindow* window;
     static E1jugador* pinstance;
     Juego* _context;
     bool salida;
     bool ataca;
+    bool cambialvl;
+    bool finjuego;
+    bool coloca1;
+    bool coloca2;
     int lvl;
 };
 

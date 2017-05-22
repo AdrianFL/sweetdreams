@@ -32,6 +32,11 @@ Juego* Juego::Instance(){
 Juego::Juego(){
     windowWidth = 1200;
     windowHeight = 600;
+    std::string url("resources/menu.png");
+    int coordenadas[4]={300,1000,1200*4,800*4};
+    int frames=1;
+    fondo=new Sprite(url,coordenadas,frames);
+    fondo->set_scale(0.25,0.25);
     _state = 0;
     
 }

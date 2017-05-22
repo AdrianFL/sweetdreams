@@ -18,7 +18,7 @@
 
 class Obstaculo {
 public:
-    Obstaculo(std::string& url, int posx, int posy, int width, int height);
+    Obstaculo(std::string& url, int posx, int posy, float width, float height);
     Obstaculo(const Obstaculo& orig);
     virtual ~Obstaculo();
     

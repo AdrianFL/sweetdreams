@@ -101,3 +101,7 @@ void Camara::moverIzq(Personaje personaje){
         }
     }
 }
+
+int Camara::getDesp(){
+    return desp;
+}

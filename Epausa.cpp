@@ -46,15 +46,15 @@ Epausa::Epausa(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     opcionp[0].setString("Reanudar");
     opcionp[0].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS_P+1)*1);
     opcionp[1].setFont(font);
-    opcionp[1].setColor(sf::Color::White);
+    opcionp[1].setColor(sf::Color::Black);
     opcionp[1].setString("Reiniciar");
     opcionp[1].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS_P+1)*2);
     opcionp[2].setFont(font);
-    opcionp[2].setColor(sf::Color::White);
+    opcionp[2].setColor(sf::Color::Black);
     opcionp[2].setString("Opciones");
     opcionp[2].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS_P+1)*3);
     opcionp[3].setFont(font);
-    opcionp[3].setColor(sf::Color::White);
+    opcionp[3].setColor(sf::Color::Black);
     opcionp[3].setString("Salir");
     opcionp[3].setPosition(2.3*width/5,height/(MAX_NUMBER_ITEMS_P+1)*4);
     
@@ -106,11 +106,12 @@ void Epausa::Update2(sf::Event event){
                                         
                                         if(modo){
                                             //INICIAMOS NIVEL DE 0
-                                            E1jugador::Instance(Juego::Instance(),window)->reiniciar();
+                                            delete E1jugador::Instance(Juego::Instance(),window);
                                             E1jugador::Instance(Juego::Instance(),window)->Handle();
                                         }
                                         else{
                                             //INICIAMOS NIVEL DE 0
+                                            delete E2jugador::Instance(Juego::Instance(),window);
                                             E2jugador::Instance(Juego::Instance(),window)->Handle();
                                         }
                                     }
@@ -157,43 +158,42 @@ void Epausa::Render(){
     
     //aqui mostramos en la ventana las diferentes opciones
     Juego::Instance()->window->clear();
-            for(int i=0; i<MAX_NUMBER_ITEMS_P; i++){
-                window->draw(opcionp[i]);
-            }  
+    
+    Sprite* fondo = Juego::Instance()->fondo;
+    //int xD=E1jugador::Instance(Juego::Instance(),window)->xD;
+    fondo->set_position(E1jugador::Instance(Juego::Instance(),window)->xD,0);
+    window->draw(fondo->render(0)); 
+    
+    opcionp[0].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,200);
+    window->draw(opcionp[0]);
+    
+    opcionp[1].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,300);
+    window->draw(opcionp[1]);
+    
+    opcionp[2].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,400);
+    window->draw(opcionp[2]);
+    
+    opcionp[3].setPosition((E1jugador::Instance(Juego::Instance(),window))->xD+500,500);
+    window->draw(opcionp[3]);
           
     Juego::Instance()->window->display();
 
 }
-//void Emenu::Update(){
-    
- //   if(!initState){
- //       Init();
- //       initState = true;
- //   }
-    
-    //ACCIONES DE UPDATE
- //   run(*Juego::Instance()->window);
- //   Render();
 
-//}
 Juego* Epausa::getContext(){
     
     return _context;    //Para recuperar el contexto
     
 }
 
-
-
-
-
 void Epausa::moveUp(){
     if (selected -1 >=0){
-        opcionp[selected].setColor(sf::Color::White);
+        opcionp[selected].setColor(sf::Color::Black);
         selected--;
         opcionp[selected].setColor(sf::Color::Red);
     }
     else{
-        opcionp[selected].setColor(sf::Color::White);
+        opcionp[selected].setColor(sf::Color::Black);
         selected=MAX_NUMBER_ITEMS_P-1;
         opcionp[selected].setColor(sf::Color::Red);
     }
@@ -201,12 +201,12 @@ void Epausa::moveUp(){
 
 void Epausa::moveDown(){
     if (selected  <MAX_NUMBER_ITEMS_P-1){
-        opcionp[selected].setColor(sf::Color::White);
+        opcionp[selected].setColor(sf::Color::Black);
         selected++;
         opcionp[selected].setColor(sf::Color::Red);
     }
     else{
-        opcionp[selected].setColor(sf::Color::White);
+        opcionp[selected].setColor(sf::Color::Black);
         selected=0;
         opcionp[selected].setColor(sf::Color::Red);
     }

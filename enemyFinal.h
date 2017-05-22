@@ -40,12 +40,14 @@ private:
     int danyotumba;
     int aparicionTumba;
     int duracionTumba;
+    int duracionAlertaTumba;
     int tomblastx1,tomblastx2,tomblastx3,tomblastx4,tomblasty1,tomblasty2,tomblasty3,tomblasty4;
     
     //Atributos zanahorias
     int danyoZanahoria;
     int aparicionZanahoria;
     int duracionZanahoria;
+    int duracionAlertaZanahoria;
     int zanalastx1,zanalasty1,zanalastx2,zanalasty2;
 };
 

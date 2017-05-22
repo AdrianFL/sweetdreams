@@ -22,6 +22,11 @@
 
 Personaje::Personaje(int id) {
     if(id==0){
+        idx=0;
+        x=600;
+        y=450;
+        lastx=600;
+        lasty=450;
         //idles
         int coordenadas[24]={7,28,31,64,39,28,31,64,73,28,29,64,105,27,30,65,138,27,31,65,172,27,31,65};
         int frames=6;
@@ -77,29 +82,95 @@ Personaje::Personaje(int id) {
         muerte=new Sprite(ruta, coordenadas11, frames);
         muerte->set_framerate(125);
         muerte->setRepite(false);
+        muerte->set_origin(20, 30);
+        for(int i=6; i<10; i++){
+            muerte->set_origin_i(32, 0, i);
+        }
         int coordenadas12[40]={1299,1552,-40,62,1351,1548,-49,56,1426,1545,-71,44,1495,1539,-66,36,1566,1535,-67,44,1629,1541,-59,54,1678,1575,-45,38,1748,1580,-66,30,1816,1581,-65,30,1888,1587,-68,28};
         muerteleft=new Sprite(ruta, coordenadas12, frames);
         muerteleft->set_framerate(125);
         muerteleft->setRepite(false);
+        muerteleft->set_origin(20, 30);
+        for(int i=6; i<10; i++){
+            muerteleft->set_origin_i(32, 0, i);
+        }
         //recogida
         frames=3;
         int coordenadas13[12]={488, 347, 33, 53, 527, 351, 47, 49, 579, 348, 41, 52};
         recogida=new Sprite(ruta, coordenadas13, frames);
         recogida->set_framerate(100);
+        recogida->set_origin(15, 25);
         int coordenadas14[12]={521,347,-33,53,574,351,-47,49,620,348,-41,52};
         recogidaleft=new Sprite(ruta, coordenadas14, frames);
         recogidaleft->set_framerate(100);
+        recogidaleft->set_origin(15, 25);
         //hechizo
         hechizo=NULL;
         hechizoleft=NULL;
     }
     else if(id==1){
-        
+        idx=1;
+        x=450;
+        y=450;
+        lastx=450;
+        lasty=450;
+        //idle
+        std::string ruta("resources/Mort.png");
+        int frames=8;
+        int coordenadas[32]={8, 11, 35, 58, 47, 11, 35, 58, 86, 11, 35, 58, 125, 11, 35, 58, 164, 10, 35, 58, 203, 11, 35, 58, 242, 11, 35, 58, 281, 11, 35, 58};
+        idle=new Sprite(ruta, coordenadas, frames);
+        idle->set_framerate(120);
+        int coordenadas2[32]={43,11,-35,58,82,11,-35,58,121,11,-35,58,160,11,-35,58,199,11,-35,58,238,11,-35,58,277,11,-35,58,316,11,-35,58};
+        idleleft=new Sprite(ruta, coordenadas2, frames);
+        idleleft->set_framerate(120);
+        //movimientos
+        int coordenadas3[32]={10, 84, 36, 52, 50, 77, 42, 60, 96, 82, 52, 49, 152, 84, 45, 50, 201, 84, 38, 51, 243, 77, 40, 58, 287, 82, 49, 50, 340, 83, 45, 51};
+        moveright=new Sprite(ruta, coordenadas3, frames);
+        moveright->set_framerate(100);
+        int coordenadas4[32]={46,84,-36,52,92,77,-42,60,148,82,-52,49,197,84,-45,50,239,84,-38,51,283,77,-40,58,336,82,-49,50,385,83,-45,51};
+        moveleft=new Sprite(ruta, coordenadas4, frames);
+        moveleft->set_framerate(100);
+        //Ataques hacha
+        int coordenadas5[32]={376, 844, 73, 68, 450, 838, 73, 68, 526, 828, 68, 79, 615, 858, 69, 45, 691, 853, 64, 49, 762, 855, 62, 51, 831, 853, 68, 57};
+        attackright=new Sprite(ruta, coordenadas5, frames);
+        attackright->set_framerate(75);
+        int coordenadas6[32]={449,844,-73,68,523,838,-73,68,594,828,-68,79,684,858,-69,45,755,853,-64,49,824,855,-62,51,899,853,-62,51};
+        attackleft=new Sprite(ruta, coordenadas6, frames);
+        attackleft->set_framerate(75);
+        //pocionesvida
+        int coordenadas7[20]={134, 1876, 40, 55, 174, 1873, 75, 58, 251, 1873, 70, 58, 323, 1867, 50, 63, 377, 1869, 34, 62};
+        frames=5;
+        potivida=new Sprite(ruta, coordenadas7, frames);
+        potivida->set_framerate(100);
+        int coordenadas8[20]={174,1876,-40,55,249,1873,-75,58,321,1873,-70,58,373,1867,-50,63,411,1869,-34,62};
+        potividaleft=new Sprite(ruta, coordenadas8, frames);
+        potividaleft->set_framerate(100);
+        //pocionesmana
+        int coordenadas9[20]={135, 1970, 40, 55, 178, 1965, 75, 58, 251, 1963, 70, 58, 325, 1958, 50, 63, 379, 1964, 34, 62};
+        potimana=new Sprite(ruta, coordenadas9, frames);
+        potimana->set_framerate(100);
+        int coordenadas10[20]={175, 1970, -40, 55, 253, 1465, -75, 58, 321, 1963, -70, 58, 375, 1958, -50, 63, 413, 1964, -34, 62};
+        potimanaleft=new Sprite(ruta, coordenadas10, frames);
+        potimanaleft->set_framerate(100);
+        //muerte
+        frames=8;
+        int coordenadas11[32]={59, 1280, 57, 55, 188, 1267, 62, 41, 253, 1262, 57, 48, 364, 1263, 46, 60, 414, 1307, 43, 35, 461, 1306, 56, 33, 651, 1311, 60, 30, 781, 1314, 68, 29};
+        muerte=new Sprite(ruta, coordenadas11, frames);
+        muerte->set_framerate(125);
+        muerte->setRepite(false);
+        int coordenadas12[32]={116,1280, -57, 55, 250, 1267, -62, 41, 310, 1262, -57, 48, 410, 1263, -46, 60, 457, 1307, -43, 35, 517, 1306, -56, 33, 711, 1311, -60, 30, 849, 1314, -68, 29};
+        muerteleft=new Sprite(ruta, coordenadas12, frames);
+        muerteleft->set_framerate(125);
+        muerteleft->setRepite(false);
+        //recogida
+        frames=4;
+        int coordenadas13[16]={10, 500, 47, 46, 60, 495, 46, 50, 110, 486, 36, 58, 206, 481, 33, 65};
+        recogida=new Sprite(ruta, coordenadas13, frames);
+        recogida->set_framerate(100);
+        int coordenadas14[16]={57, 500, -47, 46, 106, 495, -46, 50, 146, 486, -36, 58, 239, 481, -33, 65};
+        recogidaleft=new Sprite(ruta, coordenadas14, frames);
+        recogidaleft->set_framerate(100);
     }
-    x=600;
-    y=450;
-    lastx=600;
-    lasty=450;
     sx=1.0;
     sy=1.0;
     direccion=1;
@@ -112,13 +183,16 @@ Personaje::Personaje(int id) {
     vidamax=200;
     manamax=100;
     vida=200;
-    mana=110;
+    mana=100;
     numPVida=3;
     numPMana=2;
     movingborder=false;
     hactivo=NULL;
     aactiva=new Arma("hacha");
     margen=0;
+    
+    //Alerta de meteoro
+    meteoroalert = false;
 }
 
 Sprite* Personaje::render(int32_t tempo, float p){
@@ -316,7 +390,12 @@ void Personaje::usaPocion(std::string s){
             potividaleft->set_position(x, y);
             potividaleft->set_scale(sx, sy);
         }
-        potvidatime=800;
+        if(idx==0){
+            potvidatime=800;
+        }
+        else{
+            potvidatime=500;
+        }
     }
     else if(potmanatime<0 && s=="mana" && numPMana>0){
         numPMana--;
@@ -331,7 +410,12 @@ void Personaje::usaPocion(std::string s){
             potimanaleft->set_position(x, y);
             potimanaleft->set_scale(sx, sy);
         }
-        potmanatime=800;
+        if(idx==0){
+            potmanatime=800;
+        }
+        else{
+            potmanatime=500;
+        }
     }
 }
 
@@ -384,15 +468,6 @@ int Personaje::getMana(){
 int Personaje::getVida(){
     return vida;
 }
-
-/*void Personaje::setPociones(Pocion *pociones[]){
-    
-    for(int i=0; i<5; i++){
-        for(int j=0; i<5; i++){
-            bolsilloP[i]=pociones[j];
-        }
-    }
-}*/
 
 Sprite* Personaje::getAnimacionActiva(){
     switch(activa){
@@ -475,13 +550,16 @@ int Personaje::getNumPMana(){
 
 void Personaje::cambiarAtaque(Arma* a){
     if(a!=NULL){
-        attackright=a->getAttackRight();
-        attackleft=a->getAttackLeft();
+        attackright=a->getAttackRight(idx);
+        attackleft=a->getAttackLeft(idx);
         aactiva=new Arma(a->getTipo());
     }
 }
 
-Proyectil* Personaje::lanzarHechizo(){
+std::vector<Proyectil*> Personaje::lanzarHechizo(){
+    
+    std::vector<Proyectil*> conjunto;
+     
     if(hactivo!=NULL && hactivo->getGastoMana()<=mana && spelltime<0){
         spelltime=675;
         mana-=hactivo->getGastoMana();
@@ -490,12 +568,18 @@ Proyectil* Personaje::lanzarHechizo(){
             hechizo->set_position(x, y);
             hechizo->set_scale(sx, sy);
             if(hactivo->getTipo()=="meteoro"){
-                Proyectil* p=new Proyectil(10, x+100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
-                return p;
+                meteoroalert=true;
+                Proyectil* alerta=new Proyectil(2, x+100, y+20, x+100, y+20, 0, 0.0f, 0.0f, 2000);
+                conjunto.push_back(alerta);
+                 if(meteoroalert==true){
+                     meteoroalert=false;
+                      Proyectil* p=new Proyectil(10, x+110, y+20, x, y-200, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                      conjunto.push_back(p);;
+                }
             }
             else if(hactivo->getTipo()=="escupitajo"){
                 Proyectil* p=new Proyectil(11, x+100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
-                return p;
+                conjunto.push_back(p);
             }
         }
         else{
@@ -503,26 +587,43 @@ Proyectil* Personaje::lanzarHechizo(){
             hechizoleft->set_position(x, y);
             hechizoleft->set_scale(sx, sy);
             if(hactivo->getTipo()=="meteoro"){
-                Proyectil* p=new Proyectil(10, x-100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
-                return p;
+                meteoroalert=true;
+                Proyectil* alerta=new Proyectil(2, x-100, y+20, x-100, y+20, 0, 0.0f, 0.0f, 2000);
+                conjunto.push_back(alerta);
+                 if(meteoroalert==true){
+                     meteoroalert=false;
+                      Proyectil* p=new Proyectil(10, x-110, y+20, x, y-200, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
+                      conjunto.push_back(p);;
+                }
             }
             else if(hactivo->getTipo()=="escupitajo"){
                 Proyectil* p=new Proyectil(11, x-100, y, x, y, hactivo->getDanyo(), 15.0f, 15.0f, 1000);
-                return p;
+                conjunto.push_back(p);
             }
         }
     }
-    return NULL;
+    return conjunto;
 }
 
 void Personaje::recogeHechizo(Hechizo* h){
     if(h!=NULL){
         hactivo=new Hechizo(h->getTipo());
-        hechizo=h->getHechizoRight();
-        hechizoleft=h->getHechizoLeft();
+        hechizo=h->getHechizoRight(idx);
+        hechizoleft=h->getHechizoLeft(idx);
     }
 }
 
 int Personaje::getDanyo(){
     return(aactiva->getDanyo());
+}
+
+void Personaje::cambialvl(int id){
+    if(id==0){
+        x=600;
+        y=450;
+        lastx=600;
+        lasty=450;
+        sx=1.0;
+        sy=1.0;
+    }
 }

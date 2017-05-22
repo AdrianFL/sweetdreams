@@ -68,11 +68,16 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                 //Si está a rango de dispararle, le dispara
                 if(distRaycast <= distDisparo){
                     if(ataquetime<0){
-                       atacar();
-                       if(disparado){
+                        if(px-ex>0){
+                            direccion=1;
+                        }else{
+                            direccion=-1;
+                        }
+                        atacar();
+                        if(disparado){
                             disparotime = 400;
                             disparado=false;
-                       }
+                        }
                     }
                     if(!disparado){
                        if(disparotime<0){
@@ -204,7 +209,7 @@ Proyectil* enemyRange::perseguir(Personaje *p, Mapa *m, int32_t tempo){
                     caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 0);
                 }else if(ex>=1200 && ex<2000){
                     caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 1);
-                }else{
+                }else if(ex>=2000 && ex<3200){
                     caminoActual =  m->CalcRoute(nodoPy,nodoPx, nodoEy, nodoEx, 2);
                 }
                 

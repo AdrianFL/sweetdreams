@@ -30,7 +30,7 @@ public:
     void moverDer(Personaje personaje);
     void moverIzq(Personaje personaje);
     void fija();
-    
+    int getDesp();
     
     
 private:

@@ -201,6 +201,11 @@ int enemyMelee::perseguir(Personaje *p, Mapa *m){
                 }
             }
         }else{
+            if(px-ex>0){
+                direccion=1;
+            }else{
+                direccion=-1;
+            }
             atacar(p);
         }
     }else{

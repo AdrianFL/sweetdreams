@@ -36,6 +36,15 @@ Hechizo::Hechizo(std::string t, int x, int y){
             int coordh2[36]={415, 1554, -30, 62, 460, 1551, -42, 64, 508, 1550, -45, 65, 557, 1550, -46, 66, 607, 1550, -46, 66, 942, 1557, -83, 59, 1372, 1458, -47, 59, 1414, 1456, -38, 62, 1446, 1453, -29, 65};
             hechizoleft=new Sprite(ruta2, coordh2, frames);
             hechizoleft->set_framerate(75);
+            
+            frames=8;
+            std::string ruta3("resources/Mort.png");
+            int coordh3[32]={9, 3695, 41, 55, 54, 3699, 47, 51, 103, 3699, 47, 51, 238, 3697, 92, 51, 336, 3697, 66, 52, 405, 3696, 66, 52, 529, 3692, 43, 56};
+            hechizorightmort=new Sprite(ruta3, coordh3, frames);
+            hechizorightmort->set_framerate(75);
+            int coordh4[32]={50, 3695, -41, 55, 101, 3699, -47, 51, 150, 3699, -47, 51, 330, 3697, -92, 51, 402, 3697, -66, 52, 471, 3696, -66, 52, 572, 3692, -43, 56};
+            hechizoleftmort=new Sprite(ruta3, coordh4, frames);
+            hechizoleftmort->set_framerate(75);
         }
         else if(t=="m"){
             tipo="meteoro";
@@ -57,6 +66,15 @@ Hechizo::Hechizo(std::string t, int x, int y){
             int coordh2[36]={705, 1455, -30, 62, 750, 1453, -42, 64, 798, 1452, -45, 65, 848, 1452, -46, 66, 898, 1452, -46, 66, 1064, 1451, -80, 67, 1372, 1458, -47, 59, 1414, 1456, -38, 62, 1446, 1453, -29, 65};
             hechizoleft=new Sprite(ruta2, coordh2, frames);
             hechizoleft->set_framerate(75);
+            
+            frames=8;
+            std::string ruta3("resources/Mort.png");
+            int coordh3[32]={9, 3755, 41, 55, 54, 3759, 47, 51, 104, 3759, 47, 51, 238, 3749, 92, 51, 336, 3697, 66, 52, 405, 3696, 66, 52, 529, 3692, 43, 56};
+            hechizorightmort=new Sprite(ruta3, coordh3, frames);
+            hechizorightmort->set_framerate(75);
+            int coordh4[32]={50, 3755, -41, 55, 101, 3759, -47, 51, 151, 3759, -47, 51, 330, 3749, -92, 51, 402, 3697, -66, 52, 471, 3696, -66, 52, 572, 3692, -43, 56};
+            hechizoleftmort=new Sprite(ruta3, coordh4, frames);
+            hechizoleftmort->set_framerate(75);
         }
 
     }
@@ -105,10 +123,26 @@ Hechizo::Hechizo(std::string t){
         return posY;
     }
     
-    Sprite* Hechizo::getHechizoRight(){
-        return hechizoright;
+    Sprite* Hechizo::getHechizoRight(int id){
+        if(id==0){
+            return hechizoright;
+        }
+        else if(id==1){
+            return hechizorightmort;
+        }
     }
     
-    Sprite* Hechizo::getHechizoLeft(){
-        return hechizoleft;
+    Sprite* Hechizo::getHechizoLeft(int id){
+        if(id==0){
+            return hechizoleft;
+        }
+        else if(id==1){
+            return hechizoleftmort;
+        }
+    }
+    
+    void Hechizo::cambiarPos(int x, int y){
+        posX=x;
+        posY=y;
+        spritehechizo->set_position(posX, posY);
     }

@@ -38,17 +38,17 @@ E1jugador* E1jugador::Instance(Juego* context,sf::RenderWindow *w){
 }
 E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     window=w;
-    _context = context;
+    _context = context;    
+    
+    texto1= new sf::Text;
+    texto2= new sf::Text;
+    xD=0;
+    
+    
     //08080808080808080808080808080808080808080808080808080808080808080808080808080808080808
     //08080808080808080808080808080808080808080808080808080808080808080808080808080808080808
     window->setVerticalSyncEnabled(true);
     p1= new Personaje(0);
-   /* hacha=new Arma("h", 750, 450);
-    espada=new Arma("e", 850, 450);
-    meteoro=new Hechizo("m", 650, 500);
-    escupitajo=new Hechizo("e", 300, 500);
-    pvida=new Pocion("v", 400, 450);
-    pmana=new Pocion("m", 400, 520);*/
     mapa= new Mapa;
     
     //Música
@@ -56,7 +56,11 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     Musica* musica = new Musica(rutamusica);
     
     musica->setLoop(true);
-    musica->Play();
+    //Comprobador de la música con el menú de opciones
+    if(Eopciones::Instance(Juego::Instance(),window)->musica){
+        musica->Play();
+    }
+    musicaencendida=true;
     
     //1 para leer el mapa 1, 2 para leer el mapa 2
     lvl = 1;
@@ -67,7 +71,14 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     recogida=true;
     movimiento=0;
     
+    //Valores para el posicionamiento de enemigos y pociones
     ataca=false;
+    cambialvl=false;
+    finjuego=false;
+    coloca1=false;
+    coloca2=false;
+    niveltime=-1;
+    fintime=-1;
     
     //###################
     //Instanciacion enemigos
@@ -76,15 +87,30 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
         enemigos.push_back(enemigoM);
         enemigoR= new enemyRange(1000, 520, 40, 5);
         enemigos.push_back(enemigoR);
-        enemigoM= new enemyMelee(200, 400, 40, 5);
-        enemigos.push_back(enemigoM);
-        enemigoM=new enemyMelee(1800, 520, 40, 10);
-        enemigos.push_back(enemigoM);
-        enemigoR=new enemyRange(1870, 470, 60, 10);
-        enemigos.push_back(enemigoR);
+        enemigoM2= new enemyMelee(1800, 400, 40, 5);
+        enemigos.push_back(enemigoM2);
+        enemigoM3=new enemyMelee(1800, 520, 40, 10);
+        enemigos.push_back(enemigoM3);
+        enemigoR2=new enemyRange(1870, 470, 60, 10);
+        enemigos.push_back(enemigoR2);
+        enemigoM4=new enemyMelee(3000, 400, 50, 10);
+        enemigos.push_back(enemigoM4);
+        enemigoM5=new enemyMelee(3000, 520, 50, 10);
+        enemigos.push_back(enemigoM5);
+        enemigoM6=new enemyMelee(3100, 400, 50, 10);
+        enemigos.push_back(enemigoM6);
+        enemigoM7=new enemyMelee(3100, 520, 50, 10);
+        enemigos.push_back(enemigoM7);
+        enemigoR3=new enemyRange(3150, 470, 100, 15);
+        enemigos.push_back(enemigoR3);
         
-        enemigoFinal = new enemyFinal(2500,450,500,20);
-        enemigos.push_back(enemigoFinal);
+        pvida=new Pocion("v", 900, -450);
+        pociones.push_back(pvida);
+        pmana=new Pocion("m", 400, -520);
+        pociones.push_back(pmana);
+
+        escupitajo=new Hechizo("e", 300, -500);
+        hechizos.push_back(escupitajo);
     }
     //###################
     
@@ -97,7 +123,9 @@ E1jugador::E1jugador(Juego* context,sf::RenderWindow *w){ //CONSTRUCTOR REAL
     
     prueba=0;
     option=0;
+    
     //08080808080808080808080808080808080808080808080808080808080808080808080808080808080808
+    interfaz = new hud;
     //08080808080808080808080808080808080808080808080808080808080808080808080808080808080808
 }
 
@@ -125,6 +153,16 @@ int E1jugador::run(sf::RenderWindow &window){
     //buclue principal del juego  
     while(window.isOpen() && !salida){
         sf::Event event;
+        //Comprobador de la música
+        if(Eopciones::Instance(Juego::Instance(),&window)->musica && !musicaencendida){
+            musica->Play();
+            musicaencendida = true;
+        }
+        if(!Eopciones::Instance(Juego::Instance(),&window)->musica && musicaencendida){
+            musica->Stop();
+            musicaencendida = false;
+        }
+        
         while(window.pollEvent(event)){
             CUpdate2( event); //llamamos a la funcion teclas /update
         }
@@ -142,8 +180,18 @@ int E1jugador::run(sf::RenderWindow &window){
 }
 void E1jugador::Update(){
     
+    if(finjuego==false && (p1->getVida()<=0 || (lvl==2 && enemigoFinal->vida<=0))){
+        finjuego=true;
+        fintime=1500;
+    }
+    
+    if(finjuego==true && fintime<0){
+        salida=true;
+        Emenu::Instance(Juego::Instance(), window)->Handle();
+    }
+    
     Proyectil* disparo = NULL;
-    Proyectil* disparoHechizo = NULL;
+    std::vector<Proyectil*> disparoHechizo;
     
     updatetime=updateclock.restart();
     
@@ -154,6 +202,34 @@ void E1jugador::Update(){
             if(golpeados[i]==true){
                 enemigos[i]->herir(p1->getDanyo());
             }
+        }
+        
+        if(lvl==1 && enemigoR3->vida<=0){
+            cambialvl=true;
+            niveltime=1000;
+        }
+        
+        if(coloca1==false && lvl==1 && enemigoR->vida<=0){
+            hechizos[0]->cambiarPos(1200,450);
+            coloca1=true;
+        }
+        
+        if(coloca2==false && lvl==1 && enemigoR2->vida<=0){
+            pociones[0]->cambiarPos(1900,450);
+            pociones[1]->cambiarPos(1800,425);
+            coloca2=true;
+        }
+        
+        if(coloca1==false &&lvl==2 && enemigoR->vida<=0 && enemigoR2->vida<=0){
+            armas[0]->cambiarPos(1200,475);
+            coloca1=true;
+        }
+        
+        if(coloca2==false && lvl==2 && enemigoR3->vida<=0 && enemigoR4->vida<=0){
+            pociones[2]->cambiarPos(1900,450);
+            pociones[3]->cambiarPos(1800,425);
+            hechizos[0]->cambiarPos(2000,500);
+            coloca2=true;
         }
     }
     
@@ -190,9 +266,9 @@ void E1jugador::Update(){
                     if(enemigos[i]->vida>0 && enemigos[i]->getXCoordinate()>p1->getXCoordinate() && enemigos[i]->getXCoordinate()-p1->getXCoordinate()<150 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()<100 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()>-100){
                          golpeados.push_back(true);
                     }
-                        else{
-                             golpeados.push_back(false);
-                        }
+                    else{
+                        golpeados.push_back(false);
+                    }
                 }
                 else{
                     if(enemigos[i]->vida>0 && enemigos[i]->getXCoordinate()<p1->getXCoordinate() && p1->getXCoordinate()-enemigos[i]->getXCoordinate()<150 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()<100 && enemigos[i]->getYCoordinate()-p1->getYCoordinate()>-100){
@@ -208,86 +284,84 @@ void E1jugador::Update(){
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::I) || sf::Joystick::isButtonPressed(0, 2)){
         p1->activaRecogida();
         recogida=false;
-        if(recogida==false){
-            if(p1->getDireccion()>0){
-                if(pvida!=NULL && pvida->getPosX()>p1->getXCoordinate() && pvida->getPosX()-p1->getXCoordinate()<50 && pvida->getPosY()-p1->getYCoordinate()<30 && pvida->getPosY()-p1->getYCoordinate()>-30){
-                    if(p1->getNumPVida()<3){
-                        pvida->deletePocion();
-                        pvida=NULL;
-                        p1->aumentaPVida();
-                        recogida=true;
-                    }
-                  }
-            }
-            else{
-                if(pvida!=NULL && pvida->getPosX()<p1->getXCoordinate() && p1->getXCoordinate()-pvida->getPosX()<50 && pvida->getPosY()-p1->getYCoordinate()<30 && pvida->getPosY()-p1->getYCoordinate()>-30){
-                    if(p1->getNumPVida()<3){
-                        pvida->deletePocion();
-                        pvida=NULL;
-                        p1->aumentaPVida();     
-                        recogida=true;
-                    }
-                }
-            }
-        }
-        if(recogida==false){
-            if(p1->getDireccion()>0){
-                if(pmana!=NULL && pmana->getPosX()>p1->getXCoordinate() && pmana->getPosX()-p1->getXCoordinate()<50 && pmana->getPosY()-p1->getYCoordinate()<30 && pmana->getPosY()-p1->getYCoordinate()>-30){
-                    if(p1->getNumPMana()<3){
-                        pmana->deletePocion();
-                        pmana=NULL;
-                        p1->aumentaPMana();
-                        recogida=true;
+        for(int i=0; i<pociones.size()&&recogida==false; i++){
+            if(recogida==false){
+                if(p1->getDireccion()>0){
+                    if(pociones[i]!=NULL && pociones[i]->getPosX()>p1->getXCoordinate() && pociones[i]->getPosX()-p1->getXCoordinate()<80 && pociones[i]->getPosY()-p1->getYCoordinate()<60 && pociones[i]->getPosY()-p1->getYCoordinate()>-60){
+                        if(pociones[i]->getTipo()=="vida"){
+                            if(p1->getNumPVida()<3){
+                                recogida=true;
+                                p1->aumentaPVida();
+                                pociones.erase(pociones.begin()+i);
+                            }
+                        }
+                        else if(pociones[i]->getTipo()=="mana"){
+                            if(p1->getNumPMana()<3){
+                                recogida=true;
+                                p1->aumentaPMana();
+                                pociones.erase(pociones.begin()+i);
+                            }
+                        }
                     }
                 }
-            }
-            else{
-               if(pmana!=NULL && pmana->getPosX()<p1->getXCoordinate() && p1->getXCoordinate()-pmana->getPosX()<50 && pmana->getPosY()-p1->getYCoordinate()<30 && pmana->getPosY()-p1->getYCoordinate()>-30){
-                    if(p1->getNumPMana()<3){
-                        pmana->deletePocion();
-                        pmana=NULL;
-                        p1->aumentaPMana();
-                        recogida=true;
+                else{
+                    if(pociones[i]!=NULL && pociones[i]->getPosX()<p1->getXCoordinate() && p1->getXCoordinate()-pociones[i]->getPosX()<80 && pociones[i]->getPosY()-p1->getYCoordinate()<60 && pociones[i]->getPosY()-p1->getYCoordinate()>-60){
+                        if(pociones[i]->getTipo()=="vida"){
+                            if(p1->getNumPVida()<3){
+                                recogida=true;
+                                p1->aumentaPVida();
+                                pociones.erase(pociones.begin()+i);
+                            }
+                        }
+                        else if(pociones[i]->getTipo()=="mana"){
+                            if(p1->getNumPMana()<3){
+                                recogida=true;
+                                p1->aumentaPMana();
+                                pociones.erase(pociones.begin()+i);
+                            }
+                        }
                     }
                 }
             }
         }
-         if(recogida==false){
-            if(p1->getDireccion()>0){
-                if(espada!=NULL && espada->getposX()>p1->getXCoordinate() && espada->getposX()-p1->getXCoordinate()<50 && espada->getposY()-p1->getYCoordinate()<30 && espada->getposY()-p1->getYCoordinate()>-30){
-                    recogida=true;
-                    p1->cambiarAtaque(espada);
-                    espada=NULL;
+        for(int i=0; i<armas.size() && recogida==false; i++){
+            if(recogida==false){
+                if(p1->getDireccion()>0){
+                    if(armas[i]!=NULL && armas[i]->getposX()>p1->getXCoordinate() && armas[i]->getposX()-p1->getXCoordinate()<100 && armas[i]->getposY()-p1->getYCoordinate()<100 && armas[i]->getposY()-p1->getYCoordinate()>-100){
+                        recogida=true;
+                        p1->cambiarAtaque(armas[i]);
+                        armas.erase(armas.begin()+i);
+                    }
                 }
-            }
-            else{
-                if(espada!=NULL && espada->getposX()<p1->getXCoordinate() && p1->getXCoordinate()-espada->getposX()<50 && espada->getposY()-p1->getYCoordinate()<30 && espada->getposY()-p1->getYCoordinate()>-30){
-                    recogida=true;
-                    p1->cambiarAtaque(espada);
-                    espada=NULL;
-                }
-            }
-        }
-        if(recogida==false){
-            if(p1->getDireccion()>0){
-                if(meteoro!=NULL && meteoro->getPosX()>p1->getXCoordinate() && meteoro->getPosX()-p1->getXCoordinate()<50 && meteoro->getPosY()-p1->getYCoordinate()<30 && meteoro->getPosY()-p1->getYCoordinate()>-30){
-                    recogida=true;
-                    p1->recogeHechizo(meteoro);
-                    meteoro=NULL;
+                else{
+                    if(armas[i]!=NULL && armas[i]->getposX()<p1->getXCoordinate() && p1->getXCoordinate()-armas[i]->getposX()<100 && armas[i]->getposY()-p1->getYCoordinate()<100 && armas[i]->getposY()-p1->getYCoordinate()>-100){
+                        recogida=true;
+                        p1->cambiarAtaque(armas[i]);
+                        armas.erase(armas.begin()+i);
+                    }
                 }
             }
         }
-        if(recogida==false){
-            if(p1->getDireccion()>0){
-                if(escupitajo!=NULL && escupitajo->getPosX()>p1->getXCoordinate() && escupitajo->getPosX()-p1->getXCoordinate()<50 && escupitajo->getPosY()-p1->getYCoordinate()<30 && escupitajo->getPosY()-p1->getYCoordinate()>-30){
-                    recogida=true;
-                    p1->recogeHechizo(escupitajo);
-                    escupitajo=NULL;
+        for(int i=0; i<hechizos.size() && recogida==false; i++){
+            if(recogida==false){
+                if(p1->getDireccion()>0){
+                    if(hechizos[i]!=NULL && hechizos[i]->getPosX()>p1->getXCoordinate() && hechizos[i]->getPosX()-p1->getXCoordinate()<100 && hechizos[i]->getPosY()-p1->getYCoordinate()<100 && hechizos[i]->getPosY()-p1->getYCoordinate()>-100){
+                        recogida=true;
+                        p1->recogeHechizo(hechizos[i]);
+                        hechizos.erase(hechizos.begin()+i);
+                    }
+                }
+                else{
+                    if(hechizos[i]!=NULL && hechizos[i]->getPosX()<p1->getXCoordinate() && p1->getXCoordinate()-hechizos[i]->getPosX()<100 && hechizos[i]->getPosY()-p1->getYCoordinate()<100 && hechizos[i]->getPosY()-p1->getYCoordinate()>-100){
+                        recogida=true;
+                        p1->recogeHechizo(hechizos[i]);
+                        hechizos.erase(hechizos.begin()+i);
+                    }
                 }
             }
         }
     }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Y) || sf::Joystick::isButtonPressed(0, 3)){
-                disparoHechizo = p1->lanzarHechizo();
+        disparoHechizo = p1->lanzarHechizo();
     }
     p1->move(option);
     if(movimiento == 0){
@@ -302,7 +376,6 @@ void E1jugador::Update(){
     option=0;
     movimiento = 0;
     
-     
     //######################
     //Control total de los enemigos
     int muertos=0; //Cuenta los destruidos, por si se da más de un enemigo destruido a la vez (casi imposible pero por si acaso)
@@ -331,7 +404,6 @@ void E1jugador::Update(){
             delete enemigoMuerto;
         }*/
     }
-     
     //Control de los disparos
     //Enemigos
 
@@ -341,11 +413,10 @@ void E1jugador::Update(){
     }
     
     //Personaje
-    if(disparoHechizo!=NULL){
-        proyectiles.push_back(disparoHechizo);
+    for(int i = 0; i<disparoHechizo.size();i++){
+        Proyectil* aux = disparoHechizo.at(i);
+        proyectiles.push_back(aux);
     }
-    
-    
     int destruidos=0; //Cuenta los destruidos, por si se da más de un proyectil destruido a la vez (casi imposible pero por si acaso)
     for(int i = 0; i<proyectiles.size();i++){
         if(!proyectiles[i]->muerto){
@@ -365,7 +436,34 @@ void E1jugador::Update(){
         
     }
     
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.INI
+    int vidaDespues=p1->getVida();
+    int manaDespues=p1->getMana();
+    int numpv=p1->getNumPVida();
+    int numpm=p1->getNumPMana();
+
+    int entero = 10;
+    std::string cadena = "";
+
+    cadena = static_cast<std::ostringstream*>(&(std::ostringstream() << numpv))->str();
+    std::string cadena2 = "";
+
+    cadena2 = static_cast<std::ostringstream*>(&(std::ostringstream() << numpm))->str();
+
+    //std::cout << "Esto es una cadena: " + cadena + "." << std::endl;
+
+
+    texto1->setString(cadena);
+    texto2->setString(cadena2);
+    interfaz->actualizar(vidaDespues,manaDespues);
+            
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.FIN
     //######################
+    //Manejador de niveles
+    if(lvl==1 && cambialvl==true && niveltime<0){
+        lvl=2;
+        cambiaNivel();
+    }
 }
 
 int E1jugador::CUpdate2(sf::Event event){
@@ -375,7 +473,7 @@ int E1jugador::CUpdate2(sf::Event event){
         switch(event.key.code){
             case sf::Keyboard::Escape:
                 salida=true;
-                Emenu::Instance(Juego::Instance(),window)->Handle();
+                Epausa::Instance(Juego::Instance(),window)->Handle(true);
                 break;
             case sf::Keyboard::P:
                 salida=true;
@@ -391,83 +489,151 @@ int E1jugador::CUpdate2(sf::Event event){
 
 void E1jugador::Render(){
     hittime-=time;
+    niveltime-=time;
+    fintime-=time;
     float percentTick = std::min(1.0f, static_cast<float>(updateclock.getTime())/static_cast<float>(UPDATE_TICK_TIME));
     window->clear();
     mapa->dibuja(*window);
 
+
      //###########################################
     //mapa->dibujaNodos(*window);
-    mapa->dibujaObs(*window);
+    //mapa->dibujaObs(*window);
     //Verifico que el camino va
-    for(int i = 0; i < enemigoM->caminoActual.size();i++){
-        window->draw(enemigoM->caminoActual.at(i)->getParcela()->render(time));
-    }
-    for(int i = 0; i < enemigoR->caminoActual.size();i++){
-        window->draw(enemigoR->caminoActual.at(i)->getParcela()->render(time));
-    }
+    /*for(int i = 0; i<enemigos.size();i++){
+        for(int j = 0;j < enemigos.at(i)->caminoActual.size();j++){
+            window->draw(enemigos.at(i)->caminoActual.at(j)->getParcela()->render(time));
+        }
+    }*/
     //Verifico que el raycast va
     /*window->draw(enemigoR->raycast->render(time));
     window->draw(enemigoM->raycast->render(time));
     window->draw(enemigoFinal->raycast->render(time));*/
     //###################
-    /*if(pvida!=NULL){
-       window->draw(pvida->getSprite()->render(time));
-    }
-    if(pmana!=NULL){
-        window->draw(pmana->getSprite()->render(time));
-    }
-    if(espada!=NULL){
-        window->draw(espada->getSprite()->render(time));
-    }
-    if(meteoro!=NULL){
-        window->draw(meteoro->getSpriteHechizo()->render(time));
-    }
-    if(escupitajo!=NULL){
-        window->draw(escupitajo->getSpriteHechizo()->render(time));
-    }*/
+    
     window->draw(p1->render(time, percentTick)->render(time));
-
     //###################
+    for(int i =0; i<proyectiles.size();i++){
+        if(proyectiles[i]->type==2){
+            window->draw(proyectiles[i]->render(time,percentTick)->render(time));
+        }
+    }
+    
+    for (int i=0; i<pociones.size(); i++){
+        window->draw(pociones[i]->getSprite()->getFotogramaActual());
+    }
+    
+    for (int i=0; i<hechizos.size(); i++){
+        window->draw(hechizos[i]->getSpriteHechizo()->getFotogramaActual());
+    }
+    for (int i=0; i<armas.size(); i++){
+        window->draw(armas[i]->getSprite()->getFotogramaActual());
+    }
+    
     for(int i =0; i<enemigos.size();i++){
         window->draw(enemigos[i]->render(time,percentTick)->render(time));
     }
 
+    window->draw(p1->render(time, percentTick)->render(time));
+    
     for(int i =0; i<proyectiles.size();i++){
-        window->draw(proyectiles[i]->render(time,percentTick)->render(time));
+        if(proyectiles[i]->type!=2){
+            window->draw(proyectiles[i]->render(time,percentTick)->render(time));
+        }
     }
     //###################
-
     camara->move(percentTick);
     camara->draw(*window);
-
+    
+    //Renderizado de interfaz
+    xD=camara->getDesp();
+         window->draw(interfaz->renderbv(xD)->render(time));
+         window->draw(interfaz->renderbm(xD)->render(time));
+         window->draw(interfaz->renderv(xD)->render(time));
+         window->draw(interfaz->renderm(xD)->render(time));
+         window->draw(interfaz->renderra(xD)->render(time));
+         window->draw(interfaz->renderrh(xD)->render(time));
+         //window->draw(interfaz->rendera(xD)->render(time));
+         //window->draw(interfaz->renderh(xD)->render(time));
+         window->draw(interfaz->renderpv(xD)->render(time));
+         window->draw(interfaz->renderpm(xD)->render(time));
+         texto1=interfaz->getnpm(xD);
+         texto2=interfaz->getnpv(xD);
+         window->draw(*texto1);
+         window->draw(*texto2);
+    ////////
+         
     window->display();
-}
-
-void E1jugador::reiniciar(){
-    delete p1;
-    delete hacha;
-    delete espada;
-    delete pvida;
-    delete pmana;
-    delete mapa;
-  //  delete recogida;
-    delete camara;
-  //  delete recogida;
-  //  delete movimiento; 
-    delete enemigoM;
-    delete enemigoR;
-    delete enemigoFinal;
-  //  delete proyectiles; 
-  //  delete disparoFinal;
-  //  delete clock;
-  //  delete updateclock;
-  //  delete option;
-  //  delete prueba;
-  //  delete updatetime;
-  //  delete time;
 }
 
 E1jugador::~E1jugador(){
     _context = 0;
     pinstance = 0;
+}
+
+void E1jugador::cambiaNivel(){
+   
+    
+    if(lvl==2){
+       delete mapa;
+       
+       mapa=new Mapa;
+       mapa->leerMapa(lvl);
+       
+       delete camara;
+       camara=new Camara(window->getSize().x, window->getSize().y, 12, *mapa);
+       p1->cambialvl(0);
+       enemigos.clear();
+       delete enemigoM;
+       enemigoM=new enemyMelee(100, 520, 10, 10);
+       delete enemigoM2;
+       enemigoM2=new enemyMelee(100, 470, 10, 10);
+       delete enemigoR;
+       enemigoR=new enemyRange(1000, 520, 50, 10);
+       delete enemigoR2;
+       enemigoR2=new enemyRange(1000, 470, 50, 10);
+       delete enemigoM3;
+       enemigoM3=new enemyMelee(1400, 520, 40, 10);
+       delete enemigoM4;
+       enemigoM4=new enemyMelee(1400, 470, 40, 10);
+       delete enemigoM5;
+       enemigoM5=new enemyMelee(1600, 500, 100, 10);
+       delete enemigoR3;
+       enemigoR3=new enemyRange(1900, 520, 40, 10);
+       enemigoR4=new enemyRange(1900, 470, 40, 10);
+       enemigoFinal=new enemyFinal(2700, 500, 1000, 20);
+       enemigos.push_back(enemigoM);
+       enemigos.push_back(enemigoM2);
+       enemigos.push_back(enemigoR);
+       enemigos.push_back(enemigoR2);
+       enemigos.push_back(enemigoM3);
+       enemigos.push_back(enemigoM4);
+       enemigos.push_back(enemigoM5);
+       enemigos.push_back(enemigoR3);
+       enemigos.push_back(enemigoR4);
+       enemigos.push_back(enemigoFinal);
+       
+       pociones.clear();
+       delete pvida;
+       delete pmana;
+       pvida=new Pocion("v", 900, -450);
+       pociones.push_back(pvida);
+       pmana=new Pocion("m", 400, -520);
+       pociones.push_back(pmana);
+       pvida2=new Pocion("v",900,-900);
+       pociones.push_back(pvida2);
+       pmana2=new Pocion("m",400,-400);
+       pociones.push_back(pmana2);
+       
+       hechizos.clear();
+       delete escupitajo;
+       meteoro=new Hechizo("m", 650, -500);
+       hechizos.push_back(meteoro);
+        
+       espada=new Arma("e", 850, -450);
+       armas.push_back(espada);
+       
+       coloca1=false;
+       coloca2=false;
+    }
 }

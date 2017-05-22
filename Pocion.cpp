@@ -70,3 +70,9 @@
             return 50;
         }
     }
+    
+    void Pocion::cambiarPos(int x, int y){
+        posX=x;
+        posY=y;
+        spritepocion->set_position(posX, posY);
+    }

@@ -7,7 +7,7 @@
 
         if(t=="e"){
             tipo="espada";
-            danyo=15;
+            danyo=25;
             posx=x;
             posy=y;
             
@@ -23,10 +23,18 @@
             int coorda2[32]={1500,885,-44,79,1564,884,-44,79,1609,887,-44,76,1671,907,-62,60,1732,903,-58,63, 1828, 916, -93, 51, 1907, 904, -70, 62, 1993, 904, -52, 62};
             attackleft=new Sprite(ruta2, coorda2, 8);
             attackleft->set_framerate(75);
+            
+            std::string ruta3("resources/Mort.png");
+            int coorda3[24]={5, 697, 72, 66, 79, 688, 66, 75, 166, 694, 93, 68, 273, 696, 76, 64, 354, 698, 65, 63};
+            attackrightmort=new Sprite(ruta3, coorda3, 6);
+            attackrightmort->set_framerate(75);
+            int coorda4[24]={77, 697, -72, 66, 145, 688, -66, 75, 259, 694, -93, 68, 349, 696, -76, 64, 419, 698, -65, 63};
+            attackleftmort=new Sprite(ruta3, coorda4, 6);
+            attackleftmort->set_framerate(75);
         }
         else if(t=="h"){
             tipo="hacha";
-            danyo=25;
+            danyo=15;
             posx=x;
             posy=y;
             
@@ -41,13 +49,13 @@
     }
     
     Arma::Arma(std::string t){
-        if(t=="espaada"){
+        if(t=="espada"){
             tipo="espada";
-            danyo=15;
+            danyo=25;
         }
         else if(t=="hacha"){
             tipo="hacha";
-            danyo=25;
+            danyo=15;
         }
     }
 
@@ -71,10 +79,27 @@
         return(spritearma);
     }
     
-    Sprite* Arma::getAttackRight(){
-        return attackright;
+    Sprite* Arma::getAttackRight(int id){
+        if(id==0){
+            return attackright;
+        }
+        else if(id==1){
+            return attackrightmort;
+        }
     }
     
-    Sprite* Arma::getAttackLeft(){
-        return attackleft;
+    Sprite* Arma::getAttackLeft(int id){
+        if(id==0){
+            return attackleft;
+        }
+        else if(id==1){
+            return attackleftmort;
+        }
+    }
+    
+    void Arma::cambiarPos(int x, int y){
+        posx=x;
+        posy=y;
+        spritearma->set_position(posx, posy);
+        
     }

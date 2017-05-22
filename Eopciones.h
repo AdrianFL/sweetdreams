@@ -13,9 +13,12 @@
 
 #ifndef EOPCIONES_H
 #define EOPCIONES_H
-#define MAX_NUMBER_ITEMSO 3
+#define MAX_NUMBER_ITEMSO 2
 #include "State.h"
 #include "Juego.h"
+#include "Emenu.h"
+
+class Emenu;
 
 class Eopciones: public State {
 public:
@@ -40,16 +43,19 @@ public:
     
     int run(sf::RenderWindow &window);
     
+    bool musica;
+    bool sonido;
+    
 private:
     sf::RenderWindow* window;
     int selected;
     int maxitems;
-    bool musica;
-    bool sonido;
+
     sf::Font font;
     
     bool salida;
     bool donde;
+    bool musicaencendida;
     
    // std::vector<sf::Text*> opciono;
     sf::Text opciono[MAX_NUMBER_ITEMSO];

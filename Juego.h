@@ -15,6 +15,7 @@
 #define JUEGO_H
 #include "State.h"
 #include <SFML/Graphics.hpp>
+#include "Sprite.hpp"
 
 class Juego {
 public:
@@ -46,6 +47,7 @@ public:
     
     int windowHeight; //Height de la window
     
+    Sprite* fondo;
 private:
 	State* _state;
         static Juego* pinstance;

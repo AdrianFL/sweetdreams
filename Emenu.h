@@ -20,8 +20,11 @@
 #include "State.h"
 #include "Juego.h"
 #include "Musica.hpp"
-
+#include "Eopciones.h"
 #include <SFML/Graphics.hpp>
+
+class Eopciones;
+
 class Emenu: public State {
 public:
     //Emenu(float width, float height,int tipo);
@@ -49,7 +52,10 @@ public:
     int run(sf::RenderWindow &window);
     
     ~Emenu();
-        
+    
+    Musica* music;
+    
+    
     protected:
         
     Emenu(Juego* context,sf::RenderWindow *w);
@@ -57,6 +63,7 @@ public:
     Emenu &operator = (const Emenu &);
     
 
+    
     
 private:
     sf::RenderWindow* window;
@@ -67,9 +74,10 @@ private:
     sf::Text opcion[MAX_NUMBER_ITEMS];
     sf::Text opcionj[MAX_NUMBER_ITEMS_J];
         
-    Musica* music;
+    
 
-
+    bool musicaencendida;
+       
     static Emenu* pinstance;
     Juego* _context;
     bool salida;

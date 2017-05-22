@@ -33,7 +33,12 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
     //si es jefe o no
     jefe = false;
     
-        //Sprites de melee
+    //Escalado y dirección
+    sx=1.0;
+    sy=1.0;
+    direccion=1;
+    
+    //Sprites de melee
     if(id==0){
         
         int frames=6;
@@ -167,48 +172,56 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
         int frames=3;
         std::string ruta("resources/badRabbit.png");
         //left, top, width, height
-        int coordenadas[18]={93,0,44,83, 93,87,44,83, 93,177,44,83};
+        int coordenadas[12]={93,0,44,83, 93,87,44,83, 93,177,44,83};
         idle= new Sprite(ruta, coordenadas, frames);
         idle->set_position(x, y);
         idle->set_framerate(120);
         idle->set_origin(22,41);
         
-        int coordenadas2[18] = {93,0,44,83, 93,87,44,83, 93,177,44,83};
+        int coordenadas2[12] = {93,0,44,83, 93,87,44,83, 93,177,44,83};
         idleleft = new Sprite(ruta, coordenadas2, frames);
         idleleft->set_position(x, y);
         idleleft->set_framerate(120);
         idleleft->set_origin(22,41);
         
-        int coordenadas3[18]={45,0,44,83, 45,87,44,83, 45,177,44,83};
+        int coordenadas3[12]={45,0,44,83, 45,87,44,83, 45,177,44,83};
         moveright=new Sprite(ruta, coordenadas3, frames);
         moveright->set_position(x, y);
         moveright->set_framerate(120);
         moveright->set_origin(22,41);
         
         
-        int coordenadas4[18]={144,0,44,83, 141,87,44,83, 141,177,44,83};
+        int coordenadas4[12]={144,0,44,83, 141,87,44,83, 141,177,44,83};
         moveleft=new Sprite(ruta, coordenadas4, frames);
         moveleft->set_position(x,y);
         moveleft->set_framerate(120);
         moveleft->set_origin(22,41);
         
-        int coordenadas5[18]={188,270,-44,83, 185,357,-44,83, 185,447,-44,83};
+        int coordenadas5[12]={188,270,-44,83, 185,357,-44,83, 185,447,-44,83};
         ataqueRight=new Sprite(ruta, coordenadas5, frames);
         ataqueRight->set_position(x,y);
         ataqueRight->set_framerate(120);
         ataqueRight->set_origin(22,41);
         
-        int coordenadas6[18]={144,270,44,83, 141,357,44,83, 141,447,44,83};
+        int coordenadas6[12]={144,270,44,83, 141,357,44,83, 141,447,44,83};
         ataqueLeft=new Sprite(ruta, coordenadas6, frames);
         ataqueLeft->set_position(x,y);
         ataqueLeft->set_framerate(120);
         ataqueLeft->set_origin(22,41);
         
-        int coordenadas7[48]={0,0,44,83, 0,87,44,83, 0,177,44,83, 199,0,44,83, 199,87,44,83, 199,177,44,83, 199,87,44,83, 199,177,44,83};
-        specialAttack=new Sprite(ruta, coordenadas, frames);
+        frames=8;
+        int coordenadas7[32]={0,0,44,83, 0,87,44,83, 0,177,44,83, 199,0,44,83, 199,87,44,83, 199,177,44,83, 199,87,44,83, 199,177,44,83};
+        specialAttack=new Sprite(ruta, coordenadas7, frames);
         specialAttack->set_position(x, y);
         specialAttack->set_framerate(120);
         specialAttack->set_origin(22,41);
+        
+        int coordenadas8[32]={0,270,44,83, 0,357,44,83, 0,447,44,83, 199,270,44,83, 199,357,44,83, 199,447,44,83, 199,357,44,83, 199,447,44,83};
+        muerteright=new Sprite(ruta, coordenadas8, frames);
+        muerteright->set_position(x, y);
+        muerteright->set_framerate(120);
+        muerteright->set_origin(22,41);
+        muerteright->setRepite(false);
         
         spriteActual = idle;
     }
@@ -220,10 +233,7 @@ Enemy::Enemy(int id, int inix, int iniy, int v, int danyo) {
     raycast->set_framerate(100);
     raycast->set_origin(0,0);
     
-    //Escalado y dirección
-    sx=1.0;
-    sy=1.0;
-    direccion=1;
+
     
     //Iniciar variables de tiempo
     ataquetime = -1;
@@ -245,6 +255,7 @@ Sprite* Enemy::render(int32_t tempo, float per){
     ataquetime-=tempo;
     disparotime-=tempo;
     cambiatime-=tempo;
+    spattacktime-=tempo;
     
     int movx = 0;
     int movy = 0;
@@ -329,11 +340,12 @@ Sprite* Enemy::render(int32_t tempo, float per){
     }else{
         //Si muere
         if(vida<=0){
-            specialAttack->set_position(x,y);
-            specialAttack->set_scale(sx, sy);
-            spriteActual = specialAttack;
-            return(specialAttack);
+            muerteright->set_position(x,y);
+            muerteright->set_scale(sx, sy);
+            spriteActual = muerteright;
+            return(muerteright);
         }
+        
         //Si lanza ataque especial
         if(spattacktime>=0){
            specialAttack->set_position(x,y);
@@ -341,6 +353,7 @@ Sprite* Enemy::render(int32_t tempo, float per){
            spriteActual = specialAttack;
            return(specialAttack); 
         }
+        
         //Si ataca normal
         if(ataquetime>=0){
             if(direccion>0){

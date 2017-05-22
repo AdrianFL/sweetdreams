@@ -38,7 +38,9 @@ class Hechizo{
         
         Sprite *hechizoleft;
 
-    
+        Sprite *hechizorightmort;
+        
+        Sprite *hechizoleftmort;
     public:
     
         Hechizo(std::string t, int x, int y);
@@ -57,9 +59,11 @@ class Hechizo{
         
         Sprite* getSpriteHechizo();
         
-        Sprite* getHechizoRight();
+        Sprite* getHechizoRight(int id);
         
-        Sprite* getHechizoLeft();
+        Sprite* getHechizoLeft(int id);
+        
+        void cambiarPos(int x,int y);
 };
 
 

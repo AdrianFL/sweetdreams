@@ -24,6 +24,10 @@ class Arma{
         
         Sprite *attackleft;
         
+        Sprite *attackrightmort;
+        
+        Sprite *attackleftmort;
+        
         
     
     public:
@@ -42,9 +46,11 @@ class Arma{
         
         Sprite* getSprite();
 
-        Sprite* getAttackRight();
+        Sprite* getAttackRight(int id);
         
-        Sprite* getAttackLeft();
+        Sprite* getAttackLeft(int id);
+        
+        void cambiarPos(int x, int y);
         
         
 };

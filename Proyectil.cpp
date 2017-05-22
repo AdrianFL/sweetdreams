@@ -122,6 +122,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
             direccion=1;
             spriteActual = movright;
         }
+        
     //Aviso de ataque de jefe
     }else if(id == 2){
         //Uso el valor del daño para indicar si es de tumba, o de zanahoria (no debería)
@@ -142,6 +143,7 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         explosion->set_origin(20,30);
         
         spriteActual = explosion;
+        
     //Ataque de jefe tumba
     }else if(id == 3){
         //Asignamos un tamaño pequeño para dar efecto de "salir del suelo"
@@ -216,44 +218,30 @@ Proyectil::Proyectil(int id, int px, int py, int ex, int ey, int d, float velox,
         spriteActual = explosion;
         
     }else if(type == 10){
-        
         sx = 1;
         sy = 1;
         int frames=5;
         std::string ruta("resources/AnimaMeteoro.png");
         //Sprite derecha
         //left, top, width, height
-        int coordenadas[20]={1, 4, 38, 25,   43, 4, 38, 25,   87, 4, 38, 25,   130, 4, 38, 5,   169, 4, 38, 25};
+        int coordenadas[20]={3, 1, 25, 38, 3, 44, 25, 38, 3, 87, 25, 38, 3, 130, 25, 48, 3, 170, 25, 38};
         movright= new Sprite(ruta, coordenadas, frames);
         movright->set_position(x, y);
         movright->set_framerate(100);
 
         //Origen de coordenadas en el centro
-        movright->set_origin(19,7);
-
-        //Sprite izquierda
-        int coordenadas2[20]={39, 4, -38, 25,    81, 4, -38, 25,    125, 4, -38, 25,    168, 4, -38, 5,   206, 4, -38, 25};
-        movleft= new Sprite(ruta, coordenadas2, frames);
-        movleft->set_position(x, y);
-        movleft->set_framerate(100);
-        movleft->set_origin(6,7);
+        movright->set_origin(12,19);
 
         //Sprite explosion
-        frames = 6;
-        std::string rutaExplosion("resources/proyectil.png");
-        int coordenadas3[24]={23,25,16,13, 7,27,13,9, 80,27,10,9, 80,27,10,9, 7,27,13,9, 80,27,10,9};
-        explosion= new Sprite(rutaExplosion, coordenadas3, frames);
+        frames = 1;
+        std::string rutaExplosion("resources/explosionMeteoro.png");
+        int coordenadas2[24]={0, 0, 68, 70};
+        explosion= new Sprite(rutaExplosion, coordenadas2, frames);
         explosion->set_position(x, y);
         explosion->set_framerate(60);
-        explosion->set_origin(8,6);
+        explosion->set_origin(34,35);
         
-        if(px-ex<0){
-            direccion=-1;
-            spriteActual = movleft;
-        }else{
-            direccion=1;
-            spriteActual = movright;
-        }
+        spriteActual = movright;
         
     }else if(type == 11){
         sx = 1;
@@ -319,7 +307,7 @@ Sprite* Proyectil::render(int32_t tempo, float p){
    
     int movx=0,movy=0;
     //Si es de tipo 1, es una bala normal
-    if(type == 0 || type == 1 || type == 10 || type == 11){
+    if(type == 0 || type == 1 || type == 11){
         //Si ha explotado, mostramos la animación de explosión
         if(explotar){
             muertetime-=tempo;
@@ -430,10 +418,43 @@ Sprite* Proyectil::render(int32_t tempo, float p){
             return(explosion);
         }
      //Si no ha explotado, movimiento interpolado
+    }else if(type==10){
+        //Si ha explotado, mostramos la animación de explosión
+        if(explotar){
+            muertetime-=tempo;
+            if(muertetime>0){
+                explosion->set_position(x,y);
+                explosion->set_scale(sx,sy);
+                spriteActual = explosion;
+                return(explosion);
+            }else{
+                muerto = true;
+                return(explosion);
+            }
+        }
+        //Si no ha explotado, movimiento interpolado
+        if(p<1.0f && (lastx!=x||lasty!=y)){
+            movx=(lastx*(1-p))+(x*p);
+            movy=(lasty*(1-p))+(y*p);
+            movright->set_position(movx, movy);
+            movright->set_scale(sx, sy);
+            spriteActual = movright;
+            return(movright);
+        }
+        else if(movingborder==true){
+            spriteActual = movright;
+            return(movright);
+        }else{
+            movright->set_position(x, y);
+            movright->set_scale(sx, sy);
+            spriteActual = movright;
+            return(movright);
+        }
     }
 }
 
 void Proyectil::volar(Personaje *p){
+    
     lastx=x;
     lasty=y;
     //Si la bala es de tipo 1, se mueve y comprueba colisiones con el personaje
@@ -442,8 +463,10 @@ void Proyectil::volar(Personaje *p){
         if(vuelotime>=0 && !muerto && !explotar){
             //Comprobamos colision con el personaje
             if(spriteActual->comprobarColision(0,p->getAnimacionActiva())){
-                p->herir(danyo);
-                explotar = true;
+                if(p->getVida()>0){
+                    p->herir(danyo);
+                    explotar = true;
+                }
             }else{
                 if(objx-x>0){
                     if(x<3200){
@@ -543,18 +566,83 @@ void Proyectil::volar(Personaje *p){
 void Proyectil::volarP(std::vector<Enemy*> enemigos){
     lastx=x;
     lasty=y;
-    //Si la bala es de tipo 1, se mueve y comprueba colisiones con el personaje
+    
     if(type == 10){
-        
+         //Si no se le ha acabado el tiempo, o ha muerto o explotado
+        if(vuelotime>=0 && !muerto && !explotar){
+            //Comprobamos colision con el personaje
+            for(int i = 0 ; i< enemigos.size() ; i++){
+                if(enemigos.at(i)->vida>0){
+                    if(spriteActual->comprobarColision(0,enemigos.at(i)->getAnimacionActiva())){
+                        enemigos.at(i)->herir(danyo);
+                        explotar = true;
+                    }
+                }
+            }
+            if(!explotar){
+                if(objx-x>0){
+                    if(x<3200){
+                        movingborder=false;
+                        x += vx;
+                    }else{
+                        movingborder=true;
+                        lastx=x;
+                        lasty=y;
+                    }
+
+                }else if(objx-x<0){
+                    if(x>20){
+                        movingborder=false;
+                        x += vx;
+                    }else{
+                        movingborder=true;
+                        lastx=x;
+                        lasty=y;
+                    }
+                }
+
+                if(objy-y<0){
+                    if(y>380){
+                        movingborder=false;
+                         y += vy;
+                    }else{
+                        movingborder=true;
+                        lastx=x;
+                        lasty=y;
+                    }
+
+                }else if(objy-y>0){
+                    if(y<570){
+                        movingborder=false;
+                         y +=  vy;
+                    }else{
+                        movingborder=true;
+                        lastx=x;
+                        lasty=y;
+                    }
+
+                }
+                if(objx == x && objy == y){
+                    movingborder=false;
+                    lasty=y;
+                    lastx=x;
+                }
+            }
+        }else{
+            std::cout<<"peta infinito"<<std::endl;
+            muerto = true;
+        }
     }
     else if(type == 11){
         //Si no se le ha acabado el tiempo, o ha muerto o explotado
         if(vuelotime>=0 && !muerto && !explotar){
             //Comprobamos colision con el personaje
             for(int i = 0 ; i< enemigos.size() ; i++){
-                if(spriteActual->comprobarColision(0,enemigos.at(i)->getAnimacionActiva())){
-                    enemigos.at(i)->herir(danyo);
-                    explotar = true;
+                if(enemigos.at(i)->vida>0){
+                    if(spriteActual->comprobarColision(0,enemigos.at(i)->getAnimacionActiva())){
+                        enemigos.at(i)->herir(danyo);
+                        explotar = true;
+                    }
                 }
             }
             if(!explotar){

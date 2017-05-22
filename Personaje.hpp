@@ -49,7 +49,7 @@ public:
     void aumentaPMana();
     int getNumPVida();
     int getNumPMana();
-    Proyectil* lanzarHechizo();
+    std::vector<Proyectil*> lanzarHechizo();
     void recogeHechizo(Hechizo* h);
     
     void aumentarMargenDer(int i);
@@ -58,6 +58,10 @@ public:
     void cambiarAtaque(Arma* a);
     
     int getDanyo();
+    
+    void cambialvl(int i);
+    
+    bool meteoroalert;
     
 private:
     Sprite *idle;
@@ -84,6 +88,8 @@ private:
     int numPVida;
     int numPMana;
     
+    int idx;
+     
     Hechizo *hactivo;
     Arma *aactiva;
     
